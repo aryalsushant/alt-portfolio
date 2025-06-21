@@ -2,6 +2,7 @@ import './globals.css';
 import { Inter, Manrope } from '@next/font/google';
 import type { Metadata } from 'next';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import { ThemeProvider } from 'next-themes';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
@@ -18,12 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
-      <body className="font-inter bg-light-background text-light-text dark:bg-dark-background dark:text-dark-text min-h-screen transition-colors duration-300">
+    <html lang="en" className={`${inter.variable} ${manrope.variable}`} suppressHydrationWarning>
+      <body className="font-inter bg-light-background text-light-text dark:bg-dark-background dark:text-dark-text min-h-screen transition-colors duration-300 flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Navbar />
-          {/* Navbar and ThemeToggle will go here */}
-          {children}
+          <main className="flex-grow">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
