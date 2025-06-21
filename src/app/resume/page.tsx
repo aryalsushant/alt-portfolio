@@ -1,7 +1,12 @@
 "use client";
 import { motion } from 'framer-motion';
-import PDFViewer from '@/components/PDFViewer';
+import dynamic from 'next/dynamic';
 import ResumeSidebar from '@/components/ResumeSidebar';
+
+const PDFViewer = dynamic(() => import('@/components/PDFViewer'), {
+  ssr: false,
+  loading: () => <div className="w-full h-[100vh] flex items-center justify-center bg-gray-200 dark:bg-gray-800"><p>Loading PDF...</p></div>
+});
 
 export default function ResumePage() {
   return (
