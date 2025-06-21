@@ -2,6 +2,7 @@ import './globals.css';
 import { Inter, Manrope } from '@next/font/google';
 import type { Metadata } from 'next';
 import Navbar from '../components/Navbar';
+import { ThemeProvider } from 'next-themes';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope', display: 'swap' });
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${manrope.variable}`}>
       <body className="font-inter bg-light-background text-light-text dark:bg-dark-background dark:text-dark-text min-h-screen transition-colors duration-300">
-        <Navbar />
-        {/* Navbar and ThemeToggle will go here */}
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Navbar />
+          {/* Navbar and ThemeToggle will go here */}
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

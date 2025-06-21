@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
+import ThemeToggle from './ThemeToggle';
+import SocialIcons from './SocialIcons';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -29,12 +31,9 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          {/* ThemeToggle and SocialIcons placeholders */}
           <div className="ml-4 flex items-center gap-3">
-            <span className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">🌞/🌙</span>
-            <span className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">GH</span>
-            <span className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">LI</span>
-            <span className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">PF</span>
+            <ThemeToggle />
+            <SocialIcons />
           </div>
         </div>
         {/* Mobile menu button */}
@@ -60,12 +59,9 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            {/* ThemeToggle and SocialIcons placeholders */}
             <div className="flex items-center gap-3 mt-2">
-              <span className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">🌞/🌙</span>
-              <span className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">GH</span>
-              <span className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">LI</span>
-              <span className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">PF</span>
+              <ThemeToggle />
+              <SocialIcons />
             </div>
           </div>
         </div>
