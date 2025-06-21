@@ -1,4 +1,17 @@
-export const projects = [
+export type Project = {
+  title: string;
+  description: string;
+  image: string;
+  techStack: { name: string, icon: string }[];
+  links: {
+    github: string;
+    devpost?: string;
+  };
+  details: string;
+  award?: string;
+};
+
+export const projects: Project[] = [
   {
     title: 'Druglytics',
     description: 'GenAI app analyzing 300K+ drug interactions & allergies. Built for Hacklytics 2025.',

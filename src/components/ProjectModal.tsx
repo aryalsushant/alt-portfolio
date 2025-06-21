@@ -4,6 +4,7 @@ import { FaGithub, FaExternalLinkAlt, FaPython, FaReact, FaAws } from 'react-ico
 import { SiTypescript, SiNextdotjs, SiTailwindcss, SiFlask, SiMongodb, SiStreamlit, SiOpencv, SiClerk, SiExpress, SiTensorflow } from 'react-icons/si';
 import { FiX } from 'react-icons/fi';
 import { IconType } from 'react-icons';
+import { Project } from '../../data/projects';
 
 const iconMap: { [key: string]: IconType } = {
   FaPython,
@@ -21,7 +22,7 @@ const iconMap: { [key: string]: IconType } = {
   SiTensorflow,
 };
 
-const ProjectModal = ({ project, onClose }) => {
+const ProjectModal = ({ project, onClose }: { project: Project | null, onClose: () => void }) => {
   if (!project) return null;
 
   return (
