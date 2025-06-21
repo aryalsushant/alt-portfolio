@@ -1,7 +1,7 @@
 "use client";
 import { motion } from 'framer-motion';
-import PDFViewer from '../../components/PDFViewer';
-import ResumeSidebar from '../../components/ResumeSidebar';
+import PDFViewer from '@/components/PDFViewer';
+import ResumeSidebar from '@/components/ResumeSidebar';
 
 export default function ResumePage() {
   return (

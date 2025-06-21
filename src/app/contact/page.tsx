@@ -1,7 +1,7 @@
 "use client";
 import { motion } from 'framer-motion';
-import ContactForm from '../../components/ContactForm';
-import SocialIcons from '../../components/SocialIcons';
+import ContactForm from '@/components/ContactForm';
+import SocialIcons from '@/components/SocialIcons';
 
 export default function ContactPage() {
   return (

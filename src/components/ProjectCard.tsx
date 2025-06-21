@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { FaPython, FaReact, FaAws } from 'react-icons/fa';
 import { SiTypescript, SiNextdotjs, SiTailwindcss, SiFlask, SiMongodb, SiStreamlit, SiOpencv, SiClerk, SiExpress, SiTensorflow } from 'react-icons/si';
 import { IconType } from 'react-icons';
-import { Project } from '../../data/projects';
+import { Project } from '@/data/projects';
 
 const iconMap: { [key: string]: IconType } = {
   FaPython,

@@ -1,10 +1,11 @@
+"use client";
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { FaGithub, FaExternalLinkAlt, FaPython, FaReact, FaAws } from 'react-icons/fa';
 import { SiTypescript, SiNextdotjs, SiTailwindcss, SiFlask, SiMongodb, SiStreamlit, SiOpencv, SiClerk, SiExpress, SiTensorflow } from 'react-icons/si';
 import { FiX } from 'react-icons/fi';
 import { IconType } from 'react-icons';
-import { Project } from '../../data/projects';
+import { Project } from '@/data/projects';
 
 const iconMap: { [key: string]: IconType } = {
   FaPython,

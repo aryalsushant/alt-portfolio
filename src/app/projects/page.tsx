@@ -1,9 +1,9 @@
 "use client";
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { projects, Project } from '../../data/projects';
-import ProjectCard from '../../components/ProjectCard';
-import ProjectModal from '../../components/ProjectModal';
+import { projects, Project } from '@/data/projects';
+import ProjectCard from '@/components/ProjectCard';
+import ProjectModal from '@/components/ProjectModal';
 
 export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
