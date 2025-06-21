@@ -1,17 +1,14 @@
-import { FaPython, FaReact, FaNodeJs, FaAws, FaDocker } from 'react-icons/fa';
-import { SiTypescript, SiNextdotjs, SiTailwindcss, SiFlask, SiMongodb, SiStreamlit, SiOpencv, SiClerk, SiExpress, SiTensorflow } from 'react-icons/si';
-
 export const projects = [
   {
     title: 'Druglytics',
     description: 'GenAI app analyzing 300K+ drug interactions & allergies. Built for Hacklytics 2025.',
     image: '/projects/druglytics.png', // Placeholder
     techStack: [
-      { name: 'Python', icon: <FaPython /> },
-      { name: 'Streamlit', icon: <SiStreamlit /> },
-      { name: 'Flask', icon: <SiFlask /> },
-      { name: 'MongoDB', icon: <SiMongodb /> },
-      { name: 'AWS EC2', icon: <FaAws /> },
+      { name: 'Python', icon: 'FaPython' },
+      { name: 'Streamlit', icon: 'SiStreamlit' },
+      { name: 'Flask', icon: 'SiFlask' },
+      { name: 'MongoDB', icon: 'SiMongodb' },
+      { name: 'AWS EC2', icon: 'FaAws' },
     ],
     links: {
       github: 'https://github.com/aryalsushant/druglytics',
@@ -25,10 +22,10 @@ export const projects = [
     description: 'AI hiring platform modeled after dating apps, built in 18 hours for HackNYU 2025.',
     image: '/projects/swiped-in.png', // Placeholder
     techStack: [
-      { name: 'Next.js', icon: <SiNextdotjs /> },
-      { name: 'TypeScript', icon: <SiTypescript /> },
-      { name: 'TailwindCSS', icon: <SiTailwindcss /> },
-      { name: 'MongoDB', icon: <SiMongodb /> },
+      { name: 'Next.js', icon: 'SiNextdotjs' },
+      { name: 'TypeScript', icon: 'SiTypescript' },
+      { name: 'TailwindCSS', icon: 'SiTailwindcss' },
+      { name: 'MongoDB', icon: 'SiMongodb' },
     ],
     links: {
       github: 'https://github.com/aryalsushant/swiped-in',
@@ -42,10 +39,10 @@ export const projects = [
     description: 'Full-stack AI chatbot with user authentication, powered by the Gemini API.',
     image: '/projects/brot-ai.png', // Placeholder
     techStack: [
-      { name: 'React', icon: <FaReact /> },
-      { name: 'Express', icon: <SiExpress /> },
-      { name: 'MongoDB', icon: <SiMongodb /> },
-      { name: 'Clerk', icon: <SiClerk /> },
+      { name: 'React', icon: 'FaReact' },
+      { name: 'Express', icon: 'SiExpress' },
+      { name: 'MongoDB', icon: 'SiMongodb' },
+      { name: 'Clerk', icon: 'SiClerk' },
     ],
     links: {
       github: 'https://github.com/aryalsushant/brot-ai',
@@ -57,9 +54,9 @@ export const projects = [
     description: 'Multimodal ML pipeline to detect fraud in home insurance claims, winning 1st place.',
     image: '/projects/fraud-detection.png', // Placeholder
     techStack: [
-      { name: 'TensorFlow', icon: <SiTensorflow /> },
-      { name: 'Python', icon: <FaPython /> },
-      { name: 'OpenCV', icon: <SiOpencv /> },
+      { name: 'TensorFlow', icon: 'SiTensorflow' },
+      { name: 'Python', icon: 'FaPython' },
+      { name: 'OpenCV', icon: 'SiOpencv' },
     ],
     links: {
       github: 'https://github.com/aryalsushant/home-insurance-fraud-detection',

@@ -1,5 +1,24 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { FaPython, FaReact, FaAws } from 'react-icons/fa';
+import { SiTypescript, SiNextdotjs, SiTailwindcss, SiFlask, SiMongodb, SiStreamlit, SiOpencv, SiClerk, SiExpress, SiTensorflow } from 'react-icons/si';
+import { IconType } from 'react-icons';
+
+const iconMap: { [key: string]: IconType } = {
+  FaPython,
+  FaReact,
+  FaAws,
+  SiTypescript,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiFlask,
+  SiMongodb,
+  SiStreamlit,
+  SiOpencv,
+  SiClerk,
+  SiExpress,
+  SiTensorflow,
+};
 
 const ProjectCard = ({ project, onClick }) => (
   <motion.div
@@ -23,15 +42,17 @@ const ProjectCard = ({ project, onClick }) => (
       )}
       <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{project.description}</p>
       <div className="flex flex-wrap gap-2">
-        {project.techStack.map(tech => (
-          <span
-            key={tech.name}
-            className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/10 text-primary dark:text-accent border border-primary/20 dark:border-accent/20 text-xs font-medium"
-          >
-            <span className="text-sm">{tech.icon}</span>
-            {tech.name}
-          </span>
-        ))}
+        {project.techStack.map(tech => {
+          const Icon = iconMap[tech.icon];
+          return (
+            <span
+              key={tech.name}
+              className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/10 text-primary dark:text-accent border border-primary/20 dark:border-accent/20 text-xs font-medium"
+            >
+              {Icon && <Icon className="text-sm" />} {tech.name}
+            </span>
+          );
+        })}
       </div>
     </div>
   </motion.div>

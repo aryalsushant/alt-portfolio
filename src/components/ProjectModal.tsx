@@ -1,7 +1,25 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaPython, FaReact, FaAws } from 'react-icons/fa';
+import { SiTypescript, SiNextdotjs, SiTailwindcss, SiFlask, SiMongodb, SiStreamlit, SiOpencv, SiClerk, SiExpress, SiTensorflow } from 'react-icons/si';
 import { FiX } from 'react-icons/fi';
+import { IconType } from 'react-icons';
+
+const iconMap: { [key: string]: IconType } = {
+  FaPython,
+  FaReact,
+  FaAws,
+  SiTypescript,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiFlask,
+  SiMongodb,
+  SiStreamlit,
+  SiOpencv,
+  SiClerk,
+  SiExpress,
+  SiTensorflow,
+};
 
 const ProjectModal = ({ project, onClose }) => {
   if (!project) return null;
@@ -42,12 +60,14 @@ const ProjectModal = ({ project, onClose }) => {
             )}
             <p className="text-gray-700 dark:text-gray-300 mb-6">{project.details}</p>
             <div className="flex flex-wrap gap-2 mb-6">
-              {project.techStack.map(tech => (
-                <span key={tech.name} className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/10 text-primary dark:text-accent border border-primary/20 dark:border-accent/20 text-sm font-medium">
-                  <span className="text-md">{tech.icon}</span>
-                  {tech.name}
-                </span>
-              ))}
+              {project.techStack.map(tech => {
+                const Icon = iconMap[tech.icon];
+                return (
+                  <span key={tech.name} className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-accent/10 text-primary dark:text-accent border border-primary/20 dark:border-accent/20 text-sm font-medium">
+                    {Icon && <Icon className="text-md" />} {tech.name}
+                  </span>
+                );
+              })}
             </div>
             <div className="flex items-center gap-4">
               {project.links.github && (

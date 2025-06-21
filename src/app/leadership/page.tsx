@@ -1,6 +1,14 @@
+"use client";
+
 import { motion } from 'framer-motion';
 
-const timelineData = [
+type TimelineEvent = {
+  role: string;
+  date: string;
+  description: string;
+};
+
+const timelineData: TimelineEvent[] = [
   {
     role: 'Senior Resident Assistant',
     date: 'May 2025 – Present',
@@ -18,7 +26,7 @@ const timelineData = [
   },
 ];
 
-const TimelineItem = ({ item, isLast }) => (
+const TimelineItem = ({ item }: { item: TimelineEvent }) => (
   <div className="relative pl-8">
     <div className="absolute left-0 top-0 h-full w-0.5 bg-primary/30"></div>
     <div className="absolute left-[-6px] top-1 w-4 h-4 rounded-full bg-primary ring-4 ring-light-background dark:ring-dark-background"></div>
@@ -37,8 +45,8 @@ const TimelineItem = ({ item, isLast }) => (
 
 const LeadershipTimeline = () => (
   <div className="space-y-8">
-    {timelineData.map((item, index) => (
-      <TimelineItem key={item.role} item={item} isLast={index === timelineData.length - 1} />
+    {timelineData.map((item) => (
+      <TimelineItem key={item.role} item={item} />
     ))}
   </div>
 );
