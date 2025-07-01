@@ -9,7 +9,7 @@ const tech = [
   { icon: <FaNodeJs className="text-green-400 group-hover:scale-125 transition" />, name: 'Node.js' },
   { icon: <SiJavascript className="text-yellow-400 group-hover:scale-125 transition" />, name: 'JavaScript' },
   { icon: <FaCss3Alt className="text-blue-300 group-hover:scale-125 transition" />, name: 'CSS3' },
-  { icon: <FaGithub className="text-white group-hover:scale-125 transition" />, name: 'GitHub' },
+  { icon: <FaGithub className="text-gray-800 dark:text-white group-hover:scale-125 transition" />, name: 'GitHub' },
 ];
 
 const About = () => {
@@ -26,17 +26,17 @@ const About = () => {
         </div>
       </div>
       <div className="flex-1 text-center md:text-left">
-        <h2 className="text-3xl font-bold text-white mb-4 drop-shadow-neon">About Me</h2>
-        <p className="text-cyan-100 mb-6">
+        <h2 className="text-3xl font-bold mb-4 drop-shadow-neon text-gray-900 dark:text-white">About Me</h2>
+        <p className="mb-6 text-gray-700 dark:text-cyan-100 font-medium text-lg">
           Hi! I'm Sushant, a passionate developer blending Computer Science and Math to build futuristic, impactful solutions. I love exploring new tech, creating beautiful UIs, and solving real-world problems.
         </p>
         <div className="flex flex-wrap gap-6 justify-center md:justify-start">
           {tech.map(({ icon, name }) => (
             <div key={name} className="group flex flex-col items-center cursor-pointer">
-              <div className="text-4xl mb-1 transition-transform duration-200">
+              <div className="text-4xl mb-1 transition-transform duration-200 border border-cyan-300 rounded-full p-2" style={{borderWidth: '1.5px'}}>
                 {icon}
               </div>
-              <span className="text-xs text-cyan-200 opacity-80">{name}</span>
+              <span className="text-xs font-semibold text-gray-600 dark:text-cyan-200 opacity-90 drop-shadow-sm">{name}</span>
             </div>
           ))}
         </div>
