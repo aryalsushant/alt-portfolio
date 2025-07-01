@@ -39,6 +39,22 @@ const Navbar = ({ darkMode, setDarkMode }) => {
         <div className="text-2xl font-bold tracking-widest text-cyan-500 dark:text-cyan-400 drop-shadow-glow select-none">
           SUSHANT
         </div>
+        {/* Mobile dark mode toggle (left of hamburger) */}
+        <div className="flex items-center md:hidden">
+          <span className="mr-2"><FaMoon className={`text-xl ${darkMode ? 'text-cyan-400' : 'text-gray-400'}`} /></span>
+          <button
+            aria-label="Toggle dark mode"
+            onClick={() => setDarkMode(dm => !dm)}
+            className="relative w-12 h-6 flex items-center bg-gray-100 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
+            tabIndex={0}
+          >
+            <span
+              className={`absolute left-1 top-1 w-4 h-4 rounded-full bg-cyan-400 dark:bg-yellow-300 shadow-md transform transition-transform duration-300 ${darkMode ? 'translate-x-0' : 'translate-x-6'}`}
+            ></span>
+            <span className="sr-only">Toggle dark mode</span>
+          </button>
+          <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-400' : 'text-gray-400'}`} /></span>
+        </div>
         {/* Desktop nav */}
         <ul className="hidden md:flex gap-6 text-lg">
           {navLinks.map(link => (
