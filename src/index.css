@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
+:root {
+  --bg-main: linear-gradient(to bottom right, #fff, #f1f5f9 60%, #e5e7eb 100%);
+  --text-main: #232526;
+  --bg-card: #fff;
+  --text-card: #232526;
+  --bg-navbar: #fff;
+  --text-navbar: #232526;
+  --bg-footer: #fff;
+  --text-footer: #232526;
+}
+
+.dark {
+  --bg-main: linear-gradient(to bottom right, #0f2027, #2c5364 60%, #232526 100%);
+  --text-main: #f1f5f9;
+  --bg-card: #232526;
+  --text-card: #f1f5f9;
+  --bg-navbar: #232526;
+  --text-navbar: #f1f5f9;
+  --bg-footer: #232526;
+  --text-footer: #f1f5f9;
+  background: #181c23;
+  color: #f1f5f9;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} 

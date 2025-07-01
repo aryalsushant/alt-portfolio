@@ -14,7 +14,7 @@ const tech = [
 
 const About = () => {
   return (
-    <section className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 py-24 px-6" id="about">
+    <section className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 py-24 px-6 bg-white dark:bg-[#232526] rounded-2xl shadow-neon mt-16" id="about">
       <div className="flex-1 flex justify-center">
         <div className="relative group">
           <img

@@ -10,7 +10,7 @@ function App() {
   // Dark mode state
   const [darkMode, setDarkMode] = useState(() => {
     const stored = localStorage.getItem('theme');
-    return stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return stored ? stored === 'dark' : true; // Default to dark mode
   });
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function App() {
   }, []);
 
   return (
-    <div className={`font-orbitron bg-gradient-to-br from-[#0f2027] via-[#2c5364] to-[#232526] min-h-screen transition-colors duration-500 ${darkMode ? 'dark' : ''}`}>
+    <div className={`font-orbitron min-h-screen transition-colors duration-500 ${darkMode ? 'dark' : ''}`}>
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <main>
         <section id="home"><Hero /></section>

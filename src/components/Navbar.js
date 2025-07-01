@@ -34,9 +34,9 @@ const Navbar = ({ darkMode, setDarkMode }) => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-lg bg-white/20 dark:bg-black/30 shadow-lg border-b border-white/10 dark:border-white/20 transition-colors duration-500">
+    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-lg bg-white dark:bg-[#232526] shadow-lg border-b border-gray-200 dark:border-white/20 transition-colors duration-500">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-3">
-        <div className="text-2xl font-bold tracking-widest text-cyan-400 drop-shadow-glow select-none">
+        <div className="text-2xl font-bold tracking-widest text-cyan-500 dark:text-cyan-400 drop-shadow-glow select-none">
           SUSHANT
         </div>
         {/* Desktop nav */}
@@ -44,7 +44,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
           {navLinks.map(link => (
             <li key={link.to}>
               <button
-                className={`relative px-2 py-1 font-semibold transition text-white dark:text-cyan-100 hover:text-cyan-400 focus:outline-none ${active === link.to ? 'after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-1 after:bg-cyan-400 after:rounded-full after:shadow-neon' : ''}`}
+                className={`relative px-2 py-1 font-semibold transition text-black dark:text-cyan-100 hover:text-cyan-500 dark:hover:text-cyan-400 focus:outline-none ${active === link.to ? 'after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-1 after:bg-cyan-400 after:rounded-full after:shadow-neon' : ''}`}
                 onClick={() => handleClick(link.to)}
               >
                 {link.name}
@@ -58,7 +58,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
           <button
             aria-label="Toggle dark mode"
             onClick={() => setDarkMode(dm => !dm)}
-            className="relative w-14 h-7 flex items-center bg-white/20 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
+            className="relative w-14 h-7 flex items-center bg-gray-100 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
             tabIndex={0}
           >
             <span
@@ -66,11 +66,11 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             ></span>
             <span className="sr-only">Toggle dark mode</span>
           </button>
-          <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-300' : 'text-gray-400'}`} /></span>
+          <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-400' : 'text-gray-400'}`} /></span>
         </div>
         {/* Hamburger for mobile */}
         <button
-          className="md:hidden ml-2 p-2 rounded-full bg-white/20 dark:bg-black/30 text-cyan-400 focus:outline-none"
+          className="md:hidden ml-2 p-2 rounded-full bg-gray-100 dark:bg-black/30 text-cyan-400 focus:outline-none"
           aria-label="Open menu"
           onClick={() => setMenuOpen(m => !m)}
         >
@@ -79,12 +79,12 @@ const Navbar = ({ darkMode, setDarkMode }) => {
       </div>
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-[#0f2027]/95 dark:bg-black/95 backdrop-blur-lg border-b border-cyan-400/20 shadow-lg animate-fade-in z-40">
+        <div className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-black/95 backdrop-blur-lg border-b border-cyan-400/20 shadow-lg animate-fade-in z-40">
           <ul className="flex flex-col items-center gap-4 py-6">
             {navLinks.map(link => (
               <li key={link.to}>
                 <button
-                  className={`block w-full text-lg font-semibold px-4 py-2 text-cyan-100 hover:text-cyan-400 focus:outline-none ${active === link.to ? 'border-b-2 border-cyan-400' : ''}`}
+                  className={`block w-full text-lg font-semibold px-4 py-2 text-gray-900 dark:text-cyan-100 hover:text-cyan-500 focus:outline-none ${active === link.to ? 'border-b-2 border-cyan-400' : ''}`}
                   onClick={() => handleClick(link.to)}
                 >
                   {link.name}
@@ -97,7 +97,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                 <button
                   aria-label="Toggle dark mode"
                   onClick={() => setDarkMode(dm => !dm)}
-                  className="relative w-14 h-7 flex items-center bg-white/20 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
+                  className="relative w-14 h-7 flex items-center bg-gray-100 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
                   tabIndex={0}
                 >
                   <span
@@ -105,7 +105,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                   ></span>
                   <span className="sr-only">Toggle dark mode</span>
                 </button>
-                <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-300' : 'text-gray-400'}`} /></span>
+                <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-400' : 'text-gray-400'}`} /></span>
               </div>
             </li>
           </ul>

@@ -37,12 +37,12 @@ const cardVariants = {
 const Projects = () => {
   return (
     <section className="max-w-6xl mx-auto py-24 px-6" id="projects">
-      <h2 className="text-3xl font-bold text-white mb-10 drop-shadow-neon text-center">Projects</h2>
+      <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-10 drop-shadow-neon text-center">Projects</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {projects.map((proj, i) => (
           <motion.div
             key={proj.name}
-            className="bg-white/10 dark:bg-black/30 rounded-2xl shadow-neon border border-cyan-400/30 overflow-hidden group hover:scale-105 hover:shadow-glow transition-all duration-300 cursor-pointer relative"
+            className="bg-white dark:bg-[#232526] rounded-2xl shadow-neon border border-gray-200 dark:border-cyan-400/30 overflow-hidden group hover:scale-105 hover:shadow-glow transition-all duration-300 cursor-pointer relative"
             custom={i}
             initial="hidden"
             whileInView="visible"
@@ -51,16 +51,16 @@ const Projects = () => {
           >
             <img src={proj.image} alt={proj.name} className="w-full h-40 object-cover" />
             <div className="p-6">
-              <h3 className="text-xl font-bold text-cyan-400 mb-2">{proj.name}</h3>
-              <p className="text-cyan-100 mb-4 min-h-[48px]">{proj.desc}</p>
+              <h3 className="text-xl font-bold text-cyan-500 dark:text-cyan-400 mb-2">{proj.name}</h3>
+              <p className="text-gray-700 dark:text-cyan-100 mb-4 min-h-[48px]">{proj.desc}</p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {proj.tech.map(t => (
-                  <span key={t} className="px-2 py-1 text-xs bg-cyan-400/20 text-cyan-200 rounded-full border border-cyan-400/40">{t}</span>
+                  <span key={t} className="px-2 py-1 text-xs bg-cyan-100/60 dark:bg-cyan-400/20 text-cyan-700 dark:text-cyan-200 rounded-full border border-cyan-200 dark:border-cyan-400/40">{t}</span>
                 ))}
               </div>
               <div className="flex gap-4">
-                <a href={proj.github} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-white transition"><FaGithub size={22} /></a>
-                <a href={proj.live} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-white transition"><FaExternalLinkAlt size={20} /></a>
+                <a href={proj.github} target="_blank" rel="noopener noreferrer" className="text-cyan-500 dark:text-cyan-400 hover:text-gray-900 dark:hover:text-white transition"><FaGithub size={22} /></a>
+                <a href={proj.live} target="_blank" rel="noopener noreferrer" className="text-cyan-500 dark:text-cyan-400 hover:text-gray-900 dark:hover:text-white transition"><FaExternalLinkAlt size={20} /></a>
               </div>
             </div>
           </motion.div>
