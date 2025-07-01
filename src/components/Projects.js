@@ -9,7 +9,7 @@ const projects = [
     desc: 'GenAI powered app that analyzes drug interactions and generates animated informational video',
     tech: ['Python', 'AWS', 'MongoDB'],
     github: 'https://github.com/aryalsushant/hacklytics2025',
-    live: 'https://hacklytics.streamlit.app',
+    live: 'https://devpost.com/software/druglytics',
   },
   {
     name: 'Swiped-In',
@@ -17,7 +17,7 @@ const projects = [
     desc: 'Dating APP style hiring platform allowing job seekers to swipe through jobs and recruiters to swipe through candidates',
     tech: ['Next.js', 'Node.js', 'MongoDB'],
     github: 'https://github.com/rupaut98/swipedin',
-    live: 'https://www.swipedin.co',
+    live: 'https://devpost.com/software/swiped-in',
   },
   {
     name: 'Brot AI',
@@ -59,8 +59,14 @@ const Projects = () => {
                 ))}
               </div>
               <div className="flex gap-4">
-                <a href={proj.github} target="_blank" rel="noopener noreferrer" className="text-cyan-500 dark:text-cyan-400 hover:text-gray-900 dark:hover:text-white transition"><FaGithub size={22} /></a>
-                <a href={proj.live} target="_blank" rel="noopener noreferrer" className="text-cyan-500 dark:text-cyan-400 hover:text-gray-900 dark:hover:text-white transition"><FaExternalLinkAlt size={20} /></a>
+                <a href={proj.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-cyan-500 dark:text-cyan-400 hover:text-gray-900 dark:hover:text-white transition">
+                  <FaGithub size={22} />
+                  <span className="text-sm font-medium">GitHub</span>
+                </a>
+                <a href={proj.live} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-cyan-500 dark:text-cyan-400 hover:text-gray-900 dark:hover:text-white transition">
+                  <FaExternalLinkAlt size={20} />
+                  <span className="text-sm font-medium">Live Demo</span>
+                </a>
               </div>
             </div>
           </motion.div>
