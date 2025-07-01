@@ -6,8 +6,8 @@ const Footer = () => (
     <div className="flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-6 gap-4">
       <div className="text-gray-700 dark:text-cyan-200 text-sm">&copy; {new Date().getFullYear()} Sushant Aryal. All rights reserved.</div>
       <div className="flex gap-6 justify-center">
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-cyan-500 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-white transition drop-shadow-neon hover:drop-shadow-glow text-xl"><FaLinkedin /></a>
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-cyan-500 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-white transition drop-shadow-neon hover:drop-shadow-glow text-xl"><FaGithub /></a>
+        <a href="https://www.linkedin.com/in/sushant-aryal/" target="_blank" rel="noopener noreferrer" className="text-cyan-500 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-white transition drop-shadow-neon hover:drop-shadow-glow text-xl"><FaLinkedin /></a>
+        <a href="https://github.com/aryalsushant" target="_blank" rel="noopener noreferrer" className="text-cyan-500 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-white transition drop-shadow-neon hover:drop-shadow-glow text-xl"><FaGithub /></a>
         <a href="mailto:someone@email.com" className="text-cyan-500 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-white transition drop-shadow-neon hover:drop-shadow-glow text-xl"><FaEnvelope /></a>
       </div>
     </div>

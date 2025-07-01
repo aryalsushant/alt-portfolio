@@ -45,11 +45,11 @@ const Hero = () => {
         >
           <Typewriter
             words={[
-              'Future-Facing Developer',
-              'UI/UX Enthusiast',
-              'Open Source Contributor',
+              'Future-Facing Engineer',
+              'BTT AI/ML Fellow @ Cornell',
               'React & Tailwind Specialist',
-              'Problem Solver',
+              'Solving Real-World Problems',
+              'Getting 1% Better Every Day',
             ]}
             loop={0}
             cursor

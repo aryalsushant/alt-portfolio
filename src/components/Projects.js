@@ -4,28 +4,28 @@ import { motion } from 'framer-motion';
 
 const projects = [
   {
-    name: 'Neon Portfolio',
+    name: 'Druglytics',
     image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80',
-    desc: 'A futuristic portfolio with glassmorphism and glowing UI.',
-    tech: ['React', 'Tailwind', 'Framer Motion'],
-    github: '#',
-    live: '#',
+    desc: 'GenAI powered app that analyzes drug interactions and generates animated informational video',
+    tech: ['Python', 'AWS', 'MongoDB'],
+    github: 'https://github.com/aryalsushant/hacklytics2025',
+    live: 'https://hacklytics.streamlit.app',
   },
   {
-    name: 'AI Chatbot',
+    name: 'Swiped-In',
     image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-    desc: 'Conversational AI bot with real-time responses.',
-    tech: ['Python', 'Flask', 'OpenAI'],
-    github: '#',
-    live: '#',
+    desc: 'Dating APP style hiring platform allowing job seekers to swipe through jobs and recruiters to swipe through candidates',
+    tech: ['Next.js', 'Node.js', 'MongoDB'],
+    github: 'https://github.com/rupaut98/swipedin',
+    live: 'https://www.swipedin.co',
   },
   {
-    name: 'Crypto Tracker',
+    name: 'Brot AI',
     image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-    desc: 'Track crypto prices with live charts and neon UI.',
-    tech: ['React', 'Tailwind', 'API'],
-    github: '#',
-    live: '#',
+    desc: 'Full-stack conversational AI platform featuring logins, saved chats, image analysis etc.',
+    tech: ['React', 'Express', 'MongoDB'],
+    github: 'https://github.com/aryalsushant/aichat',
+    live: 'https://brot-ai.vercel.app',
   },
 ];
 
