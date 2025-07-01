@@ -53,13 +53,21 @@ const Navbar = ({ darkMode, setDarkMode }) => {
           ))}
         </ul>
         {/* Desktop dark mode toggle */}
-        <button
-          aria-label="Toggle dark mode"
-          onClick={() => setDarkMode(dm => !dm)}
-          className="hidden md:block ml-4 p-2 rounded-full bg-white/20 dark:bg-black/30 shadow-neon hover:shadow-glow transition-all duration-300"
-        >
-          {darkMode ? <FaSun className="text-yellow-300 text-xl" /> : <FaMoon className="text-cyan-400 text-xl" />}
-        </button>
+        <div className="hidden md:flex items-center ml-4">
+          <span className="mr-2"><FaMoon className={`text-xl ${darkMode ? 'text-cyan-400' : 'text-gray-400'}`} /></span>
+          <button
+            aria-label="Toggle dark mode"
+            onClick={() => setDarkMode(dm => !dm)}
+            className="relative w-14 h-7 flex items-center bg-white/20 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
+            tabIndex={0}
+          >
+            <span
+              className={`absolute left-1 top-1 w-5 h-5 rounded-full bg-cyan-400 dark:bg-yellow-300 shadow-md transform transition-transform duration-300 ${darkMode ? 'translate-x-0' : 'translate-x-7'}`}
+            ></span>
+            <span className="sr-only">Toggle dark mode</span>
+          </button>
+          <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-300' : 'text-gray-400'}`} /></span>
+        </div>
         {/* Hamburger for mobile */}
         <button
           className="md:hidden ml-2 p-2 rounded-full bg-white/20 dark:bg-black/30 text-cyan-400 focus:outline-none"
@@ -84,13 +92,21 @@ const Navbar = ({ darkMode, setDarkMode }) => {
               </li>
             ))}
             <li>
-              <button
-                aria-label="Toggle dark mode"
-                onClick={() => setDarkMode(dm => !dm)}
-                className="mt-2 p-2 rounded-full bg-white/20 dark:bg-black/30 shadow-neon hover:shadow-glow transition-all duration-300"
-              >
-                {darkMode ? <FaSun className="text-yellow-300 text-xl" /> : <FaMoon className="text-cyan-400 text-xl" />}
-              </button>
+              <div className="flex items-center justify-center mt-2">
+                <span className="mr-2"><FaMoon className={`text-xl ${darkMode ? 'text-cyan-400' : 'text-gray-400'}`} /></span>
+                <button
+                  aria-label="Toggle dark mode"
+                  onClick={() => setDarkMode(dm => !dm)}
+                  className="relative w-14 h-7 flex items-center bg-white/20 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
+                  tabIndex={0}
+                >
+                  <span
+                    className={`absolute left-1 top-1 w-5 h-5 rounded-full bg-cyan-400 dark:bg-yellow-300 shadow-md transform transition-transform duration-300 ${darkMode ? 'translate-x-0' : 'translate-x-7'}`}
+                  ></span>
+                  <span className="sr-only">Toggle dark mode</span>
+                </button>
+                <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-300' : 'text-gray-400'}`} /></span>
+              </div>
             </li>
           </ul>
         </div>
