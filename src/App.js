@@ -10,7 +10,9 @@ function App() {
   // Dark mode state
   const [darkMode, setDarkMode] = useState(() => {
     const stored = localStorage.getItem('theme');
-    return stored ? stored === 'dark' : true; // Default to dark mode
+    if (stored) return stored === 'dark';
+    // Default to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
   useEffect(() => {
