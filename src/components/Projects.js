@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 const projects = [
   {
     name: 'Druglytics',
-    image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1577401132921-cb39bb0adcff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     desc: 'GenAI powered app that analyzes drug interactions and generates animated informational video',
     tech: ['Python', 'AWS', 'MongoDB'],
     github: 'https://github.com/aryalsushant/hacklytics2025',
@@ -13,7 +13,7 @@ const projects = [
   },
   {
     name: 'Swiped-In',
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
+    image: 'https://plus.unsplash.com/premium_photo-1718742574584-1f798bca4b38?q=80&w=2832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     desc: 'Dating APP style hiring platform allowing job seekers to swipe through jobs and recruiters to swipe through candidates',
     tech: ['Next.js', 'Node.js', 'MongoDB'],
     github: 'https://github.com/rupaut98/swipedin',
@@ -21,7 +21,7 @@ const projects = [
   },
   {
     name: 'Brot AI',
-    image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     desc: 'Full-stack conversational AI platform featuring logins, saved chats, image analysis etc.',
     tech: ['React', 'Express', 'MongoDB'],
     github: 'https://github.com/aryalsushant/aichat',
