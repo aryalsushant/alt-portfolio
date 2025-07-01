@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaMoon, FaSun } from 'react-icons/fa';
+import { FaMoon, FaSun, FaBars, FaTimes } from 'react-icons/fa';
 
 const navLinks = [
   { name: 'Home', to: 'home' },
@@ -10,6 +10,7 @@ const navLinks = [
 
 const Navbar = ({ darkMode, setDarkMode }) => {
   const [active, setActive] = useState('home');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +29,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
 
   const handleClick = (to) => {
     setActive(to);
+    setMenuOpen(false);
     document.getElementById(to).scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -37,7 +39,8 @@ const Navbar = ({ darkMode, setDarkMode }) => {
         <div className="text-2xl font-bold tracking-widest text-cyan-400 drop-shadow-glow select-none">
           SUSHANT
         </div>
-        <ul className="flex gap-6 text-lg">
+        {/* Desktop nav */}
+        <ul className="hidden md:flex gap-6 text-lg">
           {navLinks.map(link => (
             <li key={link.to}>
               <button
@@ -49,14 +52,49 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             </li>
           ))}
         </ul>
+        {/* Desktop dark mode toggle */}
         <button
           aria-label="Toggle dark mode"
           onClick={() => setDarkMode(dm => !dm)}
-          className="ml-4 p-2 rounded-full bg-white/20 dark:bg-black/30 shadow-neon hover:shadow-glow transition-all duration-300"
+          className="hidden md:block ml-4 p-2 rounded-full bg-white/20 dark:bg-black/30 shadow-neon hover:shadow-glow transition-all duration-300"
         >
           {darkMode ? <FaSun className="text-yellow-300 text-xl" /> : <FaMoon className="text-cyan-400 text-xl" />}
         </button>
+        {/* Hamburger for mobile */}
+        <button
+          className="md:hidden ml-2 p-2 rounded-full bg-white/20 dark:bg-black/30 text-cyan-400 focus:outline-none"
+          aria-label="Open menu"
+          onClick={() => setMenuOpen(m => !m)}
+        >
+          {menuOpen ? <FaTimes className="text-2xl" /> : <FaBars className="text-2xl" />}
+        </button>
       </div>
+      {/* Mobile dropdown */}
+      {menuOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-[#0f2027]/95 dark:bg-black/95 backdrop-blur-lg border-b border-cyan-400/20 shadow-lg animate-fade-in z-40">
+          <ul className="flex flex-col items-center gap-4 py-6">
+            {navLinks.map(link => (
+              <li key={link.to}>
+                <button
+                  className={`block w-full text-lg font-semibold px-4 py-2 text-cyan-100 hover:text-cyan-400 focus:outline-none ${active === link.to ? 'border-b-2 border-cyan-400' : ''}`}
+                  onClick={() => handleClick(link.to)}
+                >
+                  {link.name}
+                </button>
+              </li>
+            ))}
+            <li>
+              <button
+                aria-label="Toggle dark mode"
+                onClick={() => setDarkMode(dm => !dm)}
+                className="mt-2 p-2 rounded-full bg-white/20 dark:bg-black/30 shadow-neon hover:shadow-glow transition-all duration-300"
+              >
+                {darkMode ? <FaSun className="text-yellow-300 text-xl" /> : <FaMoon className="text-cyan-400 text-xl" />}
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
     </nav>
   );
 };
