@@ -1,10 +1,41 @@
 {
+  "name": "src",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "aos": "^2.3.4",
-    "autoprefixer": "^10.4.21",
-    "framer-motion": "^12.20.5",
-    "postcss": "^8.5.6",
-    "react-icons": "^5.5.0",
-    "tailwindcss": "^4.1.11"
+    "aos": "^3.0.0-beta.6",
+    "cra-template-pwa": "2.0.0",
+    "framer-motion": "^11.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
+    "react-scripts": "5.0.1",
+    "smoothscroll-polyfill": "^0.4.4",
+    "web-vitals": "^5.0.3"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
