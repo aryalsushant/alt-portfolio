@@ -61,7 +61,7 @@ const Hero = () => {
         </motion.h2>
         <motion.div className="flex justify-center gap-6 mb-6" variants={itemVariants}>
           <a
-            href="https://github.com/sushantaryal"
+            href="https://github.com/aryalsushant"
             target="_blank"
             rel="noopener noreferrer"
             className="text-3xl text-gray-700 dark:text-cyan-300 hover:text-cyan-500 dark:hover:text-white transition-transform transform hover:scale-125"
@@ -70,7 +70,7 @@ const Hero = () => {
             <FaGithub />
           </a>
           <a
-            href="https://linkedin.com/in/sushantaryal"
+            href="https://linkedin.com/in/sushant-aryal"
             target="_blank"
             rel="noopener noreferrer"
             className="text-3xl text-gray-700 dark:text-cyan-300 hover:text-cyan-500 dark:hover:text-white transition-transform transform hover:scale-125"
@@ -81,8 +81,9 @@ const Hero = () => {
         </motion.div>
         <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" variants={itemVariants}>
           <a
-            href="/resume.pdf"
-            download
+            href="/Sushant_Aryal_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block px-8 py-3 rounded-lg border-2 border-cyan-400 text-cyan-500 dark:text-cyan-400 font-semibold text-lg bg-white dark:bg-white/10 backdrop-blur-md shadow-neon hover:bg-cyan-400 hover:text-white hover:shadow-glow transition-all duration-300"
           >
             Download Resume

@@ -19,15 +19,13 @@ const tech = [
 const About = () => {
   return (
     <section className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 py-24 px-6 bg-white dark:bg-[#232526] rounded-2xl shadow-neon mt-16" id="about">
-      <div className="flex-1 flex justify-center">
-        <div className="relative group">
-          <img
-            src="https://randomuser.me/api/portraits/men/32.jpg"
-            alt="Sushant Aryal"
-            className="w-48 h-48 object-cover rounded-full border-4 border-cyan-400 shadow-neon group-hover:shadow-glow transition duration-300"
-          />
-          <div className="absolute inset-0 rounded-full border-4 border-cyan-400 animate-pulse opacity-30"></div>
-        </div>
+      <div className="flex-1 flex justify-center items-center">
+        <img
+          src="/about_me.png"
+          alt="Sushant Aryal"
+          className="w-full h-auto max-w-md md:max-w-[420px] md:max-h-[420px] object-contain md:self-center animate-float"
+          style={{ background: 'transparent' }}
+        />
       </div>
       <div className="flex-1 text-center md:text-left">
         <h2 className="text-3xl font-bold mb-4 drop-shadow-neon text-gray-900 dark:text-white">About Me</h2>
