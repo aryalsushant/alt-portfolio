@@ -53,4 +53,19 @@ code {
 
 .animate-float {
   animation: float 4s ease-in-out infinite;
+}
+
+/* ── Himalayan experience animations ─────────────────────────────────── */
+@keyframes character-bob {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+
+.character-idle {
+  animation: character-bob 3s ease-in-out infinite;
+}
+
+/* Prevent rubber-band scroll on the fixed mountain experience */
+html, body {
+  overscroll-behavior: none;
 } 
