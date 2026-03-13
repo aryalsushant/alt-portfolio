@@ -1,42 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaGraduationCap, FaBriefcase, FaCode } from 'react-icons/fa';
+import { PATH_CONFIGS } from './pathConfig';
 import MountainScene from './MountainScene';
 import Character from './Character';
 import ContactPopup from './ContactPopup';
 
-const PATHS = [
-  {
-    id: 'education',
-    label: 'Education',
-    Icon: FaGraduationCap,
-    count: 4,
-    accentColor: '#60a5fa',       // blue-400
-    borderColor: 'rgba(96,165,250,0.45)',
-    bgColor: 'rgba(96,165,250,0.1)',
-    bgHover: 'rgba(96,165,250,0.18)',
-  },
-  {
-    id: 'work',
-    label: 'Work',
-    Icon: FaBriefcase,
-    count: 4,
-    accentColor: '#fbbf24',       // amber-400
-    borderColor: 'rgba(251,191,36,0.45)',
-    bgColor: 'rgba(251,191,36,0.1)',
-    bgHover: 'rgba(251,191,36,0.18)',
-  },
-  {
-    id: 'projects',
-    label: 'Projects',
-    Icon: FaCode,
-    count: 4,
-    accentColor: '#34d399',       // emerald-400
-    borderColor: 'rgba(52,211,153,0.45)',
-    bgColor: 'rgba(52,211,153,0.1)',
-    bgHover: 'rgba(52,211,153,0.18)',
-  },
-];
+const PATHS = Object.values(PATH_CONFIGS).map((cfg) => ({ ...cfg, count: 4 }));
 
 // Stagger children nicely
 const containerVariants = {
