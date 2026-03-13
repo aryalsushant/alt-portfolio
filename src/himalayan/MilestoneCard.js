@@ -41,7 +41,7 @@ export default function MilestoneCard({ milestone, pathConfig, stepNum, totalSte
         {/* ── Thumbnail / placeholder ─────────────────────────────────────── */}
         <div
           className="w-full relative overflow-hidden"
-          style={{ paddingBottom: '42%' }}
+          style={{ paddingBottom: '52%' }}
         >
           {milestone.thumbnail ? (
             <img
@@ -80,7 +80,7 @@ export default function MilestoneCard({ milestone, pathConfig, stepNum, totalSte
         </div>
 
         {/* ── Progress dots ────────────────────────────────────────────────── */}
-        <div className="flex items-center gap-1.5 px-5 pt-4">
+        <div className="flex items-center gap-1.5 px-6 pt-4">
           {Array.from({ length: totalSteps }).map((_, i) => (
             <div
               key={i}
@@ -99,7 +99,7 @@ export default function MilestoneCard({ milestone, pathConfig, stepNum, totalSte
         </div>
 
         {/* ── Content ──────────────────────────────────────────────────────── */}
-        <div className="px-5 pt-3 pb-5">
+        <div className="px-6 pt-3 pb-6">
           <h3
             className="text-white font-bold text-base md:text-lg leading-snug"
             style={{ fontFamily: "'Orbitron', sans-serif", letterSpacing: '0.02em' }}

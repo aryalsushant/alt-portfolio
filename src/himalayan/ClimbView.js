@@ -27,7 +27,7 @@ export default function ClimbView({ path, onBackToBase, onSummit }) {
   const totalSteps   = milestones.length;           // 4
   const pathConfig   = PATH_CONFIGS[path];
 
-  const [step, setStep]             = useState(1);  // 1-based
+  const [step, setStep]             = useState(0);  // 0 = at base, 1..N = milestones
   const [direction, setDirection]   = useState(1);  // 1=up, -1=down
   const [contactOpen, setContactOpen] = useState(false);
 
@@ -35,14 +35,14 @@ export default function ClimbView({ path, onBackToBase, onSummit }) {
   const isTransitioning = useRef(false);
   const touchStartY     = useRef(null);
 
-  // ── progress (0..1): used for character position + altitude overlay opacity
-  const progress = (step - 1) / Math.max(totalSteps - 1, 1); // 0 at step 1, 1 at step N
+  // ── progress (0..1): 0 at base/step 0, 1 at final milestone
+  const progress = step === 0 ? 0 : (step - 1) / Math.max(totalSteps - 1, 1);
 
-  // ── character bottom% : 8% (step 1 = near trail) → 58% (step N = near summit)
-  const charBottom = 8 + progress * 50;
+  // ── character bottom%: 3% at base → 63% at summit step
+  const charBottom = 3 + (step / totalSteps) * 60;
 
   // ── cold-air overlay opacity: builds as you climb
-  const altitudeOpacity = progress * 0.72;
+  const altitudeOpacity = (step / totalSteps) * 0.72;
 
   // ─────────────────────────────────────────────────────────────────────────
   const advance = useCallback(() => {
@@ -67,7 +67,7 @@ export default function ClimbView({ path, onBackToBase, onSummit }) {
 
     setDirection(-1);
     setStep((s) => {
-      if (s <= 1) {
+      if (s <= 0) {
         onBackToBase();
         return s;
       }
@@ -115,14 +115,15 @@ export default function ClimbView({ path, onBackToBase, onSummit }) {
   }, [advance, retreat]);
 
   // ─────────────────────────────────────────────────────────────────────────
-  const milestone  = milestones[step - 1];
+  // milestone is null on step 0 (character at base, no card shown)
+  const milestone  = step >= 1 ? milestones[step - 1] : null;
   const { accentColor, accentRgb, label: pathLabel, Icon: PathIcon } = pathConfig;
 
   return (
     <div className="relative w-full h-full select-none">
 
       {/* ── Background ─────────────────────────────────────────────────── */}
-      <MountainScene />
+      <MountainScene pathType={path} />
 
       {/* ── Cold-air altitude overlay (fades in as you climb) ──────────── */}
       <div
@@ -195,56 +196,78 @@ export default function ClimbView({ path, onBackToBase, onSummit }) {
         <Character size={80} onClick={() => setContactOpen(true)} />
       </motion.div>
 
-      {/* ── Milestone card ──────────────────────────────────────────────── */}
+      {/* ── Milestone card (only when a milestone is active) ───────────── */}
       {/*
         Desktop: right side, vertically centred
         Mobile:  upper area, horizontally centred
       */}
-      <div
-        className="
-          absolute z-20
-          left-1/2 -translate-x-1/2 top-[68px] w-[min(90vw,320px)]
-          md:left-auto md:right-6 md:top-1/2 md:-translate-x-0 md:-translate-y-1/2 md:w-80
-        "
-      >
-        <MilestoneCard
-          milestone={milestone}
-          pathConfig={pathConfig}
-          stepNum={step}
-          totalSteps={totalSteps}
-          direction={direction}
-        />
-      </div>
-
-      {/* ── Scroll hint (visible only on step 1, fades after) ──────────── */}
       <AnimatePresence>
-        {step === 1 && (
+        {milestone && (
           <motion.div
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1"
+            key="card-container"
+            className="
+              absolute z-20
+              left-1/2 -translate-x-1/2 top-[68px] w-[min(92vw,360px)]
+              md:left-auto md:translate-x-0 md:-translate-y-1/2 md:right-5 md:top-1/2 md:w-[400px]
+            "
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ delay: 0.8 }}
+            transition={{ duration: 0.3 }}
           >
+            <MilestoneCard
+              milestone={milestone}
+              pathConfig={pathConfig}
+              stepNum={step}
+              totalSteps={totalSteps}
+              direction={direction}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Step-0 start prompt: character at base, inviting first scroll ── */}
+      <AnimatePresence>
+        {step === 0 && (
+          <motion.div
+            className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3 text-center px-4"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ delay: 0.5 }}
+          >
+            <p
+              className="text-white/80 text-base tracking-widest uppercase"
+              style={{ fontFamily: "'Orbitron', sans-serif", fontSize: '13px' }}
+            >
+              {pathLabel} Trail
+            </p>
+            <p
+              className="text-white/45 text-xs tracking-wide"
+              style={{ fontFamily: "'Rajdhani', system-ui, sans-serif" }}
+            >
+              {totalSteps} milestones ahead
+            </p>
             <motion.div
+              className="flex flex-col items-center gap-1 mt-1"
               animate={{ y: [0, 6, 0] }}
               transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
             >
-              <FaChevronDown size={14} color="rgba(255,255,255,0.4)" />
+              <FaChevronDown size={14} color={accentColor} />
             </motion.div>
             <span
-              className="text-white/35 text-xs tracking-widest uppercase"
+              className="text-white/30 text-xs tracking-widest uppercase"
               style={{ fontFamily: "'Rajdhani', system-ui, sans-serif" }}
             >
-              scroll to climb
+              scroll to begin
             </span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* ── Retreat hint (step > 1, shows briefly) ─────────────────────── */}
+      {/* ── Nav buttons (up/down) visible once climbing has started ─────── */}
       <AnimatePresence>
-        {step > 1 && step <= totalSteps && (
+        {step > 0 && step <= totalSteps && (
           <motion.div
             className="absolute bottom-6 right-6 z-20 flex items-center gap-2"
             initial={{ opacity: 0, x: 10 }}
@@ -277,7 +300,7 @@ export default function ClimbView({ path, onBackToBase, onSummit }) {
         )}
       </AnimatePresence>
 
-      {/* ── "One more step to summit" hint ──────────────────────────────── */}
+      {/* ── Summit call-to-action on final milestone ────────────────────── */}
       <AnimatePresence>
         {step === totalSteps && (
           <motion.div
