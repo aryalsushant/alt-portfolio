@@ -1,134 +1,166 @@
-import React, { useState, useEffect } from 'react';
-import { FaMoon, FaSun, FaBars, FaTimes } from 'react-icons/fa';
+import React, { useState, useEffect, useCallback } from 'react';
+import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa';
 
-const navLinks = [
-  { name: 'Home', to: 'home' },
-  { name: 'About', to: 'about' },
-  { name: 'Projects', to: 'projects' },
-  { name: 'Contact', to: 'contact' },
+const NAV_LINKS = [
+  { id: 'home', label: 'Home' },
+  { id: 'education', label: 'Education' },
+  { id: 'highlights', label: 'Highlights' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'coolthings', label: 'Cool Things' },
+  { id: 'contact', label: 'Contact' },
 ];
 
-const Navbar = ({ darkMode, setDarkMode }) => {
-  const [active, setActive] = useState('home');
+export default function Navbar({ darkMode, setDarkMode }) {
+  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = navLinks.map(link => document.getElementById(link.to));
-      const scrollY = window.scrollY + 80;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if (sections[i] && scrollY >= sections[i].offsetTop) {
-          setActive(navLinks[i].to);
-          break;
-        }
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+  const onScroll = useCallback(() => {
+    setScrolled(window.scrollY > 30);
+    const midY = window.innerHeight * 0.4;
+    let active = 'home';
+    for (const link of NAV_LINKS) {
+      const el = document.getElementById(link.id);
+      if (el && el.getBoundingClientRect().top <= midY) active = link.id;
+    }
+    setActiveSection(active);
   }, []);
 
-  const handleClick = (to) => {
-    setActive(to);
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onScroll]);
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
     setMenuOpen(false);
-    document.getElementById(to).scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-lg bg-white dark:bg-[#232526] shadow-lg border-b border-gray-200 dark:border-white/20 transition-colors duration-500">
-      <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-3">
-        <div className="text-2xl font-bold tracking-widest text-cyan-500 dark:text-cyan-400 drop-shadow-glow select-none">
-          SUSHANT
-        </div>
-        {/* Mobile dark mode toggle (left of hamburger) */}
-        <div className="flex items-center md:hidden">
-          <span className="mr-2"><FaMoon className={`text-xl ${darkMode ? 'text-cyan-400' : 'text-gray-400'}`} /></span>
-          <button
-            aria-label="Toggle dark mode"
-            onClick={() => setDarkMode(dm => !dm)}
-            className="relative w-12 h-6 flex items-center bg-gray-100 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
-            tabIndex={0}
-          >
-            <span
-              className={`absolute left-1 top-1 w-4 h-4 rounded-full bg-cyan-400 dark:bg-yellow-300 shadow-md transform transition-transform duration-300 ${darkMode ? 'translate-x-0' : 'translate-x-6'}`}
-            ></span>
-            <span className="sr-only">Toggle dark mode</span>
-          </button>
-          <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-400' : 'text-gray-400'}`} /></span>
-        </div>
-        {/* Desktop nav */}
-        <ul className="hidden md:flex gap-6 text-lg">
-          {navLinks.map(link => (
-            <li key={link.to}>
-              <button
-                className={`relative px-2 py-1 font-semibold transition text-black dark:text-cyan-100 hover:text-cyan-500 dark:hover:text-cyan-400 focus:outline-none ${active === link.to ? 'after:absolute after:left-0 after:right-0 after:-bottom-1 after:h-1 after:bg-cyan-400 after:rounded-full after:shadow-neon' : ''}`}
-                onClick={() => handleClick(link.to)}
-              >
-                {link.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-        {/* Desktop dark mode toggle */}
-        <div className="hidden md:flex items-center ml-4">
-          <span className="mr-2"><FaMoon className={`text-xl ${darkMode ? 'text-cyan-400' : 'text-gray-400'}`} /></span>
-          <button
-            aria-label="Toggle dark mode"
-            onClick={() => setDarkMode(dm => !dm)}
-            className="relative w-14 h-7 flex items-center bg-gray-100 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
-            tabIndex={0}
-          >
-            <span
-              className={`absolute left-1 top-1 w-5 h-5 rounded-full bg-cyan-400 dark:bg-yellow-300 shadow-md transform transition-transform duration-300 ${darkMode ? 'translate-x-0' : 'translate-x-7'}`}
-            ></span>
-            <span className="sr-only">Toggle dark mode</span>
-          </button>
-          <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-400' : 'text-gray-400'}`} /></span>
-        </div>
-        {/* Hamburger for mobile */}
+    <nav
+      className={`
+        fixed top-0 left-0 right-0 z-40 transition-all duration-500
+        ${scrolled
+          ? 'bg-white/90 dark:bg-[#070b14]/90 backdrop-blur-xl shadow-lg shadow-black/5 dark:shadow-black/30 border-b border-gray-200/50 dark:border-white/5'
+          : 'bg-transparent'}
+      `}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Logo */}
         <button
-          className="md:hidden ml-2 p-2 rounded-full bg-gray-100 dark:bg-black/30 text-cyan-400 focus:outline-none"
-          aria-label="Open menu"
-          onClick={() => setMenuOpen(m => !m)}
+          onClick={() => scrollTo('home')}
+          className="font-orbitron font-black text-xl tracking-widest group"
         >
-          {menuOpen ? <FaTimes className="text-2xl" /> : <FaBars className="text-2xl" />}
+          <span className="text-gray-900 dark:text-white">SA</span>
+          <span className="text-indigo-600 dark:text-cyan-400 group-hover:opacity-70 transition-opacity">.</span>
         </button>
+
+        {/* Desktop Nav Links */}
+        <div className="hidden lg:flex items-center gap-1">
+          {NAV_LINKS.map((link) => (
+            <button
+              key={link.id}
+              onClick={() => scrollTo(link.id)}
+              className={`
+                relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200
+                ${activeSection === link.id
+                  ? 'text-indigo-600 dark:text-cyan-400'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}
+              `}
+            >
+              {link.label}
+              {activeSection === link.id && (
+                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-indigo-600 dark:bg-cyan-400" />
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Right Controls */}
+        <div className="flex items-center gap-3">
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={() => setDarkMode((d) => !d)}
+            aria-label="Toggle dark mode"
+            className={`
+              relative w-14 h-7 rounded-full transition-all duration-300
+              ${darkMode
+                ? 'bg-cyan-400/20 border border-cyan-400/40'
+                : 'bg-indigo-100 border border-indigo-300'}
+            `}
+          >
+            <span
+              className={`
+                absolute top-0.5 w-6 h-6 rounded-full flex items-center justify-center
+                text-xs transition-all duration-300 shadow-sm
+                ${darkMode
+                  ? 'left-7 bg-cyan-400 text-black'
+                  : 'left-0.5 bg-indigo-600 text-white'}
+              `}
+            >
+              {darkMode ? <FaMoon size={10} /> : <FaSun size={10} />}
+            </span>
+          </button>
+
+          {/* Resume Link */}
+          <a
+            href="/Sushant_Aryal_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium
+              border border-indigo-600/40 dark:border-cyan-400/40
+              text-indigo-600 dark:text-cyan-400
+              hover:bg-indigo-50 dark:hover:bg-cyan-400/10
+              transition-all duration-200 font-orbitron tracking-wide"
+          >
+            Résumé
+          </a>
+
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => setMenuOpen((o) => !o)}
+            className="lg:hidden p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
+          </button>
+        </div>
       </div>
-      {/* Mobile dropdown */}
+
+      {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white dark:bg-black/95 backdrop-blur-lg border-b border-cyan-400/20 shadow-lg animate-fade-in z-40">
-          <ul className="flex flex-col items-center gap-4 py-6">
-            {navLinks.map(link => (
-              <li key={link.to}>
-                <button
-                  className={`block w-full text-lg font-semibold px-4 py-2 text-gray-900 dark:text-cyan-100 hover:text-cyan-500 focus:outline-none ${active === link.to ? 'border-b-2 border-cyan-400' : ''}`}
-                  onClick={() => handleClick(link.to)}
-                >
-                  {link.name}
-                </button>
-              </li>
+        <div className="lg:hidden border-t border-gray-200/50 dark:border-white/5 bg-white/95 dark:bg-[#070b14]/95 backdrop-blur-xl">
+          <div className="px-6 py-4 flex flex-col gap-1">
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollTo(link.id)}
+                className={`
+                  text-left px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200
+                  ${activeSection === link.id
+                    ? 'bg-indigo-50 dark:bg-cyan-400/10 text-indigo-600 dark:text-cyan-400'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'}
+                `}
+              >
+                {link.label}
+              </button>
             ))}
-            <li>
-              <div className="flex items-center justify-center mt-2">
-                <span className="mr-2"><FaMoon className={`text-xl ${darkMode ? 'text-cyan-400' : 'text-gray-400'}`} /></span>
-                <button
-                  aria-label="Toggle dark mode"
-                  onClick={() => setDarkMode(dm => !dm)}
-                  className="relative w-14 h-7 flex items-center bg-gray-100 dark:bg-black/30 rounded-full shadow-neon hover:shadow-glow transition-all duration-300 focus:outline-none"
-                  tabIndex={0}
-                >
-                  <span
-                    className={`absolute left-1 top-1 w-5 h-5 rounded-full bg-cyan-400 dark:bg-yellow-300 shadow-md transform transition-transform duration-300 ${darkMode ? 'translate-x-0' : 'translate-x-7'}`}
-                  ></span>
-                  <span className="sr-only">Toggle dark mode</span>
-                </button>
-                <span className="ml-2"><FaSun className={`text-xl ${!darkMode ? 'text-yellow-400' : 'text-gray-400'}`} /></span>
-              </div>
-            </li>
-          </ul>
+            <a
+              href="/Sushant_Aryal_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 px-4 py-3 rounded-lg text-sm font-medium text-center
+                border border-indigo-600/40 dark:border-cyan-400/40
+                text-indigo-600 dark:text-cyan-400
+                hover:bg-indigo-50 dark:hover:bg-cyan-400/10 transition-all duration-200"
+            >
+              Résumé
+            </a>
+          </div>
         </div>
       )}
     </nav>
   );
-};
-
-export default Navbar; 
+}
