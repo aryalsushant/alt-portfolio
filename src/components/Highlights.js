@@ -137,7 +137,7 @@ export default function Highlights() {
                     bg-gray-50 dark:bg-white/4 border border-gray-100 dark:border-white/5
                     hover:border-indigo-300 dark:hover:border-cyan-400/30 transition-all duration-200">
                     <span className="text-2xl flex-shrink-0">{icon}</span>
-                    <span className="font-display font-semibold text-gray-800 dark:text-gray-100 text-sm leading-snug">
+                    <span className="font-display font-semibold text-black dark:text-black text-sm leading-snug">
                       {label}
                     </span>
                   </div>
