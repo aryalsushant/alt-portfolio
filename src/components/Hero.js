@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const GLITCH_CHARS = '!<>-_\\/[]{}—=+*^?#▓░▒@$%&~';
 const CYCLE_TEXTS = [
   'Sushant Aryal',
   'AI/ML Engineer',
@@ -20,56 +19,47 @@ const CODE_FRAGMENTS = [
   'attention_mask', 'embedding_dim=512', 'cross_entropy_loss',
 ];
 
-function useGlitchText(texts, speed) {
+function useTypewriter(texts, typeSpeed = 80, deleteSpeed = 45, pauseFrames = 42) {
   const [display, setDisplay] = useState('');
-  const stateRef = useRef({ idx: 0, phase: 'scramble', charCount: 0, frameCount: 0 });
+  const stateRef = useRef({ idx: 0, phase: 'type', charCount: 0, frameCount: 0 });
 
   useEffect(() => {
     const tick = () => {
       const s = stateRef.current;
       const target = texts[s.idx];
 
-      if (s.phase === 'scramble') {
-        const txt = target.split('').map(c =>
-          c === ' ' ? ' ' : GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
-        ).join('');
-        setDisplay(txt);
-        s.frameCount++;
-        if (s.frameCount >= 12) { s.phase = 'resolve'; s.charCount = 0; s.frameCount = 0; }
-
-      } else if (s.phase === 'resolve') {
-        const resolved = target.slice(0, s.charCount + 1);
-        const rest = target.slice(s.charCount + 1).split('').map(c =>
-          c === ' ' ? ' ' : GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)]
-        ).join('');
-        setDisplay(resolved + rest);
+      if (s.phase === 'type') {
         s.charCount++;
-        if (s.charCount >= target.length) { setDisplay(target); s.phase = 'pause'; s.frameCount = 0; }
+        setDisplay(target.slice(0, s.charCount));
+        if (s.charCount >= target.length) { s.phase = 'pause'; s.frameCount = 0; }
 
       } else if (s.phase === 'pause') {
         s.frameCount++;
-        if (s.frameCount >= 52) { s.phase = 'delete'; s.charCount = target.length; }
+        if (s.frameCount >= pauseFrames) { s.phase = 'delete'; }
 
       } else if (s.phase === 'delete') {
         s.charCount--;
         setDisplay(target.slice(0, s.charCount));
         if (s.charCount <= 0) {
           s.idx = (s.idx + 1) % texts.length;
-          s.phase = 'scramble';
-          s.frameCount = 0;
+          s.phase = 'type';
         }
       }
     };
+
+    // Use different intervals for type vs delete for a natural feel
+    const speed = stateRef.current.phase === 'delete' ? deleteSpeed : typeSpeed;
     const interval = setInterval(tick, speed);
     return () => clearInterval(interval);
-  }, [texts, speed]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [texts, typeSpeed, deleteSpeed, pauseFrames]);
 
   return display;
 }
 
 export default function Hero() {
   const canvasRef = useRef(null);
-  const displayText = useGlitchText(CYCLE_TEXTS, 48);
+  const displayText = useTypewriter(CYCLE_TEXTS);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -165,8 +155,8 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* Main heading — glitch typewriter */}
-        <h1 className="font-orbitron text-5xl sm:text-6xl md:text-7xl font-black mb-6 leading-none tracking-tight text-gray-900 dark:text-white"
+        {/* Main heading — typewriter */}
+        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6 leading-none tracking-tight text-gray-900 dark:text-white"
           style={{ minHeight: '1.2em' }}>
           <span>{displayText || '\u00A0'}</span>
           <span className="terminal-cursor" aria-hidden="true" />
@@ -184,7 +174,7 @@ export default function Hero() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group w-full sm:w-auto px-8 py-4 rounded-xl font-orbitron text-sm font-bold tracking-wider
+            className="group w-full sm:w-auto px-8 py-4 rounded-xl font-display text-sm font-bold tracking-wider
               bg-indigo-600 dark:bg-cyan-400
               text-white dark:text-black
               hover:bg-indigo-500 dark:hover:bg-cyan-300
@@ -196,7 +186,7 @@ export default function Hero() {
           </button>
           <button
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group w-full sm:w-auto px-8 py-4 rounded-xl font-orbitron text-sm font-bold tracking-wider
+            className="group w-full sm:w-auto px-8 py-4 rounded-xl font-display text-sm font-bold tracking-wider
               border-2 border-indigo-600 dark:border-cyan-400
               text-indigo-600 dark:text-cyan-400
               hover:bg-indigo-50 dark:hover:bg-cyan-400/10

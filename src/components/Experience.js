@@ -103,7 +103,7 @@ function ExperienceCard({ exp, idx }) {
         <PlaceholderImage emoji={exp.emoji} colorFrom={exp.colorFrom} colorTo={exp.colorTo} />
         <div className="p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1">
-            <h3 className="font-orbitron font-bold text-gray-900 dark:text-white">{exp.title}</h3>
+            <h3 className="font-display font-bold text-gray-900 dark:text-white">{exp.title}</h3>
             <span className="text-xs font-mono text-indigo-600 dark:text-cyan-400
               bg-indigo-50 dark:bg-cyan-400/10 border border-indigo-200 dark:border-cyan-400/20
               px-3 py-1 rounded-full self-start sm:self-auto">
@@ -135,7 +135,7 @@ export default function Experience() {
         {/* Header */}
         <div ref={headerRef} className="reveal text-center mb-16">
           <p className="font-mono text-indigo-600 dark:text-cyan-400 text-sm mb-3 tracking-widest uppercase">Work History</p>
-          <h2 className="font-orbitron text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
+          <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
             Experience
           </h2>
           <div className="mx-auto w-20 h-1 bg-gradient-to-r from-indigo-600 to-transparent dark:from-cyan-400 dark:to-transparent rounded-full" />

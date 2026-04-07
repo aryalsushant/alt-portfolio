@@ -27,7 +27,7 @@ export default function Footer() {
       <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
 
         <div className="text-center sm:text-left">
-          <p className="font-orbitron font-black text-lg text-gray-900 dark:text-white tracking-widest">
+          <p className="font-display font-black text-lg text-gray-900 dark:text-white tracking-widest">
             SUSHANT ARYAL
           </p>
           <p className="text-xs font-mono text-gray-400 dark:text-gray-500 mt-0.5">

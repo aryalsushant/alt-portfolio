@@ -129,7 +129,7 @@ function ProjectCard({ project, idx }) {
       <PlaceholderImg emoji={project.emoji} colorFrom={project.colorFrom} colorTo={project.colorTo} />
       <div className="p-6">
         <div className="mb-2">
-          <h3 className="font-orbitron font-bold text-gray-900 dark:text-white">{project.title}</h3>
+          <h3 className="font-display font-bold text-gray-900 dark:text-white">{project.title}</h3>
           <p className="text-xs font-mono text-indigo-600 dark:text-cyan-400 mt-0.5">{project.subtitle}</p>
         </div>
         <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-3">
@@ -209,7 +209,7 @@ export default function Projects() {
       <div className="py-20 px-6">
         <div ref={headerRef} className="reveal max-w-6xl mx-auto text-center">
           <p className="font-mono text-indigo-600 dark:text-cyan-400 text-sm mb-3 tracking-widest uppercase">What I've Built</p>
-          <h2 className="font-orbitron text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
+          <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
             Projects
           </h2>
           <div className="mx-auto w-20 h-1 bg-gradient-to-r from-indigo-600 to-transparent dark:from-cyan-400 dark:to-transparent rounded-full" />
@@ -246,7 +246,7 @@ export default function Projects() {
           <div className="text-center mt-8">
             <button
               onClick={() => setShowAll(true)}
-              className="px-8 py-3 rounded-xl font-orbitron text-sm font-bold tracking-wider
+              className="px-8 py-3 rounded-xl font-display text-sm font-bold tracking-wider
                 border-2 border-indigo-600 dark:border-cyan-400
                 text-indigo-600 dark:text-cyan-400
                 hover:bg-indigo-50 dark:hover:bg-cyan-400/10

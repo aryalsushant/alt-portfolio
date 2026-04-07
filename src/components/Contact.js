@@ -30,7 +30,7 @@ export default function Contact() {
         {/* Header */}
         <div ref={headerRef} className="reveal text-center mb-16">
           <p className="font-mono text-indigo-600 dark:text-cyan-400 text-sm mb-3 tracking-widest uppercase">Get In Touch</p>
-          <h2 className="font-orbitron text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
+          <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
             Contact
           </h2>
           <div className="mx-auto w-20 h-1 bg-gradient-to-r from-indigo-600 to-transparent dark:from-cyan-400 dark:to-transparent rounded-full" />
@@ -44,7 +44,7 @@ export default function Contact() {
           {/* Info Panel */}
           <div ref={infoRef} className="reveal reveal-delay-1 lg:col-span-2 flex flex-col gap-6">
             <div className="glass-card p-8 border border-gray-200/80 dark:border-white/5 flex-1">
-              <h3 className="font-orbitron font-bold text-gray-900 dark:text-white mb-6 text-lg">Let's Connect</h3>
+              <h3 className="font-display font-bold text-gray-900 dark:text-white mb-6 text-lg">Let's Connect</h3>
 
               <a href="mailto:sushantaryal05@gmail.com"
                 className="group flex items-center gap-4 p-4 rounded-xl mb-3
@@ -111,12 +111,12 @@ export default function Contact() {
               {state.succeeded ? (
                 <div className="flex flex-col items-center justify-center text-center gap-4 py-16">
                   <div className="text-6xl">✅</div>
-                  <h3 className="font-orbitron font-bold text-xl text-gray-900 dark:text-white">Message Sent!</h3>
+                  <h3 className="font-display font-bold text-xl text-gray-900 dark:text-white">Message Sent!</h3>
                   <p className="text-gray-500 dark:text-gray-400">Thanks for reaching out. I'll get back to you soon.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                  <h3 className="font-orbitron font-bold text-gray-900 dark:text-white text-lg mb-1">Send a Message</h3>
+                  <h3 className="font-display font-bold text-gray-900 dark:text-white text-lg mb-1">Send a Message</h3>
 
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor="name" className="text-xs font-mono text-gray-400 dark:text-gray-500 tracking-wider uppercase">
@@ -185,7 +185,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={state.submitting}
-                    className="w-full py-4 rounded-xl font-orbitron text-sm font-bold tracking-wider
+                    className="w-full py-4 rounded-xl font-display text-sm font-bold tracking-wider
                       bg-indigo-600 dark:bg-cyan-400
                       text-white dark:text-black
                       hover:bg-indigo-500 dark:hover:bg-cyan-300

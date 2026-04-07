@@ -84,7 +84,7 @@ function CoolCard({ thing, idx }) {
         <PlaceholderImage emoji={thing.emoji} label={thing.label} colorFrom={thing.colorFrom} colorTo={thing.colorTo} />
         <div className="p-6">
           <div className="flex items-start justify-between mb-1 gap-2">
-            <h3 className="font-orbitron font-bold text-gray-900 dark:text-white">{thing.title}</h3>
+            <h3 className="font-display font-bold text-gray-900 dark:text-white">{thing.title}</h3>
             <span className="text-xs font-mono text-indigo-600 dark:text-cyan-400
               bg-indigo-50 dark:bg-cyan-400/10 border border-indigo-200 dark:border-cyan-400/20
               px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">
@@ -97,7 +97,7 @@ function CoolCard({ thing, idx }) {
             <div className="flex gap-4 pt-3 border-t border-gray-100 dark:border-white/5">
               {thing.stats.map(s => (
                 <div key={s.label} className="text-center">
-                  <p className="font-orbitron font-bold text-lg text-indigo-600 dark:text-cyan-400">{s.value}</p>
+                  <p className="font-display font-bold text-lg text-indigo-600 dark:text-cyan-400">{s.value}</p>
                   <p className="text-xs text-gray-400 dark:text-gray-500 font-mono">{s.label}</p>
                 </div>
               ))}
@@ -119,7 +119,7 @@ export default function CoolThings() {
         {/* Header */}
         <div ref={headerRef} className="reveal text-center mb-16">
           <p className="font-mono text-indigo-600 dark:text-cyan-400 text-sm mb-3 tracking-widest uppercase">Beyond the Code</p>
-          <h2 className="font-orbitron text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
+          <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
             Other Cool Things
           </h2>
           <div className="mx-auto w-20 h-1 bg-gradient-to-r from-indigo-600 to-transparent dark:from-cyan-400 dark:to-transparent rounded-full" />

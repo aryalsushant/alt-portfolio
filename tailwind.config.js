@@ -9,6 +9,8 @@ module.exports = {
     extend: {
       fontFamily: {
         orbitron: ["'Orbitron'", 'sans-serif'],
+        display: ["'Space Grotesk'", 'system-ui', 'sans-serif'],
+        sans: ["'Inter'", 'system-ui', '-apple-system', 'sans-serif'],
         mono: ["'Courier New'", 'Courier', 'monospace'],
       },
       colors: {

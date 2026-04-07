@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 function useReveal(rootMargin = '-60px') {
   const ref = useRef(null);
@@ -15,58 +15,31 @@ function useReveal(rootMargin = '-60px') {
   return ref;
 }
 
-function useCounter(target, duration = 1600, isFloat = false, suffix = '') {
-  const [val, setVal] = useState(isFloat ? '0.0' : '0');
-  const triggerRef = useRef(null);
-  const fired = useRef(false);
-
-  useEffect(() => {
-    const el = triggerRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting || fired.current) return;
-      fired.current = true;
-      obs.disconnect();
-
-      const start = performance.now();
-      const step = (now) => {
-        const p = Math.min((now - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - p, 3);
-        if (isFloat) {
-          setVal((ease * target).toFixed(1));
-        } else {
-          setVal(Math.floor(ease * target).toLocaleString());
-        }
-        if (p < 1) requestAnimationFrame(step);
-        else setVal(isFloat ? target.toFixed(1) : target.toLocaleString() + suffix);
-      };
-      requestAnimationFrame(step);
-    }, { threshold: 0.5 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target, duration, isFloat, suffix]);
-
-  return [val, triggerRef];
-}
-
 function PlaceholderImage({ emoji, label, colorFrom, colorTo }) {
   return (
-    <div className={`w-full h-44 rounded-xl flex flex-col items-center justify-center gap-2.5
+    <div className={`w-full h-44 rounded-t-2xl flex flex-col items-center justify-center gap-2.5
       bg-gradient-to-br ${colorFrom} ${colorTo}
-      border border-white/10`}>
+      border-b border-white/10`}>
       <span className="text-5xl" role="img" aria-label={label}>{emoji}</span>
       <span className="text-xs font-mono text-white/50 tracking-wider">Photo Coming Soon</span>
     </div>
   );
 }
 
+const ACHIEVEMENTS = [
+  { icon: '🏆', label: '4× Hackathon Winner' },
+  { icon: '💼', label: '3 Hands-On Internships' },
+  { icon: '🏫', label: 'Senior Resident Assistant on Campus' },
+];
+
+const ACADEMICS = [
+  { icon: '🎓', label: 'Honors Scholar' },
+  { icon: '📋', label: "President's List" },
+  { icon: '🥇', label: 'Academic Excellence Scholar' },
+];
+
 export default function Highlights() {
   const headerRef = useReveal();
-
-  const [gpaVal, gpaRef] = useCounter(4.0, 1400, true);
-  const [residentVal, residentRef] = useCounter(400, 1600, false, '+');
-  const [appVal, appRef] = useCounter(3000, 1800, false, '+');
-
   const card1Ref = useReveal('-40px');
   const card2Ref = useReveal('-40px');
   const card3Ref = useReveal('-40px');
@@ -77,79 +50,98 @@ export default function Highlights() {
 
         {/* Header */}
         <div ref={headerRef} className="reveal text-center mb-16">
-          <p className="font-mono text-indigo-600 dark:text-cyan-400 text-sm mb-3 tracking-widest uppercase">What I Bring</p>
-          <h2 className="font-orbitron text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
+          <p className="font-mono text-indigo-600 dark:text-cyan-400 text-sm mb-3 tracking-widest uppercase">Education Highlights</p>
+          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-5">
             Highlights
           </h2>
           <div className="mx-auto w-20 h-1 bg-gradient-to-r from-indigo-600 to-transparent dark:from-cyan-400 dark:to-transparent rounded-full" />
         </div>
 
-        {/* Cards Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
 
-          {/* GPA Card */}
-          <div ref={card1Ref} className="reveal reveal-delay-1">
-            <div className="glass-card p-8 border border-gray-200/80 dark:border-white/5 h-full
-              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300
-              flex flex-col items-center text-center">
-              <div ref={gpaRef} className="font-orbitron text-6xl font-black mb-2
-                text-indigo-600 dark:text-cyan-400"
-                style={{ textShadow: '0 0 30px rgba(0,245,255,0.3)' }}>
-                {gpaVal}
+          {/* Card 1 — Academic Excellence (no image) */}
+          <div ref={card1Ref} className="reveal reveal-delay-1 flex flex-col">
+            <div className="glass-card flex flex-col p-8 border border-gray-200/80 dark:border-white/5 h-full
+              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300">
+
+              {/* GPA big number */}
+              <div className="text-center mb-6">
+                <div className="font-display text-7xl font-extrabold text-indigo-600 dark:text-cyan-400 leading-none mb-1">
+                  4.0
+                </div>
+                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wide uppercase">GPA</p>
               </div>
-              <p className="font-orbitron text-sm font-bold text-gray-900 dark:text-white mb-3 tracking-wide">GPA</p>
-              <div className="flex flex-wrap gap-2 justify-center mt-2">
-                {['Honors Scholar', "President's List", 'Academic Excellence Scholar'].map(a => (
-                  <span key={a} className="text-xs px-2.5 py-1 rounded-full
-                    bg-indigo-50 dark:bg-white/5
-                    text-indigo-600 dark:text-gray-300
-                    border border-indigo-200 dark:border-white/10">
-                    {a}
-                  </span>
+
+              {/* Divider */}
+              <div className="w-full h-px bg-gray-100 dark:bg-white/5 mb-5" />
+
+              {/* Academic honors list */}
+              <div className="flex flex-col gap-3">
+                {ACADEMICS.map(({ icon, label }) => (
+                  <div key={label} className="flex items-center gap-3">
+                    <span className="text-xl flex-shrink-0">{icon}</span>
+                    <span className="font-display font-semibold text-gray-800 dark:text-gray-100 text-sm">{label}</span>
+                  </div>
                 ))}
               </div>
+
+              <p className="mt-5 text-xs text-gray-400 dark:text-gray-500 font-mono">
+                University of Southern Mississippi
+              </p>
             </div>
           </div>
 
-          {/* SRA Card */}
-          <div ref={card2Ref} className="reveal reveal-delay-2">
-            <div className="glass-card border border-gray-200/80 dark:border-white/5 h-full
-              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300
-              overflow-hidden">
-              <PlaceholderImage emoji="🏫" label="Senior Resident Assistant" colorFrom="from-violet-500/30" colorTo="to-indigo-500/20" />
-              <div className="p-6">
-                <h3 className="font-orbitron font-bold text-gray-900 dark:text-white mb-1">Senior Resident Assistant</h3>
-                <p className="text-xs font-mono text-indigo-600 dark:text-cyan-400 mb-3">
-                  DA → RA → SRA · 2023–2025
+          {/* Card 2 — Cornell ML Foundations (with image) */}
+          <div ref={card2Ref} className="reveal reveal-delay-2 flex flex-col">
+            <div className="glass-card border border-gray-200/80 dark:border-white/5 h-full overflow-hidden
+              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300">
+              <PlaceholderImage
+                emoji="🌿"
+                label="Cornell University ML Foundations"
+                colorFrom="from-emerald-500/30"
+                colorTo="to-teal-500/20"
+              />
+              <div className="p-6 flex flex-col flex-1">
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <h3 className="font-display font-bold text-gray-900 dark:text-white text-lg leading-tight">
+                    ML Foundations
+                  </h3>
+                  <span className="text-xs font-mono text-indigo-600 dark:text-cyan-400
+                    bg-indigo-50 dark:bg-cyan-400/10 border border-indigo-200 dark:border-cyan-400/20
+                    px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">
+                    Summer 2025
+                  </span>
+                </div>
+                <p className="font-display font-semibold text-indigo-600 dark:text-cyan-400 text-sm mb-3">
+                  Cornell University
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
-                  Led a team of 12 RAs + 10 DAs supporting{' '}
-                  <span ref={residentRef} className="font-bold text-indigo-600 dark:text-cyan-400">{residentVal}</span>
-                  + residents across campus housing.
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  Intensive machine learning coursework with Cornell faculty. Selected via BreakThroughTech AI Program — 3,000+ applicants.
                 </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500">Promoted three times in two years.</p>
               </div>
             </div>
           </div>
 
-          {/* BTT AI Fellow Card */}
-          <div ref={card3Ref} className="reveal reveal-delay-3">
-            <div className="glass-card border border-gray-200/80 dark:border-white/5 h-full
-              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300
-              overflow-hidden">
-              <PlaceholderImage emoji="🤖" label="Cornell Tech AI Fellow" colorFrom="from-cyan-500/30" colorTo="to-teal-500/20" />
-              <div className="p-6">
-                <h3 className="font-orbitron font-bold text-gray-900 dark:text-white mb-1">BreakThroughTech AI Fellow</h3>
-                <p className="text-xs font-mono text-indigo-600 dark:text-cyan-400 mb-3">Cornell Tech · 12-month program</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-3">
-                  Selected from{' '}
-                  <span ref={appRef} className="font-bold text-indigo-600 dark:text-cyan-400">{appVal}</span>
-                  + applicants. Cornell faculty instruction, industry mentorship, experiential learning.
-                </p>
-                <div className="flex items-center gap-2">
-                  <span className="animate-ping w-1.5 h-1.5 rounded-full bg-cyan-400 dark:bg-cyan-400 bg-indigo-500 opacity-75" />
-                  <span className="text-xs font-mono text-indigo-600 dark:text-cyan-400">Active Fellow</span>
-                </div>
+          {/* Card 3 — Achievements (no image) */}
+          <div ref={card3Ref} className="reveal reveal-delay-3 flex flex-col">
+            <div className="glass-card flex flex-col p-8 border border-gray-200/80 dark:border-white/5 h-full
+              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300">
+
+              <h3 className="font-display font-bold text-gray-900 dark:text-white text-lg mb-6">
+                Beyond Academics
+              </h3>
+
+              <div className="flex flex-col gap-4 flex-1">
+                {ACHIEVEMENTS.map(({ icon, label }) => (
+                  <div key={label} className="flex items-center gap-4 p-4 rounded-xl
+                    bg-gray-50 dark:bg-white/4 border border-gray-100 dark:border-white/5
+                    hover:border-indigo-300 dark:hover:border-cyan-400/30 transition-all duration-200">
+                    <span className="text-2xl flex-shrink-0">{icon}</span>
+                    <span className="font-display font-semibold text-gray-800 dark:text-gray-100 text-sm leading-snug">
+                      {label}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
