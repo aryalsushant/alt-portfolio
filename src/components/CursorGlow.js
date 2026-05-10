@@ -72,12 +72,11 @@ export default function CursorGlow() {
       {/* Dot */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-[width,height,background] duration-150 hidden lg:block"
+        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-[width,height] duration-150 hidden lg:block bg-accent"
         style={{
           width: hovering ? 8 : 6,
           height: hovering ? 8 : 6,
-          background: '#00F5FF',
-          boxShadow: '0 0 6px 2px rgba(0,245,255,0.8)',
+          boxShadow: '0 0 8px 2px var(--accent-soft)',
         }}
       />
       {/* Glow ring */}
@@ -87,10 +86,10 @@ export default function CursorGlow() {
         style={{
           width: hovering ? 52 : 32,
           height: hovering ? 52 : 32,
-          border: `1.5px solid rgba(0,245,255,${hovering ? 0.7 : 0.35})`,
-          background: hovering ? 'rgba(0,245,255,0.06)' : 'transparent',
-          boxShadow: hovering ? '0 0 20px 4px rgba(0,245,255,0.2)' : 'none',
-          transition: 'width 0.2s ease, height 0.2s ease, border-color 0.2s ease, background 0.2s ease',
+          border: `1.5px solid var(--accent)`,
+          opacity: hovering ? 0.7 : 0.35,
+          background: hovering ? 'var(--accent-soft)' : 'transparent',
+          transition: 'width 0.2s ease, height 0.2s ease, opacity 0.2s ease, background 0.2s ease',
         }}
       />
     </>

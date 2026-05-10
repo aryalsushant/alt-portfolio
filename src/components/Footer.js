@@ -23,14 +23,14 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-gray-200/60 dark:border-white/5 bg-gray-50 dark:bg-[#0d1117]">
+    <footer className="border-t border-line bg-bg-soft">
       <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
 
         <div className="text-center sm:text-left">
-          <p className="font-display font-black text-lg text-gray-900 dark:text-white tracking-widest">
+          <p className="font-display font-black text-[19px] text-ink tracking-[0.18em]">
             SUSHANT ARYAL
           </p>
-          <p className="text-xs font-mono text-gray-400 dark:text-gray-500 mt-0.5">
+          <p className="text-[12px] font-mono text-ink-2 mt-1 tracking-wide font-medium">
             © {year} · All rights reserved
           </p>
         </div>
@@ -43,25 +43,25 @@ export default function Footer() {
               target={href.startsWith('mailto') ? undefined : '_blank'}
               rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
               aria-label={label}
-              className="w-10 h-10 rounded-xl flex items-center justify-center
-                bg-white dark:bg-white/5
-                border border-gray-200 dark:border-white/10
-                text-gray-500 dark:text-gray-400
-                hover:text-indigo-600 dark:hover:text-cyan-400
-                hover:border-indigo-400/60 dark:hover:border-cyan-400/50
+              className="w-11 h-11 rounded-xl flex items-center justify-center
+                bg-surface
+                border border-line-strong
+                text-ink
+                hover:bg-accent hover:text-on-accent
+                hover:border-accent
                 hover:scale-110
                 transition-all duration-200"
             >
-              <Icon size={15} />
+              <Icon size={16} />
             </a>
           ))}
         </div>
 
-        <p className="text-xs font-mono text-gray-400 dark:text-gray-600 text-center sm:text-right">
+        <p className="text-[12px] font-mono text-ink-2 text-center sm:text-right tracking-wide font-medium">
           Built with{' '}
-          <span className="text-indigo-600 dark:text-cyan-400">React</span>
+          <span className="text-accent font-bold">React</span>
           {' '}+{' '}
-          <span className="text-indigo-600 dark:text-cyan-400">Tailwind</span>
+          <span className="text-accent font-bold">Tailwind</span>
         </p>
 
       </div>

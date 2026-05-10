@@ -24,8 +24,7 @@ const ALL_PROJECTS = [
     description: 'Analyzed 300K+ drug interactions using NLP and LLMs to warn users of allergic conflicts. Full-stack app with secure MongoDB backend deployed on AWS EC2.',
     stack: ['Python', 'Streamlit', 'AWS', 'Cloudflare', 'Flask', 'MongoDB'],
     emoji: '💊',
-    colorFrom: 'from-rose-500/30',
-    colorTo: 'to-pink-500/20',
+    image: '/drug.png',
     github: 'https://github.com/aryalsushant/hacklytics2025',
     demo: 'https://devpost.com/software/druglytics',
   },
@@ -36,8 +35,7 @@ const ALL_PROJECTS = [
     description: 'AI-powered hiring app matching job seekers with recruiters via swiping interface. Gemini AI interviews + ElevenLabs voice screening. MVP built in 18 hours.',
     stack: ['JavaScript', 'Node.js', 'MongoDB', 'Google Gemini', 'ElevenLabs'],
     emoji: '🤝',
-    colorFrom: 'from-blue-500/30',
-    colorTo: 'to-indigo-500/20',
+    image: '/swipe.png',
     github: 'https://github.com/rupaut98/swipedin',
     demo: 'https://devpost.com/software/swiped-in',
   },
@@ -48,8 +46,7 @@ const ALL_PROJECTS = [
     description: 'HIPAA Contract Management System for health clinics. Won Hatchathon 2025. Contacted by Mississippi Dept. of IT for a joint follow-up project.',
     stack: ['Next.js', 'OpenAI', 'AWS', 'TypeScript'],
     emoji: '🏥',
-    colorFrom: 'from-emerald-500/30',
-    colorTo: 'to-teal-500/20',
+    image: '/hipaa.jpeg',
     github: '#',
     demo: '#',
   },
@@ -96,21 +93,38 @@ const ALL_PROJECTS = [
 
 function Badge({ text }) {
   return (
-    <span className="px-2.5 py-1 text-xs rounded-full font-mono
-      bg-indigo-50 dark:bg-white/5
-      text-indigo-600 dark:text-cyan-400/80
-      border border-indigo-200 dark:border-white/10">
+    <span className="px-3 py-[5px] text-[12px] rounded-md font-mono font-semibold
+      bg-accent-soft
+      text-accent
+      border border-line-strong
+      tracking-tight">
       {text}
     </span>
   );
 }
 
-function PlaceholderImg({ emoji, colorFrom, colorTo }) {
+function PlaceholderImg({ emoji, image, label }) {
+  if (image) {
+    return (
+      <div className="relative w-full h-44 overflow-hidden border-b border-line">
+        <img src={image} alt={label || ''} className="w-full h-full object-cover" />
+      </div>
+    );
+  }
   return (
-    <div className={`w-full h-44 flex items-center justify-center text-6xl
-      bg-gradient-to-br ${colorFrom} ${colorTo}
-      border-b border-white/10`}>
-      <span role="img">{emoji}</span>
+    <div className="relative w-full h-44 flex items-center justify-center overflow-hidden
+      border-b border-line"
+      style={{
+        background: 'linear-gradient(135deg, var(--accent-soft), transparent 65%)',
+      }}>
+      <div className="absolute inset-0 opacity-[0.10]"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
+          backgroundSize: '16px 16px',
+          color: 'var(--accent)',
+        }}
+      />
+      <span className="relative text-6xl" role="img">{emoji}</span>
     </div>
   );
 }
@@ -118,37 +132,39 @@ function PlaceholderImg({ emoji, colorFrom, colorTo }) {
 function ProjectCard({ project, idx }) {
   return (
     <div
-      className={`glass-card border border-gray-200/80 dark:border-white/5 flex-shrink-0
+      className={`glass-card border border-line flex-shrink-0
         w-80 md:w-[22rem]
-        hover:border-indigo-400/30 dark:hover:border-cyan-400/30
-        hover:scale-[1.02] hover:-translate-y-1
+        hover:border-line-strong hover:-translate-y-1
         transition-all duration-300 overflow-hidden rounded-2xl
         ${project.placeholder ? 'opacity-55' : ''}
         reveal reveal-delay-${(idx % 3) + 1}`}
     >
-      <PlaceholderImg emoji={project.emoji} colorFrom={project.colorFrom} colorTo={project.colorTo} />
+      <PlaceholderImg emoji={project.emoji} image={project.image} label={project.title} />
       <div className="p-6">
-        <div className="mb-2">
-          <h3 className="font-display font-bold text-gray-900 dark:text-white">{project.title}</h3>
-          <p className="text-xs font-mono text-indigo-600 dark:text-cyan-400 mt-0.5">{project.subtitle}</p>
+        <div className="mb-3.5">
+          {/* Subtitle now ABOVE the title — pro pattern: eyebrow → headline */}
+          <p className="text-[12px] font-mono text-accent mb-1.5 tracking-[0.18em] uppercase font-bold">
+            {project.subtitle}
+          </p>
+          <h3 className="font-display font-bold text-[22px] text-ink tracking-tight leading-[1.15]">{project.title}</h3>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-3">
+        <p className="text-[15px] text-ink-2 leading-relaxed mb-5 line-clamp-3">
           {project.description}
         </p>
         <div className="flex flex-wrap gap-1.5 mb-5">
           {project.stack.map(t => <Badge key={t} text={t} />)}
         </div>
         {!project.placeholder && (
-          <div className="flex gap-4 pt-3 border-t border-gray-100 dark:border-white/5">
+          <div className="flex gap-5 pt-4 border-t border-line">
             <a href={project.github} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400
-                hover:text-indigo-600 dark:hover:text-cyan-400 transition-colors">
-              <FaGithub size={13} /> GitHub
+              className="flex items-center gap-2 text-[14px] font-semibold text-ink
+                hover:text-accent transition-colors">
+              <FaGithub size={15} /> GitHub
             </a>
             <a href={project.demo} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400
-                hover:text-indigo-600 dark:hover:text-cyan-400 transition-colors">
-              <FaExternalLinkAlt size={11} /> Live Demo
+              className="flex items-center gap-2 text-[14px] font-semibold text-ink
+                hover:text-accent transition-colors">
+              <FaExternalLinkAlt size={13} /> Live Demo
             </a>
           </div>
         )}
@@ -203,18 +219,18 @@ export default function Projects() {
   }, [showAll]);
 
   return (
-    <section id="projects" className="bg-white dark:bg-[#070b14]">
+    <section id="projects" className="bg-bg">
 
       {/* Header */}
-      <div className="py-20 px-6">
+      <div className="py-24 px-6">
         <div ref={headerRef} className="reveal max-w-6xl mx-auto text-center">
-          <p className="font-mono text-indigo-600 dark:text-cyan-400 text-sm mb-3 tracking-widest uppercase">What I've Built</p>
-          <h2 className="font-display text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-5">
+          <p className="font-mono text-accent text-[12px] mb-4 tracking-[0.25em] uppercase font-semibold">What I've Built</p>
+          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-ink mb-5 tracking-tight">
             Projects
           </h2>
-          <div className="mx-auto w-20 h-1 bg-gradient-to-r from-indigo-600 to-transparent dark:from-cyan-400 dark:to-transparent rounded-full" />
-          <p className="mt-4 text-sm font-mono text-gray-400 dark:text-gray-500 hidden md:block">
-            ← Scroll down to pan through projects →
+          <div className="mx-auto w-16 h-[3px] rounded-full" style={{ background: 'linear-gradient(90deg, var(--accent), var(--accent) 50%, transparent)' }} />
+          <p className="mt-6 text-[13px] font-mono text-ink-2 hidden md:block tracking-wide font-medium">
+            ← scroll to pan through projects →
           </p>
         </div>
       </div>
@@ -246,11 +262,10 @@ export default function Projects() {
           <div className="text-center mt-8">
             <button
               onClick={() => setShowAll(true)}
-              className="px-8 py-3 rounded-xl font-display text-sm font-bold tracking-wider
-                border-2 border-indigo-600 dark:border-cyan-400
-                text-indigo-600 dark:text-cyan-400
-                hover:bg-indigo-50 dark:hover:bg-cyan-400/10
-                transition-all duration-300 hover:scale-105"
+              className="px-8 py-3 rounded-xl font-display text-[14px] font-semibold tracking-wide
+                border border-line-strong text-ink
+                hover:bg-accent-soft hover:border-accent hover:text-accent
+                transition-all duration-300 hover:scale-[1.03]"
             >
               Show All Projects
             </button>

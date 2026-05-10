@@ -15,13 +15,28 @@ function useReveal(rootMargin = '-60px') {
   return ref;
 }
 
-function PlaceholderImage({ emoji, label, colorFrom, colorTo }) {
+function PlaceholderImage({ emoji, label, image }) {
+  if (image) {
+    return (
+      <div className="relative w-full h-44 rounded-t-2xl overflow-hidden border-b border-line">
+        <img src={image} alt={label} className="w-full h-full object-cover" />
+      </div>
+    );
+  }
   return (
-    <div className={`w-full h-44 rounded-t-2xl flex flex-col items-center justify-center gap-2.5
-      bg-gradient-to-br ${colorFrom} ${colorTo}
-      border-b border-white/10`}>
-      <span className="text-5xl" role="img" aria-label={label}>{emoji}</span>
-      <span className="text-xs font-mono text-white/50 tracking-wider">Photo Coming Soon</span>
+    <div className="relative w-full h-44 rounded-t-2xl flex items-center justify-center overflow-hidden
+      border-b border-line"
+      style={{
+        background: 'linear-gradient(135deg, var(--accent-soft), transparent 60%)',
+      }}>
+      <div className="absolute inset-0 opacity-[0.10]"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
+          backgroundSize: '14px 14px',
+          color: 'var(--accent)',
+        }}
+      />
+      <span className="relative text-5xl" role="img" aria-label={label}>{emoji}</span>
     </div>
   );
 }
@@ -45,47 +60,47 @@ export default function Highlights() {
   const card3Ref = useReveal('-40px');
 
   return (
-    <section className="py-24 px-6 bg-white dark:bg-[#070b14]">
+    <section className="py-28 px-6 bg-bg">
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
         <div ref={headerRef} className="reveal text-center mb-16">
-          <p className="font-mono text-indigo-600 dark:text-cyan-400 text-sm mb-3 tracking-widest uppercase">Education Highlights</p>
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-5">
+          <p className="font-mono text-accent text-[12px] mb-4 tracking-[0.25em] uppercase font-semibold">Education Highlights</p>
+          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-ink mb-5 tracking-tight">
             Highlights
           </h2>
-          <div className="mx-auto w-20 h-1 bg-gradient-to-r from-indigo-600 to-transparent dark:from-cyan-400 dark:to-transparent rounded-full" />
+          <div className="mx-auto w-16 h-[3px] rounded-full" style={{ background: 'linear-gradient(90deg, var(--accent), var(--accent) 50%, transparent)' }} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
 
           {/* Card 1 — Academic Excellence (no image) */}
           <div ref={card1Ref} className="reveal reveal-delay-1 flex flex-col">
-            <div className="glass-card flex flex-col p-8 border border-gray-200/80 dark:border-white/5 h-full
-              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300">
+            <div className="glass-card flex flex-col p-8 border border-line h-full
+              hover:border-line-strong hover:-translate-y-0.5 transition-all duration-300">
 
               {/* GPA big number */}
-              <div className="text-center mb-6">
-                <div className="font-display text-7xl font-extrabold text-indigo-600 dark:text-cyan-400 leading-none mb-1">
+              <div className="text-center mb-7">
+                <div className="font-display text-7xl md:text-[80px] font-extrabold text-accent leading-none mb-2 tracking-tight tabular-nums">
                   4.0
                 </div>
-                <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 tracking-wide uppercase">GPA</p>
+                <p className="text-[11px] font-mono font-semibold text-ink-2 tracking-[0.3em] uppercase">GPA</p>
               </div>
 
               {/* Divider */}
-              <div className="w-full h-px bg-gray-100 dark:bg-white/5 mb-5" />
+              <div className="w-full h-px bg-line mb-5" />
 
               {/* Academic honors list */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3.5">
                 {ACADEMICS.map(({ icon, label }) => (
                   <div key={label} className="flex items-center gap-3">
                     <span className="text-xl flex-shrink-0">{icon}</span>
-                    <span className="font-display font-semibold text-gray-800 dark:text-gray-100 text-sm">{label}</span>
+                    <span className="font-display font-semibold text-ink text-[14px]">{label}</span>
                   </div>
                 ))}
               </div>
 
-              <p className="mt-5 text-xs text-gray-400 dark:text-gray-500 font-mono">
+              <p className="mt-6 text-[12px] text-ink-3 font-mono font-medium tracking-wide">
                 University of Southern Mississippi
               </p>
             </div>
@@ -93,29 +108,27 @@ export default function Highlights() {
 
           {/* Card 2 — Cornell ML Foundations (with image) */}
           <div ref={card2Ref} className="reveal reveal-delay-2 flex flex-col">
-            <div className="glass-card border border-gray-200/80 dark:border-white/5 h-full overflow-hidden
-              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300">
+            <div className="glass-card border border-line h-full overflow-hidden
+              hover:border-line-strong hover:-translate-y-0.5 transition-all duration-300">
               <PlaceholderImage
-                emoji="🌿"
+                image="/mlfoundations.jpeg"
                 label="Cornell University ML Foundations"
-                colorFrom="from-emerald-500/30"
-                colorTo="to-teal-500/20"
               />
               <div className="p-6 flex flex-col flex-1">
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <h3 className="font-display font-bold text-gray-900 dark:text-white text-lg leading-tight">
+                  <h3 className="font-display font-bold text-ink text-xl leading-tight">
                     ML Foundations
                   </h3>
-                  <span className="text-xs font-mono text-indigo-600 dark:text-cyan-400
-                    bg-indigo-50 dark:bg-cyan-400/10 border border-indigo-200 dark:border-cyan-400/20
-                    px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0">
+                  <span className="text-[11px] font-mono text-accent
+                    bg-accent-soft border border-line-strong
+                    px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0 tracking-wider uppercase font-semibold">
                     Summer 2025
                   </span>
                 </div>
-                <p className="font-display font-semibold text-indigo-600 dark:text-cyan-400 text-sm mb-3">
+                <p className="font-display font-semibold text-accent text-[14px] mb-3">
                   Cornell University
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                <p className="text-[15px] text-ink-2 leading-relaxed">
                   Intensive machine learning coursework with Cornell faculty. Selected via BreakThroughTech AI Program — 3,000+ applicants.
                 </p>
               </div>
@@ -124,20 +137,21 @@ export default function Highlights() {
 
           {/* Card 3 — Achievements (no image) */}
           <div ref={card3Ref} className="reveal reveal-delay-3 flex flex-col">
-            <div className="glass-card flex flex-col p-8 border border-gray-200/80 dark:border-white/5 h-full
-              hover:border-indigo-400/40 dark:hover:border-cyan-400/30 transition-all duration-300">
+            <div className="glass-card flex flex-col p-8 border border-line h-full
+              hover:border-line-strong hover:-translate-y-0.5 transition-all duration-300">
 
-              <h3 className="font-display font-bold text-gray-900 dark:text-white text-lg mb-6">
+              <h3 className="font-display font-bold text-ink text-xl mb-6 tracking-tight">
                 Beyond Academics
               </h3>
 
-              <div className="flex flex-col gap-4 flex-1">
+              <div className="flex flex-col gap-3 flex-1">
                 {ACHIEVEMENTS.map(({ icon, label }) => (
                   <div key={label} className="flex items-center gap-4 p-4 rounded-xl
-                    bg-gray-50 dark:bg-white/4 border border-gray-100 dark:border-white/5
-                    hover:border-indigo-300 dark:hover:border-cyan-400/30 transition-all duration-200">
+                    bg-accent-soft/40 border border-line
+                    hover:border-accent hover:bg-accent-soft
+                    transition-all duration-200">
                     <span className="text-2xl flex-shrink-0">{icon}</span>
-                    <span className="font-display font-semibold text-black dark:text-black text-sm leading-snug">
+                    <span className="font-display font-semibold text-ink text-[14px] leading-snug">
                       {label}
                     </span>
                   </div>

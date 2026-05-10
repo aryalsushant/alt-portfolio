@@ -48,11 +48,11 @@ export default function ProgressBar() {
       {/* Track */}
       <div className="relative flex flex-col items-center" style={{ height: SECTIONS.length * 40 }}>
         {/* Background track line */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-white/10 dark:bg-white/10 bg-black/10" />
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-line-strong" />
 
         {/* Filled track line */}
         <div
-          className="absolute left-1/2 -translate-x-1/2 top-0 w-px bg-gradient-to-b from-cyan-400 to-indigo-500 transition-all duration-150"
+          className="absolute left-1/2 -translate-x-1/2 top-0 w-px bg-accent transition-all duration-150"
           style={{ height: `${progress * 100}%` }}
         />
 
@@ -71,19 +71,20 @@ export default function ProgressBar() {
                 className={`
                   rounded-full transition-all duration-300
                   ${isActive
-                    ? 'w-3 h-3 bg-cyan-400 dark:bg-cyan-400 bg-indigo-600 shadow-neon'
-                    : 'w-2 h-2 bg-white/20 dark:bg-white/20 bg-black/20 group-hover:bg-cyan-400 dark:group-hover:bg-cyan-400 group-hover:bg-indigo-400'}
+                    ? 'w-3 h-3 bg-accent ring-4 ring-accent-soft'
+                    : 'w-2 h-2 bg-line-strong group-hover:bg-accent'}
                 `}
               />
               {/* Label tooltip */}
               <span
                 className={`
-                  absolute right-7 text-xs font-mono whitespace-nowrap px-2 py-0.5 rounded
-                  pointer-events-none
+                  absolute right-7 text-[11px] font-mono font-semibold whitespace-nowrap px-2 py-1 rounded
+                  bg-bg-soft border border-line
+                  pointer-events-none tracking-wide uppercase
                   transition-all duration-200
                   ${isActive
-                    ? 'opacity-100 text-cyan-400 dark:text-cyan-400 text-indigo-600'
-                    : 'opacity-0 group-hover:opacity-100 text-gray-400 dark:text-gray-400 text-gray-500'}
+                    ? 'opacity-100 text-accent'
+                    : 'opacity-0 group-hover:opacity-100 text-ink-2'}
                 `}
               >
                 {sec.label}
