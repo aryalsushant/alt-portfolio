@@ -17,15 +17,14 @@ function useReveal(rootMargin = '-60px') {
 
 const EXPERIENCES = [
   {
-    id: 'cayra',
-    emoji: '🧠',
-    image: '/aws.png',
-    title: 'AI/ML Engineer',
-    company: 'Cayra.ai',
-    dates: 'April 2026 – May 2026',
+    id: 'gol',
+    emoji: '🧬',
+    image: null,
+    title: 'AI Engineer Intern',
+    company: 'Gift of Life Marrow Registry',
+    dates: 'June 2026 – Present',
     bullets: [
-      'Researched and tested multiple image-generation models, benchmarking prompt-engineering techniques, API costs, and output quality to produce a comprehensive comparison.',
-      'Built backend infrastructure to migrate deployment from Railway to AWS.',
+      'Building AI-powered tooling to support the mission of matching donors with patients.',
     ],
   },
   {

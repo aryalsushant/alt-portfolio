@@ -224,7 +224,7 @@ export default function Home() {
               Contact
             </h3>
             <p className="text-[14px] leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,.82)' }}>
-              If you have any questions about my services, or just want to say hello,
+              If you have any questions about me, or just want to say hello,
               feel free to contact me. Below are my social pages and my email:
             </p>
             <div className="flex items-center gap-4">

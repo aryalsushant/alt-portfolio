@@ -45,7 +45,32 @@ export default function Level1About() {
       <PlantTag x={275} label={ABOUT.tags[2]} delay={1.6} />
 
       {/* the meme ribbon */}
-      <SceneBox x={320} w={22} y={50} h={28} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
+      <SceneBox x={320} w={22} y={40} h={38} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
+        {/* meditating monk robot, levitating over the banner */}
+        <svg viewBox="0 0 100 92" style={{ width: '4.8vw', minWidth: 48, marginBottom: '0.4vh', animation: 'ip-bob 6s ease-in-out infinite' }}>
+          {/* halo */}
+          <ellipse cx="50" cy="12" rx="15" ry="3.6" fill="none" stroke="#ffd166" strokeWidth="2.4" opacity=".85" />
+          {/* crossed legs */}
+          <path d="M16 80 Q30 66 50 66 Q70 66 84 80 Q66 90 50 90 Q34 90 16 80 Z" fill="#8f99b4" />
+          <path d="M30 78 Q40 72 50 72 Q60 72 70 78" stroke="#4b5470" strokeWidth="3" fill="none" strokeLinecap="round" />
+          {/* arms resting on knees */}
+          <rect x="18" y="52" width="10" height="24" rx="5" fill="#aab4cc" transform="rotate(20 23 64)" />
+          <rect x="72" y="52" width="10" height="24" rx="5" fill="#aab4cc" transform="rotate(-20 77 64)" />
+          {/* body */}
+          <rect x="32" y="42" width="36" height="34" rx="11" fill="#ff9d6b" />
+          <circle cx="50" cy="58" r="5" fill="#ffd166" />
+          {/* head */}
+          <rect x="30" y="16" width="40" height="28" rx="12" fill="#e8ecf7" />
+          <rect x="35" y="22" width="30" height="16" rx="8" fill="#1c2138" />
+          {/* zen eyes */}
+          <path d="M40 30 Q43 33 46 30 M54 30 Q57 33 60 30" stroke="#63e7de" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+          {/* antenna */}
+          <line x1="50" y1="16" x2="50" y2="8" stroke="#8f99b4" strokeWidth="2.5" />
+          <circle cx="50" cy="6" r="3.6" fill="#ffd166" />
+          {/* drifting calm sparkles */}
+          <circle cx="20" cy="34" r="2" fill="#ff7ac8" opacity=".7" />
+          <circle cx="82" cy="28" r="2" fill="#63e7de" opacity=".7" />
+        </svg>
         <div className="ip-ribbon" style={{ animation: 'ip-bob 4s ease-in-out infinite' }}>😴 {ABOUT.ribbon}</div>
         <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, letterSpacing: '.14em', color: 'var(--ip-text-dim)', marginTop: '1vh' }}>
           stress levels: unmeasurable
