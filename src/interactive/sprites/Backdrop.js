@@ -1,4 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
+import { useFrame } from '../engine/useScrollDriver';
+import { cameraAt } from '../engine/timeline';
+import { clamp } from '../engine/math';
 
 // Deterministic pseudo-random so renders are stable.
 const rnd = i => {
@@ -85,7 +88,24 @@ function Pagoda({ x, s = 1, fill }) {
 }
 
 // City skyline + temples — parallax factor ~0.5. Window lights key off --night.
+// Fades out as the camera dives into the gorge (its layer barely moves with
+// camY, so over the river the buildings would look like they float on nothing).
 export function Skyline() {
+  const ref = useRef(null);
+  const lastO = useRef('');
+
+  useFrame(s => {
+    const el = ref.current;
+    if (!el) return;
+    const { camY } = cameraAt(s.smoothYVh);
+    const o = clamp(1 - camY / 60, 0, 1).toFixed(3);
+    if (o !== lastO.current) {
+      lastO.current = o;
+      el.style.opacity = o;
+      el.style.visibility = o === '0.000' ? 'hidden' : '';
+    }
+  });
+
   const buildings = useMemo(
     () =>
       Array.from({ length: 64 }, (_, i) => {
@@ -108,6 +128,7 @@ export function Skyline() {
   );
   return (
     <svg
+      ref={ref}
       className="ip-skyline"
       style={{
         position: 'absolute', bottom: '20vh', left: 0,
