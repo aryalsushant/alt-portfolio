@@ -10,7 +10,7 @@ export default function Splash() {
         of <span style={{ color: 'var(--ip-amber)' }}>Sushant Aryal</span>
       </h1>
       <div style={{ marginTop: '6vh' }}>
-        <span className="ip-scroll-hint">▼ scroll down to start walking</span>
+        <span className="ip-scroll-hint">▼ scroll down or press the down arrow key</span>
       </div>
     </SceneBox>
   );

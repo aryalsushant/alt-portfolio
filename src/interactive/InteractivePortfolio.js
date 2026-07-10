@@ -53,6 +53,19 @@ function Ride({ onSkip }) {
     return () => driver.stop();
   }, [driver]);
 
+  // arrow keys advance the ride a meaningful step (native step is tiny)
+  useEffect(() => {
+    const onKey = e => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      e.preventDefault();
+      const dir = e.key === 'ArrowDown' ? 1 : -1;
+      window.scrollBy({ top: dir * window.innerHeight * 1.1, behavior: 'smooth' });
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   // scale the whole world down on narrow screens; pacing stays in vh
   useEffect(() => {
     const setScale = () => {
