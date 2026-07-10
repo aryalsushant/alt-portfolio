@@ -159,9 +159,9 @@ export default function Home() {
 
       {/* intro */}
       <div className="max-w-6xl mx-auto px-6 pt-6 pb-10 text-center">
-        <p className="eyebrow justify-center mb-4">Choose your experience</p>
+        <p className="eyebrow justify-center mb-4">Hi, I'm Sushant</p>
         <h1 className="font-display text-3xl md:text-5xl font-extrabold tracking-tight">
-          Two portfolios. Same person.
+          Welcome to my website
         </h1>
       </div>
 
