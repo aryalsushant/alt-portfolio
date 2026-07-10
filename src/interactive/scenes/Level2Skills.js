@@ -43,6 +43,15 @@ function LanternCluster({ x0, group }) {
 export default function Level2Skills() {
   return (
     <>
+      {/* countdown banner strung from the bridge cables at the jump point */}
+      <SceneBox x={450} w={13} y={50} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '64%', height: '8vh' }}>
+          <div className="ip-banner-rope" />
+          <div className="ip-banner-rope" />
+        </div>
+        <div className="ip-bungee-banner">1, 2, 3 BUNJEE!</div>
+      </SceneBox>
+
       {/* gate floats on stilts at the gorge edge */}
       <SceneBox x={444} w={16} y={168} className="ip-gate" style={{ alignItems: 'center' }}>
         <div className="ip-gate-sign">LEVEL 2 · SKILLS</div>

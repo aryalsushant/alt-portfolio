@@ -37,7 +37,7 @@ export default function Robot() {
         rx = 40;
         ry = 30;
         const v = clamp(Math.abs(s.vy) * 0.12, 0, 16);
-        swing.current.amp = lerp(swing.current.amp, 3 + v, 0.05);
+        swing.current.amp = lerp(swing.current.amp, 7 + v, 0.05);
         swing.current.t += 0.03;
         sw = Math.sin(swing.current.t * 2.1) * swing.current.amp;
         break;
@@ -48,6 +48,8 @@ export default function Robot() {
         ry = t < 0.55
           ? mapRange(t, 0, 0.55, 30, 10, easeOutCubic)   // lifted high
           : mapRange(t, 0.55, 1, 10, 64, easeInCubic);   // set down on ground
+        swing.current.t += 0.025;
+        sw = Math.sin(swing.current.t * 2.1) * 4;        // dangling off the tow rope
         break;
       }
       case 'climbing':
@@ -129,6 +131,15 @@ export default function Robot() {
               <rect x="28" y="50" width="44" height="50" rx="13" fill="url(#rb-body)" />
               <circle cx="50" cy="70" r="6.5" fill="#ffd166" stroke="#b34a24" strokeWidth="2" />
               <rect x="40" y="82" width="20" height="8" rx="3" fill="rgba(0,0,0,.22)" />
+
+              {/* bungee cord wrapped around the waist (shown while roped) */}
+              <g id="waist-rope">
+                <rect x="26" y="80" width="48" height="6.5" rx="3" fill="#ff7ac8" />
+                <rect x="26" y="83.5" width="48" height="3" rx="1.5" fill="#e8578f" />
+                <path d="M32 80 L34 87 M42 80 L44 87 M56 80 L58 87 M66 80 L68 87"
+                  stroke="#c23f73" strokeWidth="1.6" strokeLinecap="round" />
+                <circle cx="50" cy="83" r="4.4" fill="#e8578f" stroke="#c23f73" strokeWidth="1.6" />
+              </g>
 
               {/* head */}
               <rect x="24" y="14" width="52" height="36" rx="16" fill="url(#rb-head)" />

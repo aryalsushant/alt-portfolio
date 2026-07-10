@@ -207,6 +207,32 @@
 }
 @keyframes ip-river-flow { to { transform: translateX(11vw); } }
 
+/* countdown banner hanging off the bridge cables */
+.ip-banner-rope {
+  width: 3px;
+  background: linear-gradient(180deg, #aab0c4, #d8dbe6);
+  border-radius: 2px;
+}
+.ip-bungee-banner {
+  background: linear-gradient(180deg, #ffcf7d, #ffb454);
+  color: #4e2a10;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  letter-spacing: .18em;
+  font-size: clamp(13px, 1.3vw, 19px);
+  padding: .6em 1.3em;
+  border-radius: 10px;
+  border: 2px solid #a86a1e;
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.55);
+  white-space: nowrap;
+  animation: ip-banner-sway 3.4s ease-in-out infinite;
+  transform-origin: 50% -8vh;
+}
+@keyframes ip-banner-sway {
+  0%, 100% { transform: rotate(-2.2deg); }
+  50% { transform: rotate(2.2deg); }
+}
+
 /* suspension bridge */
 .ip-bridge-deck {
   position: absolute;
@@ -401,9 +427,10 @@
 /* limb rotations need the element's own box as reference */
 .ip-robot svg g, .ip-robot svg rect { transform-box: fill-box; }
 
-/* the bungee/hang cord — drawn above the robot */
+/* the bungee/hang cord — runs from above down to the robot's waist
+   (drawn behind the body, so it visually ends at the waist wrap) */
 .ip-cord {
-  position: absolute; left: 50%; bottom: 92%;
+  position: absolute; left: 50%; bottom: 50%;
   width: 4px; height: 0;
   transform: translateX(-50%);
   background: repeating-linear-gradient(180deg, #ff7ac8 0 10px, #e8578f 10px 20px);
@@ -413,11 +440,15 @@
 }
 .ip-robot[data-state='bungee'] .ip-cord,
 .ip-robot[data-state='hanging'] .ip-cord { opacity: 1; height: 90vh; }
-.ip-robot[data-state='plane'] .ip-cord { opacity: 1; height: 11vh; }
+.ip-robot[data-state='plane'] .ip-cord { opacity: 1; height: 16vh; }
 
 /* body groups */
 .ip-robot #eyes-x, .ip-robot #eyes-closed { opacity: 0; }
 .ip-robot #zzz { opacity: 0; }
+.ip-robot #waist-rope { opacity: 0; transition: opacity .3s; }
+.ip-robot[data-state='bungee'] #waist-rope,
+.ip-robot[data-state='hanging'] #waist-rope,
+.ip-robot[data-state='plane'] #waist-rope { opacity: 1; }
 
 /* antenna light doubles as a lantern at night */
 .ip-robot #antenna-tip {
@@ -463,18 +494,23 @@
 .ip-robot[data-state='bungee'] #arm-l,
 .ip-robot[data-state='bungee'] #arm-r { transform: rotate(-160deg); transform-origin: 50% 12%; }
 
-/* hanging: arms up gripping the cord */
-.ip-robot[data-state='hanging'] #arm-l { transform: rotate(-165deg); transform-origin: 50% 12%; }
-.ip-robot[data-state='hanging'] #arm-r { transform: rotate(165deg); transform-origin: 50% 12%; }
-.ip-robot[data-state='hanging'] #leg-l { animation: ip-dangle 2.4s ease-in-out infinite; transform-origin: 50% 8%; }
-.ip-robot[data-state='hanging'] #leg-r { animation: ip-dangle 2.4s ease-in-out infinite reverse; transform-origin: 50% 8%; }
+/* hanging: roped at the waist, body horizontal, limbs drooping */
+.ip-robot[data-state='hanging'] .ip-robot-pose { transform: rotate(-92deg); }
+.ip-robot[data-state='hanging'] #arm-l { animation: ip-dangle-h 2.2s ease-in-out infinite; transform-origin: 50% 12%; }
+.ip-robot[data-state='hanging'] #arm-r { animation: ip-dangle-h 2.2s ease-in-out infinite reverse; transform-origin: 50% 12%; }
+.ip-robot[data-state='hanging'] #leg-l { animation: ip-droop 2.4s ease-in-out infinite; transform-origin: 50% 8%; }
+.ip-robot[data-state='hanging'] #leg-r { animation: ip-droop 2.4s ease-in-out infinite reverse; transform-origin: 50% 8%; }
 @keyframes ip-dangle { 0%,100% { transform: rotate(8deg); } 50% { transform: rotate(-8deg); } }
+/* horizontal body: limbs swing toward the ground */
+@keyframes ip-dangle-h { 0%,100% { transform: rotate(76deg); } 50% { transform: rotate(102deg); } }
+@keyframes ip-droop { 0%,100% { transform: rotate(20deg); } 50% { transform: rotate(38deg); } }
 
-/* plane: carried, legs dangling */
-.ip-robot[data-state='plane'] #arm-l { transform: rotate(-170deg); transform-origin: 50% 12%; }
-.ip-robot[data-state='plane'] #arm-r { transform: rotate(170deg); transform-origin: 50% 12%; }
-.ip-robot[data-state='plane'] #leg-l { animation: ip-dangle 1.6s ease-in-out infinite; transform-origin: 50% 8%; }
-.ip-robot[data-state='plane'] #leg-r { animation: ip-dangle 1.6s ease-in-out infinite reverse; transform-origin: 50% 8%; }
+/* plane: towed by the waist, same horizontal dangle */
+.ip-robot[data-state='plane'] .ip-robot-pose { transform: rotate(-92deg); }
+.ip-robot[data-state='plane'] #arm-l { animation: ip-dangle-h 1.6s ease-in-out infinite; transform-origin: 50% 12%; }
+.ip-robot[data-state='plane'] #arm-r { animation: ip-dangle-h 1.6s ease-in-out infinite reverse; transform-origin: 50% 12%; }
+.ip-robot[data-state='plane'] #leg-l { animation: ip-droop 1.6s ease-in-out infinite; transform-origin: 50% 8%; }
+.ip-robot[data-state='plane'] #leg-r { animation: ip-droop 1.6s ease-in-out infinite reverse; transform-origin: 50% 8%; }
 
 /* napping: lying on the contact card */
 .ip-robot[data-state='napping'] .ip-robot-pose { transform: rotate(-88deg); }
