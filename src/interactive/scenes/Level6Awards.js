@@ -7,6 +7,8 @@ import { AWARDS } from '../content';
 import { slopePoint } from '../sprites/Terrain';
 
 const FLAG_US = [0.16, 0.4, 0.64, 0.88]; // positions along the slope
+// climb runs worst → best: the biggest win waits at the top
+const CLIMB_ORDER = [...AWARDS].reverse();
 
 export default function Level6Awards() {
   const refs = useRef([]);
@@ -24,7 +26,7 @@ export default function Level6Awards() {
   return (
     <>
       <LevelGate x={1372} label="LEVEL 6 · AWARDS" />
-      {AWARDS.map((a, i) => {
+      {CLIMB_ORDER.map((a, i) => {
         const pt = slopePoint(FLAG_US[i]);
         return (
           <SceneBox key={a.event} x={pt.x} w={26} y={pt.y - 14} z={5}>

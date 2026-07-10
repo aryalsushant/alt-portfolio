@@ -26,8 +26,8 @@ export default function Terrain() {
 
       {/* suspension bridge over the gorge */}
       <div className="ip-bridge-deck" style={{ left: '425vw', top: '74.5vh', width: '330vw', height: '3vh' }} />
-      <div className="ip-bridge-tower" style={{ left: '470vw', top: '40vh', width: '2.4vw', height: '200vh' }} />
-      <div className="ip-bridge-tower" style={{ left: '706vw', top: '40vh', width: '2.4vw', height: '200vh' }} />
+      <div className="ip-bridge-tower" style={{ left: '470.4vw', top: '40vh', width: '1.6vw', height: '200vh' }} />
+      <div className="ip-bridge-tower" style={{ left: '706.4vw', top: '40vh', width: '1.6vw', height: '200vh' }} />
       <svg
         className="ip-bridge-cables"
         style={{ left: '425vw', top: '38vh', width: '330vw', height: '40vh' }}

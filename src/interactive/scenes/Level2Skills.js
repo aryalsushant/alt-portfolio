@@ -15,16 +15,16 @@ function LanternCluster({ x0, group }) {
   return (
     <>
       {/* stilt sign with the group name, standing in the river */}
-      <SceneBox x={x0 + 6} w={20} y={140} className="ip-skill-header">
+      <SceneBox x={x0 + 6} w={20} y={170} className="ip-skill-header">
         <div className="ip-ribbon">{group.group}</div>
-        <div className="ip-skill-post" style={{ height: `${RIVER_Y - 146}vh` }} />
+        <div className="ip-skill-post" style={{ height: `${RIVER_Y - 176}vh` }} />
       </SceneBox>
 
       {SKILLS && group.items.map((skill, i) => {
         const col = i % cols;
         const row = Math.floor(i / cols);
         const x = x0 + col * 17 + rnd(i + x0) * 4;
-        const y = 158 + row * 13.5 + rnd(i * 3 + x0) * 3;
+        const y = 183 + row * 14 + rnd(i * 3 + x0) * 3;
         return (
           <SceneBox key={skill} x={x} w={14} y={y}>
             <div
@@ -44,9 +44,9 @@ export default function Level2Skills() {
   return (
     <>
       {/* gate floats on stilts at the gorge edge */}
-      <SceneBox x={444} w={16} y={122} className="ip-gate" style={{ alignItems: 'center' }}>
+      <SceneBox x={444} w={16} y={168} className="ip-gate" style={{ alignItems: 'center' }}>
         <div className="ip-gate-sign">LEVEL 2 · SKILLS</div>
-        <div className="ip-gate-posts" style={{ height: `${RIVER_Y - 128}vh` }}>
+        <div className="ip-gate-posts" style={{ height: `${RIVER_Y - 174}vh` }}>
           <div className="ip-gate-post" />
           <div className="ip-gate-post" />
         </div>

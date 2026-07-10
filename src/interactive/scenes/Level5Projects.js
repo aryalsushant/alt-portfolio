@@ -4,7 +4,7 @@ import { PROJECTS } from '../content';
 
 function Storefront({ x, p }) {
   return (
-    <SceneBox x={x} w={25} y={78 - 60} h={60} className="ip-building">
+    <SceneBox x={x} w={25} y={78 - 48} h={48} className="ip-building">
       <div className="ip-building-roof" style={{ background: 'linear-gradient(180deg, #14434d, #0c2b33)' }} />
       <div className="ip-building-body" style={{ background: 'linear-gradient(180deg, #17333c, #0f2129)' }}>
         <div className="ip-neon" style={{ '--glow': p.glow, fontSize: 'clamp(15px, 1.5vw, 22px)' }}>{p.name}</div>
