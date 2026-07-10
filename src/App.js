@@ -7,8 +7,8 @@ const InteractivePortfolio = lazy(() => import('./interactive/InteractivePortfol
 
 const TITLES = {
   '/': 'Sushant Aryal',
-  '/classic': 'Sushant Aryal — Portfolio',
-  '/interactive': 'Sushant Aryal — Interactive Portfolio',
+  '/classic': 'Sushant Aryal | Portfolio',
+  '/interactive': 'Sushant Aryal | Interactive Portfolio',
 };
 
 function ScrollToTop() {
