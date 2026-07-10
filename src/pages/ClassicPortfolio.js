@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Education from '../components/Education';
@@ -75,6 +76,16 @@ function ClassicPortfolio() {
       </main>
 
       <Footer />
+
+      {/* back to the landing page, same idea as the interactive HUD's exit */}
+      <Link
+        to="/"
+        className="fixed bottom-5 right-5 z-50 px-5 py-2.5 rounded-full border border-line bg-surface
+          font-mono text-[11px] font-bold tracking-[0.16em] text-ink-2 shadow-lg
+          hover:text-accent hover:border-accent transition-colors"
+      >
+        EXIT ↗
+      </Link>
     </div>
   );
 }
