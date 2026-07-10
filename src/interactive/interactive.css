@@ -494,12 +494,17 @@
 .ip-robot[data-state='jumping'] #arm-l,
 .ip-robot[data-state='jumping'] #arm-r { transform: rotate(-140deg); transform-origin: 50% 12%; }
 
+/* climbing = riding a levitating hoverboard up the slope: surf stance,
+   arms out for balance, thrusters pulsing underneath */
+.ip-robot #hoverboard { opacity: 0; transition: opacity .3s; }
+.ip-robot[data-state='climbing'] #hoverboard { opacity: 1; }
 .ip-robot[data-state='climbing'] .ip-robot-pose { transform: rotate(-14deg); }
-.ip-robot[data-state='climbing'] #leg-l { animation: ip-climb 0.8s ease-in-out infinite; transform-origin: 50% 8%; }
-.ip-robot[data-state='climbing'] #leg-r { animation: ip-climb 0.8s ease-in-out infinite reverse; transform-origin: 50% 8%; }
-.ip-robot[data-state='climbing'] #arm-l { animation: ip-climb 0.8s ease-in-out infinite reverse; transform-origin: 50% 12%; }
-.ip-robot[data-state='climbing'] #arm-r { animation: ip-climb 0.8s ease-in-out infinite; transform-origin: 50% 12%; }
-@keyframes ip-climb { 0%,100% { transform: rotate(-46deg); } 50% { transform: rotate(10deg); } }
+.ip-robot[data-state='climbing'] #leg-l { transform: rotate(-12deg); transform-origin: 50% 8%; }
+.ip-robot[data-state='climbing'] #leg-r { transform: rotate(14deg); transform-origin: 50% 8%; }
+.ip-robot[data-state='climbing'] #arm-l { transform: rotate(-58deg); transform-origin: 50% 12%; }
+.ip-robot[data-state='climbing'] #arm-r { transform: rotate(34deg); transform-origin: 50% 12%; }
+.ip-robot[data-state='climbing'] #hoverboard ellipse { animation: ip-thrust 1.1s ease-in-out infinite; }
+@keyframes ip-thrust { 0%, 100% { opacity: .85; } 50% { opacity: .35; } }
 
 /* bungee: headfirst, scared eyes */
 .ip-robot[data-state='bungee'] .ip-robot-pose { transform: rotate(178deg); }

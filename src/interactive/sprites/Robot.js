@@ -61,14 +61,16 @@ export default function Robot() {
         break;
       }
       case 'climbing':
+        // riding the hoverboard: held clear of the slope, gentle float bob
         rx = 40;
-        ry = 58;
+        swing.current.t += 0.02;
+        ry = 54.5 + Math.sin(swing.current.t * 1.8) * 0.7;
         break;
       case 'jumping': {
         // hop from the slope onto the contact card
         const t = clamp(seg('ending', y) / 0.4, 0, 1);
         rx = lerp(38, 49, t);
-        ry = lerp(58, 21.5, easeOutCubic(t)) - Math.sin(t * Math.PI) * 12;
+        ry = lerp(54.5, 21.5, easeOutCubic(t)) - Math.sin(t * Math.PI) * 12;
         break;
       }
       case 'napping':
@@ -172,6 +174,14 @@ export default function Robot() {
               {/* cheek lights */}
               <circle cx="33" cy="40" r="2" fill="#ff7ac8" opacity=".7" />
               <circle cx="67" cy="40" r="2" fill="#ff7ac8" opacity=".7" />
+            </g>
+
+            {/* levitating hoverboard (climbing only) — sits just under the feet */}
+            <g id="hoverboard">
+              <rect x="6" y="130.5" width="88" height="9" rx="4.5" fill="#31395c" stroke="#63e7de" strokeWidth="1.6" />
+              <rect x="14" y="132.8" width="72" height="2.4" rx="1.2" fill="rgba(255,255,255,.32)" />
+              <ellipse cx="24" cy="142" rx="7.5" ry="2.8" fill="#63e7de" opacity=".85" />
+              <ellipse cx="76" cy="142" rx="7.5" ry="2.8" fill="#63e7de" opacity=".85" />
             </g>
 
             {/* nap bubbles */}
