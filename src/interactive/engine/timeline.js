@@ -63,6 +63,14 @@ export const cameraAt = yVh => {
   return { camX: x, camY: y };
 };
 
+// Ground obstacles the robot hops over while walking. Each entry is the
+// scroll position (vh) at which the robot is directly above the rock;
+// the hop arc spans ±JUMP_SPAN vh of scroll around it.
+export const JUMPS = [170, 380, 560, 1780, 2050];
+export const JUMP_SPAN = 14;
+// World X of the obstacle under a given jump (robot walks at ~40vw screen).
+export const jumpObstacleX = yJ => cameraAt(yJ).camX + 40.3;
+
 export const nightAt = yVh => sampleKeys(NIGHT_KEYS, yVh)[0];
 
 // Robot behavioural state, derived from RAW scroll (not smoothed) so

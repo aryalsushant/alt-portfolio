@@ -5,6 +5,7 @@ import useReducedMotion from './engine/useReducedMotion';
 import { TOTAL_VH, cameraAt, nightAt } from './engine/timeline';
 import { Sky, MountainsFar, Skyline } from './sprites/Backdrop';
 import Terrain from './sprites/Terrain';
+import Obstacles from './sprites/Obstacles';
 import Robot from './sprites/Robot';
 import Plane from './sprites/Plane';
 import Splash from './scenes/Splash';
@@ -81,6 +82,7 @@ function Ride({ onSkip }) {
             </div>
             <div className="ip-layer" ref={el => { layerRefs.current[2] = el; }}>
               <Terrain />
+              <Obstacles />
               <Splash />
               <Level1About />
               <Level2Skills />

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useFrame } from '../engine/useScrollDriver';
-import { seg, robotStateFor } from '../engine/timeline';
-import { mapRange, easeInOut, easeInCubic, easeOutCubic, clamp, lerp } from '../engine/math';
+import { seg, robotStateFor, JUMPS, JUMP_SPAN } from '../engine/timeline';
+import { mapRange, easeInOut, easeInCubic, easeOutCubic, clamp, lerp, invLerp } from '../engine/math';
 
 // Screen-space character. Position is driven per-frame via CSS vars
 // (--rx in vw, --ry in vh); pose/limb animation is pure CSS keyed to
@@ -16,13 +16,10 @@ export default function Robot() {
     if (!el) return;
 
     const st = robotStateFor(s.yVh); // raw scroll → exact state boundaries
-    if (st !== lastState.current) {
-      el.dataset.state = st;
-      lastState.current = st;
-    }
 
     const y = s.smoothYVh;
     let rx = 38, ry = 64, sw = 0;
+    let effState = st;
 
     switch (st) {
       case 'idle':
@@ -68,8 +65,23 @@ export default function Robot() {
         rx = 42;
         ry = 21.5;
         break;
-      default:
+      default: {
+        // walking — hop over any ground rock we're passing
+        for (const yJ of JUMPS) {
+          const t = invLerp(yJ - JUMP_SPAN, yJ + JUMP_SPAN, y);
+          if (t > 0 && t < 1) {
+            ry = 64 - Math.sin(t * Math.PI) * 15;
+            if (t > 0.15 && t < 0.85) effState = 'jumping';
+            break;
+          }
+        }
         break;
+      }
+    }
+
+    if (effState !== lastState.current) {
+      el.dataset.state = effState;
+      lastState.current = effState;
     }
 
     el.style.setProperty('--rx', rx.toFixed(2));
