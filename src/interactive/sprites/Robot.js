@@ -59,12 +59,12 @@ export default function Robot() {
       case 'jumping': {
         // hop from the slope onto the contact card
         const t = clamp(seg('ending', y) / 0.4, 0, 1);
-        rx = lerp(38, 42, t);
+        rx = lerp(38, 49, t);
         ry = lerp(58, 21.5, easeOutCubic(t)) - Math.sin(t * Math.PI) * 12;
         break;
       }
       case 'napping':
-        rx = 42;
+        rx = 49;
         ry = 21.5;
         break;
       default: {

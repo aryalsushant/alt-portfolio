@@ -7,7 +7,8 @@ import ContactForm from './ContactForm';
 // The robot hops off the peak and naps on its top edge.
 export default function ContactSummit() {
   return (
-    <SceneBox x={1512} w={42} y={-114} z={10}>
+    // sits right of the First Prize flag (banner ends ~1528) so it never covers it
+    <SceneBox x={1529} w={34} y={-114} z={10}>
       <div className="ip-card" style={{ padding: '2.4vh 1.8vw' }}>
         <p className="ip-eyebrow" style={{ margin: '0 0 0.8vh' }}>Final level cleared · Summit reached</p>
         <h2 style={{ margin: '0 0 0.6vh', fontSize: 'clamp(18px, 1.8vw, 26px)', fontWeight: 800 }}>
