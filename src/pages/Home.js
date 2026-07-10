@@ -186,10 +186,73 @@ export default function Home() {
         />
       </main>
 
-      <footer className="max-w-6xl mx-auto px-6 pb-10 text-center">
-        <p className="font-mono text-[12px] text-ink-3 tracking-wide">
-          © {new Date().getFullYear()} Sushant Aryal · Hattiesburg, MS
-        </p>
+      <footer style={{ background: '#484848' }}>
+        <div className="max-w-6xl mx-auto px-6 py-14 grid md:grid-cols-2 gap-12">
+          {/* about */}
+          <div>
+            <h3 className="font-display text-lg font-extrabold tracking-[0.08em] uppercase text-white mb-6">
+              About
+            </h3>
+            <div className="flex items-start gap-5">
+              <div className="shrink-0 w-20 h-20 rounded-full flex items-end justify-center overflow-hidden"
+                style={{ background: '#29b7d3' }}>
+                <svg viewBox="0 0 100 140" style={{ width: 44, height: 62, marginBottom: -6 }}>
+                  <line x1="50" y1="16" x2="50" y2="5" stroke="#8f99b4" strokeWidth="3" />
+                  <circle cx="50" cy="4" r="4.5" fill="#ffd166" />
+                  <rect x="14" y="56" width="12" height="34" rx="6" fill="#aab4cc" />
+                  <rect x="74" y="56" width="12" height="34" rx="6" fill="#aab4cc" />
+                  <rect x="28" y="50" width="44" height="50" rx="13" fill="#ff9d6b" />
+                  <circle cx="50" cy="70" r="6.5" fill="#ffd166" />
+                  <rect x="24" y="14" width="52" height="36" rx="16" fill="#e8ecf7" />
+                  <rect x="30" y="22" width="40" height="22" rx="10" fill="#1c2138" />
+                  <circle cx="42" cy="33" r="4.6" fill="#63e7de" />
+                  <circle cx="58" cy="33" r="4.6" fill="#63e7de" />
+                </svg>
+              </div>
+              <p className="text-[14px] leading-relaxed" style={{ color: 'rgba(255,255,255,.82)' }}>
+                Sushant Aryal is a Computer Science student specializing in AI Engineering.
+                He has built and deployed multiple production level applications for personal
+                projects, hackathons, as well as organizations. His speciality is finding
+                creative solutions to boring engineering problems.
+              </p>
+            </div>
+          </div>
+
+          {/* contact */}
+          <div>
+            <h3 className="font-display text-lg font-extrabold tracking-[0.08em] uppercase text-white mb-6">
+              Contact
+            </h3>
+            <p className="text-[14px] leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,.82)' }}>
+              If you have any questions about my services, or just want to say hello,
+              feel free to contact me. Below are my social pages and my email:
+            </p>
+            <div className="flex items-center gap-4">
+              <a href="https://github.com/aryalsushant" target="_blank" rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="w-11 h-11 rounded-full flex items-center justify-center text-white transition-transform hover:-translate-y-1"
+                style={{ background: '#24292f' }}>
+                <FaGithub size={20} />
+              </a>
+              <a href="https://www.linkedin.com/in/sushant-aryal/" target="_blank" rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="w-11 h-11 rounded-full flex items-center justify-center text-white transition-transform hover:-translate-y-1"
+                style={{ background: '#2867b2' }}>
+                <FaLinkedin size={20} />
+              </a>
+              <a href="mailto:sushantaryal05@gmail.com" aria-label="Email"
+                className="w-11 h-11 rounded-full flex items-center justify-center text-white transition-transform hover:-translate-y-1"
+                style={{ background: '#f2a33c' }}>
+                <FaEnvelope size={19} />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="text-center pb-8">
+          <p className="font-mono text-[12px] tracking-wide" style={{ color: 'rgba(255,255,255,.5)' }}>
+            © {new Date().getFullYear()} Sushant Aryal
+          </p>
+        </div>
       </footer>
     </div>
   );
