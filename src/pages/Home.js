@@ -171,7 +171,7 @@ export default function Home() {
           art={<InteractiveArt />}
           eyebrow="▶ New Game"
           title="Interactive Portfolio"
-          blurb="A scroll-driven adventure — walk a retro city, bungee off a bridge, catch a plane, climb a mountain. My work, playable."
+          blurb="A scroll-driven adventure. Walk a retro city, bungee off a bridge, catch a plane, climb a mountain. My work, playable."
           cta="Press Start →"
           to="/interactive"
         />
@@ -180,7 +180,7 @@ export default function Home() {
           external
           eyebrow="📄 Speedrun"
           title="Classic Portfolio"
-          blurb="The straightforward version. Everything in one scrollable page — no side quests, no falling off bridges."
+          blurb="A classic, straightforward portfolio with no sidequests and no mountains."
           cta="View Portfolio →"
           to="/classic"
         />
