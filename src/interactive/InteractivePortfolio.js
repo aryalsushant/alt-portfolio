@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import './interactive.css';
 import { createScrollDriver, ScrollContext, useFrame } from './engine/useScrollDriver';
 import useReducedMotion from './engine/useReducedMotion';
@@ -43,7 +43,7 @@ function CameraRig({ layerRefs, stageRef }) {
   return null;
 }
 
-function Ride({ onSkip }) {
+function Ride() {
   const driver = useMemo(() => createScrollDriver(), []);
   const stageRef = useRef(null);
   const layerRefs = useRef([]);
@@ -108,7 +108,7 @@ function Ride({ onSkip }) {
             <Robot />
             <Plane />
           </div>
-          <Hud onSkip={onSkip} />
+          <Hud />
         </div>
 
         <CameraRig layerRefs={layerRefs} stageRef={stageRef} />
@@ -119,12 +119,7 @@ function Ride({ onSkip }) {
 
 export default function InteractivePortfolio() {
   const reduced = useReducedMotion();
-  const [skip, setSkip] = useState(false);
 
-  useEffect(() => {
-    if (skip) window.scrollTo(0, 0);
-  }, [skip]);
-
-  if (reduced || skip) return <StaticFallback />;
-  return <Ride onSkip={() => setSkip(true)} />;
+  if (reduced) return <StaticFallback />;
+  return <Ride />;
 }

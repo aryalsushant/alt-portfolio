@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useFrame } from '../engine/useScrollDriver';
 import { levelFor, TOTAL_VH } from '../engine/timeline';
 
-export default function Hud({ onSkip }) {
+export default function Hud() {
   const badgeRef = useRef(null);
   const progRef = useRef(null);
   const lastLevel = useRef(-1);
@@ -28,14 +28,7 @@ export default function Hud({ onSkip }) {
       <div className="ip-hud">
         <span ref={badgeRef} className="ip-hud-badge"><b>START</b></span>
         <span style={{ display: 'flex', gap: 8 }}>
-          <button
-            type="button"
-            className="ip-hud-link"
-            style={{ cursor: 'pointer' }}
-            onClick={onSkip}
-          >
-            SKIP ANIMATION
-          </button>
+          <Link className="ip-hud-link" to="/classic">SKIP ANIMATION</Link>
           <Link className="ip-hud-link" to="/">EXIT ↗</Link>
         </span>
       </div>
