@@ -10,12 +10,20 @@ export default function Robot() {
   const ref = useRef(null);
   const lastState = useRef('');
   const swing = useRef({ amp: 0, t: 0 });
+  const dir = useRef(1);
 
   useFrame(s => {
     const el = ref.current;
     if (!el) return;
 
     const st = robotStateFor(s.yVh); // raw scroll → exact state boundaries
+
+    // face where we're headed: right when scrolling down, left when up
+    const d = s.vy > 1.5 ? 1 : s.vy < -1.5 ? -1 : dir.current;
+    if (d !== dir.current) {
+      dir.current = d;
+      el.style.setProperty('--dir', d);
+    }
 
     const y = s.smoothYVh;
     let rx = 38, ry = 64, sw = 0;

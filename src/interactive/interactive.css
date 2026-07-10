@@ -466,13 +466,27 @@
   85% { transform: rotate(-58deg); }
 }
 
-/* walking */
-.ip-robot[data-state='walking'] #leg-l { animation: ip-step 0.55s ease-in-out infinite; transform-origin: 50% 8%; }
-.ip-robot[data-state='walking'] #leg-r { animation: ip-step 0.55s ease-in-out infinite reverse; transform-origin: 50% 8%; }
-.ip-robot[data-state='walking'] #arm-l { animation: ip-step 0.55s ease-in-out infinite reverse; transform-origin: 50% 12%; }
-.ip-robot[data-state='walking'] #arm-r { animation: ip-step 0.55s ease-in-out infinite; transform-origin: 50% 12%; }
-.ip-robot[data-state='walking'] #body-group { animation: ip-bob-slight 0.55s ease-in-out infinite; }
-@keyframes ip-step { 0%,100% { transform: rotate(24deg); } 50% { transform: rotate(-24deg); } }
+/* walking: real stride — plant ahead, push off behind, lift & swing through.
+   --dir (1 right / -1 left, set from scroll velocity) flips the whole gait
+   and makes the robot lean & look the way it's moving. */
+.ip-robot[data-state='walking'] .ip-robot-pose { transform: rotate(calc(var(--dir, 1) * 5deg)); }
+.ip-robot[data-state='walking'] #eyes-open { transform: translateX(calc(var(--dir, 1) * 5.5px)); }
+.ip-robot[data-state='walking'] #leg-l { animation: ip-stride 0.52s linear infinite; transform-origin: 50% 8%; }
+.ip-robot[data-state='walking'] #leg-r { animation: ip-stride 0.52s linear infinite; animation-delay: -0.26s; transform-origin: 50% 8%; }
+.ip-robot[data-state='walking'] #arm-l { animation: ip-arm-swing 0.52s ease-in-out infinite; animation-delay: -0.26s; transform-origin: 50% 12%; }
+.ip-robot[data-state='walking'] #arm-r { animation: ip-arm-swing 0.52s ease-in-out infinite; transform-origin: 50% 12%; }
+.ip-robot[data-state='walking'] #body-group { animation: ip-bob-slight 0.26s ease-in-out infinite; }
+/* negative rotation = foot toward +x (forward when facing right) */
+@keyframes ip-stride {
+  0%   { transform: rotate(calc(var(--dir, 1) * -26deg)); }  /* heel plants ahead */
+  50%  { transform: rotate(calc(var(--dir, 1) * 26deg)); }   /* pushes off behind */
+  75%  { transform: translateY(-8px) rotate(0deg); }         /* lifts, knee through */
+  100% { transform: rotate(calc(var(--dir, 1) * -26deg)); }
+}
+@keyframes ip-arm-swing {
+  0%, 100% { transform: rotate(calc(var(--dir, 1) * 18deg)); }
+  50% { transform: rotate(calc(var(--dir, 1) * -18deg)); }
+}
 
 /* jumping / climbing */
 .ip-robot[data-state='jumping'] #leg-l,
