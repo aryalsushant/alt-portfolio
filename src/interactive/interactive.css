@@ -1,0 +1,676 @@
+/* =====================================================================
+   INTERACTIVE PORTFOLIO — retro city / mountains / temples / day-night
+   Own palette; deliberately independent of the site theme tokens.
+   --night (0..1) on .ip-stage drives the whole scene mood.
+   ===================================================================== */
+
+.ip-root {
+  --ip-ink: #131424;
+  --ip-paper: rgba(16, 17, 34, 0.88);
+  --ip-paper-line: rgba(255, 255, 255, 0.14);
+  --ip-text: #f3f1ea;
+  --ip-text-dim: rgba(243, 241, 234, 0.72);
+  --ip-amber: #ffb454;
+  --ip-pink: #ff7ac8;
+  --ip-cyan: #63e7de;
+  --ip-red: #e34a33;
+  --ip-grass: #4caf6d;
+  --ip-grass-dark: #2e7d4f;
+  --ip-dirt: #7a5237;
+  --ip-dirt-dark: #4e3423;
+  background: #0b1030;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  cursor: default;
+}
+
+.ip-stage {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  overflow: hidden;
+  --night: 0;
+}
+
+.ip-scale {
+  position: absolute;
+  inset: 0;
+  transform: scale(var(--ip-scale, 1));
+  transform-origin: 50% 100%;
+}
+
+.ip-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.ip-layer--deco { pointer-events: none; }
+
+.ip-scene {
+  position: absolute;
+  contain: layout style;
+}
+
+/* ---------------------------------------------------------------
+   SKY — day & night gradients cross-faded by --night
+   --------------------------------------------------------------- */
+.ip-sky { position: absolute; inset: 0; pointer-events: none; }
+.ip-sky-day {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, #6db5d8 0%, #8ed0e8 42%, #ffd9a6 78%, #ffc98f 100%);
+}
+.ip-sky-night {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, #070a1e 0%, #131a45 45%, #3b2a5e 80%, #4e3163 100%);
+  opacity: var(--night);
+}
+
+.ip-sun, .ip-moon {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.ip-sun {
+  width: 9vh; height: 9vh; top: 12vh; right: 16vw;
+  background: radial-gradient(circle at 40% 35%, #fff4d6, #ffd166 65%, #ffb454);
+  box-shadow: 0 0 60px 18px rgba(255, 209, 102, 0.55);
+  opacity: calc(1 - var(--night));
+}
+.ip-moon {
+  width: 7.5vh; height: 7.5vh; top: 10vh; left: 14vw;
+  background: radial-gradient(circle at 62% 38%, #fdfbee, #d8d4e8 70%, #b7b0d4);
+  box-shadow: 0 0 44px 12px rgba(220, 214, 255, 0.35);
+  opacity: var(--night);
+}
+.ip-moon::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 55%, rgba(150,142,180,.5) 0 8%, transparent 9%),
+    radial-gradient(circle at 62% 30%, rgba(150,142,180,.4) 0 6%, transparent 7%),
+    radial-gradient(circle at 55% 70%, rgba(150,142,180,.45) 0 5%, transparent 6%);
+}
+
+.ip-stars { position: absolute; inset: 0; opacity: var(--night); pointer-events: none; }
+.ip-star {
+  position: absolute; width: 3px; height: 3px; border-radius: 50%;
+  background: #fff;
+  animation: ip-twinkle 3.2s ease-in-out infinite;
+}
+@keyframes ip-twinkle {
+  0%, 100% { opacity: .9; transform: scale(1); }
+  50% { opacity: .25; transform: scale(.6); }
+}
+
+/* ---------------------------------------------------------------
+   BACKDROP SILHOUETTES (parallax layers)
+   --------------------------------------------------------------- */
+.ip-mountains-far svg, .ip-skyline svg { display: block; }
+
+.ip-window {
+  fill: #2b3350;
+  transition: none;
+}
+.ip-skyline .ip-window { fill: rgba(255, 214, 140, calc(0.12 + var(--night) * 0.85)); }
+
+.ip-haze {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 30vh;
+  background: linear-gradient(180deg, transparent, rgba(78, 49, 99, calc(var(--night) * .45)));
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------
+   CARDS / SIGNS — shared game UI
+   --------------------------------------------------------------- */
+.ip-card {
+  background: var(--ip-paper);
+  border: 1px solid var(--ip-paper-line);
+  border-radius: 14px;
+  color: var(--ip-text);
+  box-shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+}
+
+.ip-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ip-amber);
+  font-weight: 700;
+}
+
+.ip-gate {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center;
+}
+.ip-gate-sign {
+  background: linear-gradient(180deg, #e34a33, #b93322);
+  color: #fff7ea;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  font-size: clamp(12px, 1.2vw, 16px);
+  padding: 0.55em 1.2em;
+  border-radius: 8px;
+  border: 2px solid #7e2114;
+  box-shadow: 0 6px 0 #7e2114, 0 14px 30px -10px rgba(0,0,0,.5);
+  white-space: nowrap;
+}
+.ip-gate-posts {
+  display: flex; justify-content: space-between; width: 82%;
+}
+.ip-gate-post {
+  width: 10px; background: linear-gradient(90deg, #8a2f1d, #b93322 40%, #7e2114);
+  border-radius: 3px 3px 0 0;
+}
+
+.ip-ribbon {
+  display: inline-flex; align-items: center; gap: .5em;
+  background: linear-gradient(180deg, #ffcf7d, #ffb454);
+  color: #4e2a10;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  letter-spacing: .2em;
+  padding: .5em 1.1em;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%, 12px 50%);
+  font-size: clamp(11px, 1vw, 14px);
+}
+
+/* ---------------------------------------------------------------
+   TERRAIN — ground, gorge, river, bridge
+   --------------------------------------------------------------- */
+.ip-ground {
+  position: absolute;
+  background: linear-gradient(180deg, var(--ip-dirt) 0, var(--ip-dirt) 30%, var(--ip-dirt-dark) 100%);
+}
+.ip-ground::after {
+  content: ''; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 7vh, rgba(0,0,0,.10) 7vh 7.7vh),
+    repeating-linear-gradient(90deg, transparent 0 9vw, rgba(0,0,0,.05) 9vw 9.5vw);
+}
+.ip-ground::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -3.2vh; height: 3.4vh;
+  background: linear-gradient(180deg, var(--ip-grass), var(--ip-grass-dark));
+  border-radius: 4px 4px 0 0;
+}
+
+.ip-river {
+  position: absolute;
+  background: linear-gradient(180deg, #3f7fae 0%, #2a5f8f 45%, #17395c 100%);
+  overflow: hidden;
+}
+.ip-river::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg,
+    transparent 0 5vw, rgba(255,255,255,.10) 5vw 5.6vw, transparent 5.6vw 11vw);
+  animation: ip-river-flow 7s linear infinite;
+}
+@keyframes ip-river-flow { to { transform: translateX(11vw); } }
+
+/* countdown banner hanging off the bridge cables */
+.ip-banner-rope {
+  width: 3px;
+  background: linear-gradient(180deg, #aab0c4, #d8dbe6);
+  border-radius: 2px;
+}
+.ip-bungee-banner {
+  background: linear-gradient(180deg, #ffcf7d, #ffb454);
+  color: #4e2a10;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  letter-spacing: .18em;
+  font-size: clamp(13px, 1.3vw, 19px);
+  padding: .6em 1.3em;
+  border-radius: 10px;
+  border: 2px solid #a86a1e;
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,.55);
+  white-space: nowrap;
+  animation: ip-banner-sway 3.4s ease-in-out infinite;
+  transform-origin: 50% -8vh;
+}
+@keyframes ip-banner-sway {
+  0%, 100% { transform: rotate(-2.2deg); }
+  50% { transform: rotate(2.2deg); }
+}
+
+/* suspension bridge */
+.ip-bridge-deck {
+  position: absolute;
+  background: repeating-linear-gradient(90deg, #6b4a2e 0 1.4vw, #57381f 1.4vw 1.6vw);
+  border-top: 0.5vh solid #8a6038;
+  border-bottom: 0.6vh solid #3c2410;
+  border-radius: 3px;
+}
+.ip-bridge-tower {
+  position: absolute;
+  background: linear-gradient(90deg, #6e3328, #8a4131 45%, #56261c);
+  border-radius: 6px 6px 0 0;
+}
+.ip-bridge-cables { position: absolute; overflow: visible; pointer-events: none; }
+.ip-bridge-cables path { stroke: #d8dbe6; stroke-width: 3; fill: none; opacity: .9; }
+.ip-bridge-cables line { stroke: #aab0c4; stroke-width: 1.6; }
+
+/* ---------------------------------------------------------------
+   LANTERNS (Level 2 skills)
+   --------------------------------------------------------------- */
+.ip-lantern {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center;
+  animation: ip-bob 4.6s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes ip-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1.6vh); }
+}
+.ip-lantern-body {
+  padding: 1vh 1.1vw;
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: clamp(11px, 1.05vw, 15px);
+  color: #3a2408;
+  white-space: nowrap;
+  border: 2px solid rgba(0,0,0,.22);
+  position: relative;
+}
+.ip-lantern-body::before {
+  content: ''; position: absolute; top: -1.1vh; left: 50%; transform: translateX(-50%);
+  width: 34%; height: 1vh; border-radius: 3px 3px 0 0; background: rgba(0,0,0,.3);
+}
+.ip-lantern-body::after {
+  content: ''; position: absolute; bottom: -1.4vh; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 1.4vh; background: rgba(255, 220, 150, .8);
+}
+.ip-lantern--amber .ip-lantern-body {
+  background: linear-gradient(180deg, #ffd28a, #ff9d3f);
+  box-shadow: 0 0 calc(var(--night) * 26px) rgba(255, 170, 70, .75);
+}
+.ip-lantern--teal .ip-lantern-body {
+  background: linear-gradient(180deg, #9df0e4, #3fc4b4);
+  box-shadow: 0 0 calc(var(--night) * 26px) rgba(80, 220, 200, .7);
+  color: #06302a;
+}
+.ip-lantern--red .ip-lantern-body {
+  background: linear-gradient(180deg, #ff9d8a, #e34a33);
+  box-shadow: 0 0 calc(var(--night) * 26px) rgba(230, 90, 60, .75);
+  color: #3d0f06;
+}
+.ip-lantern-reflection {
+  margin-top: 7vh;
+  transform: scaleY(-0.55);
+  opacity: calc(0.14 + var(--night) * 0.2);
+  filter: blur(3px);
+}
+
+.ip-skill-header {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+.ip-skill-header .ip-ribbon { z-index: 1; }
+.ip-skill-post {
+  width: 8px; background: linear-gradient(90deg, #5d4025, #7a5237 50%, #46301c);
+  border-radius: 3px;
+}
+
+/* ---------------------------------------------------------------
+   BUILDINGS (Level 3 experience) & STOREFRONTS (Level 5 projects)
+   --------------------------------------------------------------- */
+.ip-building {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center;
+}
+.ip-building-roof {
+  width: 112%; height: 2.6vh;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #3c4468, #262c49);
+  position: relative;
+}
+.ip-building-roof::after { /* gentle pagoda-ish lift at the eaves */
+  content: ''; position: absolute; left: -5%; right: -5%; top: 22%;
+  height: 55%; border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background: inherit;
+}
+.ip-building-body {
+  flex: 1; width: 100%;
+  background: linear-gradient(180deg, #2c3354, #1d2340);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 0 0 8px 8px;
+  padding: 1.6vh 1.1vw;
+  display: flex; flex-direction: column; gap: 1vh;
+}
+
+.ip-neon {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  letter-spacing: .12em;
+  font-size: clamp(13px, 1.25vw, 18px);
+  color: #fff;
+  text-shadow:
+    0 0 calc(4px + var(--night) * 8px) var(--glow, #63e7de),
+    0 0 calc(10px + var(--night) * 22px) var(--glow, #63e7de);
+}
+
+.ip-chip {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  padding: .28em .7em;
+  border-radius: 999px;
+  border: 1px solid var(--ip-paper-line);
+  color: var(--ip-text-dim);
+  margin: 0 .3em .35em 0;
+  white-space: nowrap;
+}
+
+.ip-btn {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: .55em 1em;
+  border-radius: 8px;
+  border: 1.5px solid var(--ip-amber);
+  color: var(--ip-amber);
+  text-decoration: none;
+  transition: background .2s, color .2s, transform .2s;
+}
+.ip-btn:hover { background: var(--ip-amber); color: #33200a; transform: translateY(-2px); }
+
+/* ---------------------------------------------------------------
+   MOUNTAIN (Level 6) & FLAGS
+   --------------------------------------------------------------- */
+.ip-flag {
+  position: absolute;
+  display: flex; align-items: flex-start;
+  transform: scale(var(--pop, 0));
+  transform-origin: bottom left;
+  will-change: transform;
+}
+.ip-flag-pole { width: 5px; background: #d8dbe6; border-radius: 3px; }
+.ip-flag-banner {
+  margin-top: .4vh;
+  background: var(--ip-paper);
+  border: 1px solid var(--ip-paper-line);
+  border-left: 4px solid var(--ip-amber);
+  border-radius: 0 10px 10px 6px;
+  padding: 1vh 1vw;
+  color: var(--ip-text);
+  max-width: 24vw;
+  min-width: 15vw;
+}
+
+/* ---------------------------------------------------------------
+   ROBOT — state machine via [data-state]
+   --------------------------------------------------------------- */
+.ip-robot {
+  position: absolute;
+  left: 0; top: 0;
+  width: 8.4vh; height: 12vh;
+  transform: translate3d(calc(var(--rx, 38) * 1vw), calc(var(--ry, 64) * 1vh), 0);
+  will-change: transform;
+  z-index: 40;
+  pointer-events: none;
+}
+.ip-robot-swing {
+  width: 100%; height: 100%;
+  transform: rotate(calc(var(--swing, 0) * 1deg));
+  transform-origin: 50% -240%;
+}
+.ip-robot-pose {
+  width: 100%; height: 100%;
+  transform: rotate(calc(var(--rot, 0) * 1deg));
+  transition: transform .45s ease;
+}
+.ip-robot svg { width: 100%; height: 100%; overflow: visible; display: block; }
+/* limb rotations need the element's own box as reference */
+.ip-robot svg g, .ip-robot svg rect { transform-box: fill-box; }
+
+/* the bungee/hang cord — runs from above down to the robot's waist
+   (drawn behind the body, so it visually ends at the waist wrap) */
+.ip-cord {
+  position: absolute; left: 50%; bottom: 50%;
+  width: 4px; height: 0;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(180deg, #ff7ac8 0 10px, #e8578f 10px 20px);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.ip-robot[data-state='bungee'] .ip-cord,
+.ip-robot[data-state='hanging'] .ip-cord { opacity: 1; height: 90vh; }
+.ip-robot[data-state='plane'] .ip-cord { opacity: 1; height: 16vh; }
+
+/* body groups */
+.ip-robot #eyes-x, .ip-robot #eyes-closed { opacity: 0; }
+.ip-robot #zzz { opacity: 0; }
+.ip-robot #waist-rope { opacity: 0; transition: opacity .3s; }
+.ip-robot[data-state='bungee'] #waist-rope,
+.ip-robot[data-state='hanging'] #waist-rope,
+.ip-robot[data-state='plane'] #waist-rope { opacity: 1; }
+
+/* antenna light doubles as a lantern at night */
+.ip-robot #antenna-tip {
+  filter: drop-shadow(0 0 calc(var(--night) * 8px) #ffd166);
+}
+
+/* idle: bob + occasional blink handled by keyframes */
+.ip-robot[data-state='idle'] #body-group { animation: ip-bob-slight 2.6s ease-in-out infinite; }
+.ip-robot[data-state='idle'] #arm-r { animation: ip-wave 2.6s ease-in-out infinite; transform-origin: 20% 20%; }
+@keyframes ip-bob-slight { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes ip-wave {
+  0%, 55%, 100% { transform: rotate(0); }
+  65% { transform: rotate(-58deg); }
+  75% { transform: rotate(-30deg); }
+  85% { transform: rotate(-58deg); }
+}
+
+/* walking: real stride — plant ahead, push off behind, lift & swing through.
+   --dir (1 right / -1 left, set from scroll velocity) flips the whole gait
+   and makes the robot lean & look the way it's moving. */
+.ip-robot[data-state='walking'] .ip-robot-pose { transform: rotate(calc(var(--dir, 1) * 5deg)); }
+.ip-robot[data-state='walking'] #eyes-open { transform: translateX(calc(var(--dir, 1) * 5.5px)); }
+.ip-robot[data-state='walking'] #leg-l { animation: ip-stride 0.52s linear infinite; transform-origin: 50% 8%; }
+.ip-robot[data-state='walking'] #leg-r { animation: ip-stride 0.52s linear infinite; animation-delay: -0.26s; transform-origin: 50% 8%; }
+.ip-robot[data-state='walking'] #arm-l { animation: ip-arm-swing 0.52s ease-in-out infinite; animation-delay: -0.26s; transform-origin: 50% 12%; }
+.ip-robot[data-state='walking'] #arm-r { animation: ip-arm-swing 0.52s ease-in-out infinite; transform-origin: 50% 12%; }
+.ip-robot[data-state='walking'] #body-group { animation: ip-bob-slight 0.26s ease-in-out infinite; }
+/* negative rotation = foot toward +x (forward when facing right) */
+@keyframes ip-stride {
+  0%   { transform: rotate(calc(var(--dir, 1) * -26deg)); }  /* heel plants ahead */
+  50%  { transform: rotate(calc(var(--dir, 1) * 26deg)); }   /* pushes off behind */
+  75%  { transform: translateY(-8px) rotate(0deg); }         /* lifts, knee through */
+  100% { transform: rotate(calc(var(--dir, 1) * -26deg)); }
+}
+@keyframes ip-arm-swing {
+  0%, 100% { transform: rotate(calc(var(--dir, 1) * 18deg)); }
+  50% { transform: rotate(calc(var(--dir, 1) * -18deg)); }
+}
+
+/* jumping / climbing */
+.ip-robot[data-state='jumping'] #leg-l,
+.ip-robot[data-state='jumping'] #leg-r { transform: rotate(38deg); transform-origin: 50% 8%; }
+.ip-robot[data-state='jumping'] #arm-l,
+.ip-robot[data-state='jumping'] #arm-r { transform: rotate(-140deg); transform-origin: 50% 12%; }
+
+.ip-robot[data-state='climbing'] .ip-robot-pose { transform: rotate(-14deg); }
+.ip-robot[data-state='climbing'] #leg-l { animation: ip-climb 0.8s ease-in-out infinite; transform-origin: 50% 8%; }
+.ip-robot[data-state='climbing'] #leg-r { animation: ip-climb 0.8s ease-in-out infinite reverse; transform-origin: 50% 8%; }
+.ip-robot[data-state='climbing'] #arm-l { animation: ip-climb 0.8s ease-in-out infinite reverse; transform-origin: 50% 12%; }
+.ip-robot[data-state='climbing'] #arm-r { animation: ip-climb 0.8s ease-in-out infinite; transform-origin: 50% 12%; }
+@keyframes ip-climb { 0%,100% { transform: rotate(-46deg); } 50% { transform: rotate(10deg); } }
+
+/* bungee: headfirst, scared eyes */
+.ip-robot[data-state='bungee'] .ip-robot-pose { transform: rotate(178deg); }
+.ip-robot[data-state='bungee'] #eyes-open { opacity: 0; }
+.ip-robot[data-state='bungee'] #eyes-x { opacity: 1; }
+.ip-robot[data-state='bungee'] #arm-l,
+.ip-robot[data-state='bungee'] #arm-r { transform: rotate(-160deg); transform-origin: 50% 12%; }
+
+/* hanging: roped at the waist, body horizontal, limbs drooping */
+.ip-robot[data-state='hanging'] .ip-robot-pose { transform: rotate(-92deg); }
+.ip-robot[data-state='hanging'] #arm-l { animation: ip-dangle-h 2.2s ease-in-out infinite; transform-origin: 50% 12%; }
+.ip-robot[data-state='hanging'] #arm-r { animation: ip-dangle-h 2.2s ease-in-out infinite reverse; transform-origin: 50% 12%; }
+.ip-robot[data-state='hanging'] #leg-l { animation: ip-droop 2.4s ease-in-out infinite; transform-origin: 50% 8%; }
+.ip-robot[data-state='hanging'] #leg-r { animation: ip-droop 2.4s ease-in-out infinite reverse; transform-origin: 50% 8%; }
+@keyframes ip-dangle { 0%,100% { transform: rotate(8deg); } 50% { transform: rotate(-8deg); } }
+/* horizontal body: limbs swing toward the ground */
+@keyframes ip-dangle-h { 0%,100% { transform: rotate(76deg); } 50% { transform: rotate(102deg); } }
+@keyframes ip-droop { 0%,100% { transform: rotate(20deg); } 50% { transform: rotate(38deg); } }
+
+/* plane: towed by the waist, same horizontal dangle */
+.ip-robot[data-state='plane'] .ip-robot-pose { transform: rotate(-92deg); }
+.ip-robot[data-state='plane'] #arm-l { animation: ip-dangle-h 1.6s ease-in-out infinite; transform-origin: 50% 12%; }
+.ip-robot[data-state='plane'] #arm-r { animation: ip-dangle-h 1.6s ease-in-out infinite reverse; transform-origin: 50% 12%; }
+.ip-robot[data-state='plane'] #leg-l { animation: ip-droop 1.6s ease-in-out infinite; transform-origin: 50% 8%; }
+.ip-robot[data-state='plane'] #leg-r { animation: ip-droop 1.6s ease-in-out infinite reverse; transform-origin: 50% 8%; }
+
+/* napping: lying on the contact card */
+.ip-robot[data-state='napping'] .ip-robot-pose { transform: rotate(-88deg); }
+.ip-robot[data-state='napping'] #eyes-open { opacity: 0; }
+.ip-robot[data-state='napping'] #eyes-closed { opacity: 1; }
+.ip-robot[data-state='napping'] #zzz { opacity: 1; }
+.ip-robot[data-state='napping'] #zzz text {
+  animation: ip-zzz 2.8s ease-in-out infinite;
+}
+.ip-robot[data-state='napping'] #zzz text:nth-child(2) { animation-delay: .9s; }
+.ip-robot[data-state='napping'] #zzz text:nth-child(3) { animation-delay: 1.8s; }
+@keyframes ip-zzz {
+  0% { opacity: 0; transform: translate(0, 0) scale(.6); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translate(14px, -30px) scale(1.15); }
+}
+
+/* blink (all states with open eyes) */
+.ip-robot #eyes-open { animation: ip-blink 4.5s step-end infinite; }
+@keyframes ip-blink { 0%, 94%, 100% { opacity: 1; } 95%, 98% { opacity: 0.05; } }
+
+/* ---------------------------------------------------------------
+   PLANE sprite
+   --------------------------------------------------------------- */
+.ip-plane {
+  position: absolute; left: 0; top: 0;
+  width: 16vh; height: 8vh;
+  transform: translate3d(calc(var(--px, 120) * 1vw), calc(var(--py, 20) * 1vh), 0);
+  will-change: transform;
+  z-index: 39;
+  opacity: var(--pvis, 0);
+  pointer-events: none;
+}
+.ip-plane svg { width: 100%; height: 100%; overflow: visible; }
+.ip-plane #prop { animation: ip-prop .18s linear infinite; transform-origin: 6% 50%; }
+@keyframes ip-prop { to { transform: rotateX(180deg); } }
+
+/* ---------------------------------------------------------------
+   SPLASH & HUD
+   --------------------------------------------------------------- */
+.ip-splash-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  font-size: clamp(34px, 5.4vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ip-text);
+  text-shadow: 0 4px 30px rgba(0,0,0,.35);
+}
+.ip-scroll-hint {
+  display: inline-flex; align-items: center; gap: .8em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ip-text-dim);
+  animation: ip-hint 2s ease-in-out infinite;
+}
+@keyframes ip-hint { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+.ip-hud {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  z-index: 60;
+  pointer-events: none;
+  font-family: 'JetBrains Mono', monospace;
+}
+.ip-hud > * { pointer-events: auto; }
+.ip-hud-badge {
+  background: var(--ip-paper);
+  border: 1px solid var(--ip-paper-line);
+  color: var(--ip-text);
+  border-radius: 999px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .18em;
+  padding: .6em 1.2em;
+}
+.ip-hud-badge b { color: var(--ip-amber); }
+.ip-hud-link {
+  background: var(--ip-paper);
+  border: 1px solid var(--ip-paper-line);
+  color: var(--ip-text-dim);
+  border-radius: 999px;
+  font-size: 11px; letter-spacing: .14em;
+  padding: .6em 1.1em;
+  text-decoration: none;
+  transition: color .2s, border-color .2s;
+}
+.ip-hud-link:hover { color: var(--ip-amber); border-color: var(--ip-amber); }
+.ip-hud-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--prog, 0));
+  background: linear-gradient(90deg, var(--ip-amber), var(--ip-pink));
+  z-index: 61;
+}
+
+/* ---------------------------------------------------------------
+   CONTACT (summit)
+   --------------------------------------------------------------- */
+.ip-contact-form input, .ip-contact-form textarea {
+  width: 100%;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--ip-paper-line);
+  border-radius: 10px;
+  color: var(--ip-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  padding: .7em .9em;
+  outline: none;
+  box-sizing: border-box;
+}
+.ip-contact-form input:focus, .ip-contact-form textarea:focus { border-color: var(--ip-amber); }
+.ip-contact-form ::placeholder { color: rgba(243,241,234,.4); }
+.ip-contact-submit {
+  width: 100%;
+  background: linear-gradient(180deg, #ffcf7d, #ffb454);
+  color: #33200a;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800; letter-spacing: .12em;
+  border: none; border-radius: 10px;
+  padding: .9em;
+  cursor: pointer;
+  transition: transform .2s, filter .2s;
+}
+.ip-contact-submit:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.ip-contact-submit:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ---------------------------------------------------------------
+   STATIC FALLBACK (prefers-reduced-motion)
+   --------------------------------------------------------------- */
+.ip-static {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #070a1e, #131a45 60%, #3b2a5e);
+  color: var(--ip-text);
+  padding: 6vh 6vw 12vh;
+}
+.ip-static h1 { font-size: clamp(30px, 4.5vw, 56px); font-weight: 800; letter-spacing: -.02em; }
+.ip-static h2 {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ip-amber);
+  font-size: 14px; letter-spacing: .24em; text-transform: uppercase;
+  margin: 7vh 0 2.5vh;
+}
+.ip-static .ip-card { padding: 2.2vh 1.6vw; margin-bottom: 2vh; }
+
+@media (max-width: 720px) {
+  .ip-flag-banner { max-width: 44vw; }
+  .ip-hud { padding: 10px 12px; }
+}
