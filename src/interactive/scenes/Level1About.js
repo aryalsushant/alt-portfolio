@@ -5,7 +5,7 @@ import { ABOUT } from '../content';
 // A leafy sign sprouting from the ground with a themed tag on it.
 function PlantTag({ x, label, delay = 0 }) {
   return (
-    <SceneBox x={x} w={16} y={49} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <SceneBox x={x} w={16} y={49} h={29} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <svg viewBox="0 0 60 46" style={{ width: '5vw', minWidth: 44, marginBottom: '-1.2vh', animation: `ip-bob 5s ease-in-out ${delay}s infinite` }}>
         <path d="M30 44 Q8 34 12 12 Q30 20 30 44" fill="#4caf6d" />
         <path d="M30 44 Q52 34 48 12 Q30 20 30 44" fill="#2e7d4f" />
@@ -15,7 +15,8 @@ function PlantTag({ x, label, delay = 0 }) {
       <div className="ip-card" style={{ padding: '1.2vh 1vw', textAlign: 'center', fontSize: 'clamp(11px, 0.95vw, 14px)', fontWeight: 700 }}>
         {label}
       </div>
-      <div className="ip-skill-post" style={{ height: '9vh' }} />
+      {/* post stretches to the grass line so the sign never floats */}
+      <div className="ip-skill-post" style={{ flex: 1 }} />
     </SceneBox>
   );
 }
@@ -44,12 +45,12 @@ export default function Level1About() {
       <PlantTag x={275} label={ABOUT.tags[2]} delay={1.6} />
 
       {/* the meme ribbon */}
-      <SceneBox x={320} w={22} y={50} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
+      <SceneBox x={320} w={22} y={50} h={28} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
         <div className="ip-ribbon" style={{ animation: 'ip-bob 4s ease-in-out infinite' }}>😴 {ABOUT.ribbon}</div>
         <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, letterSpacing: '.14em', color: 'var(--ip-text-dim)', marginTop: '1vh' }}>
           stress levels: unmeasurable
         </p>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '86%', height: '18vh' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '86%', flex: 1 }}>
           <div className="ip-skill-post" />
           <div className="ip-skill-post" />
         </div>
