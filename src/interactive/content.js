@@ -31,7 +31,7 @@ export const EXPERIENCE = [
   {
     title: 'AI Engineer Intern',
     company: 'Gift of Life Marrow Registry',
-    dates: 'June 2023 - August 2023',
+    dates: 'June 2026 - August 2026',
     bullets: [
       'Building AI-powered tooling to support the mission of matching donors with patients.',
     ],
