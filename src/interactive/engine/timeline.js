@@ -23,6 +23,17 @@ export const SEG = {
 
 export const TOTAL_VH = 2600;
 
+export const NAV_STOPS = [
+  { id: 'start', label: 'START', yVh: 0 },
+  { id: 'about', label: 'ABOUT', yVh: SEG.level1[0] },
+  { id: 'skills', label: 'SKILLS', yVh: SEG.skills[0] },
+  { id: 'experience', label: 'EXPERIENCE', yVh: SEG.exp[0] },
+  { id: 'education', label: 'EDUCATION', yVh: SEG.edu[0] },
+  { id: 'projects', label: 'PROJECTS', yVh: SEG.projects[0] },
+  { id: 'awards', label: 'AWARDS', yVh: SEG.climb[0] },
+  { id: 'contact', label: 'CONTACT', yVh: SEG.ending[0] },
+];
+
 // 0..1 progress within a named segment, given scroll in vh.
 export const seg = (name, yVh) => invLerp(SEG[name][0], SEG[name][1], yVh);
 
