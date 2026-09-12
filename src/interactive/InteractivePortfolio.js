@@ -48,20 +48,22 @@ const scrollYToVh = () => {
   return vh100 ? (window.scrollY || 0) / vh100 : 0;
 };
 
+const STOP_EPSILON_VH = 6;
+
 const nextStopIndex = (yVh, direction) => {
   if (direction > 0) {
-    const next = NAV_STOPS.findIndex(stop => stop.yVh > yVh + 8);
+    const next = NAV_STOPS.findIndex(stop => stop.yVh > yVh + STOP_EPSILON_VH);
     return next === -1 ? NAV_STOPS.length - 1 : next;
   }
 
   for (let index = NAV_STOPS.length - 1; index >= 0; index -= 1) {
-    if (NAV_STOPS[index].yVh < yVh - 8) return index;
+    if (NAV_STOPS[index].yVh < yVh - STOP_EPSILON_VH) return index;
   }
 
   return 0;
 };
 
-const keyJumpDuration = distanceVh => Math.min(1150, Math.max(720, distanceVh * 2.25));
+const keyJumpDuration = distanceVh => Math.min(1800, Math.max(950, distanceVh * 5.2));
 
 function CameraRig({ layerRefs, stageRef }) {
   useFrame(s => {
