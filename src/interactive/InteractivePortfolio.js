@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import './interactive.css';
 import { createScrollDriver, ScrollContext, useFrame } from './engine/useScrollDriver';
 import useReducedMotion from './engine/useReducedMotion';
-import { TOTAL_VH, cameraAt, nightAt } from './engine/timeline';
+import { NAV_STOPS, TOTAL_VH, cameraAt, nightAt } from './engine/timeline';
 import { Sky, MountainsFar, Skyline } from './sprites/Backdrop';
 import Terrain from './sprites/Terrain';
 import Obstacles from './sprites/Obstacles';
@@ -26,6 +26,45 @@ const LAYERS = [
   [1, 1],
 ];
 
+const KEY_DIRECTIONS = {
+  ArrowDown: 1,
+  ArrowRight: 1,
+  ArrowUp: -1,
+  ArrowLeft: -1,
+};
+
+const easeInOutCubic = t => (
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+);
+
+const isEditableTarget = target => {
+  if (!target) return false;
+  const tag = target.tagName;
+  return target.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+};
+
+const scrollYToVh = () => {
+  const vh100 = window.innerHeight / 100;
+  return vh100 ? (window.scrollY || 0) / vh100 : 0;
+};
+
+const STOP_EPSILON_VH = 6;
+
+const nextStopIndex = (yVh, direction) => {
+  if (direction > 0) {
+    const next = NAV_STOPS.findIndex(stop => stop.yVh > yVh + STOP_EPSILON_VH);
+    return next === -1 ? NAV_STOPS.length - 1 : next;
+  }
+
+  for (let index = NAV_STOPS.length - 1; index >= 0; index -= 1) {
+    if (NAV_STOPS[index].yVh < yVh - STOP_EPSILON_VH) return index;
+  }
+
+  return 0;
+};
+
+const keyJumpDuration = distanceVh => Math.min(2600, Math.max(900, distanceVh * 9.5));
+
 function CameraRig({ layerRefs, stageRef }) {
   useFrame(s => {
     const { camX, camY } = cameraAt(s.smoothYVh);
@@ -47,23 +86,77 @@ function Ride() {
   const driver = useMemo(() => createScrollDriver(), []);
   const stageRef = useRef(null);
   const layerRefs = useRef([]);
+  const keyScrollRef = useRef({ raf: 0, active: false });
 
   useEffect(() => {
     driver.start();
     return () => driver.stop();
   }, [driver]);
 
-  // arrow keys advance the ride a meaningful step (native step is tiny)
+  // Arrow keys snap to the next portfolio stop with one controlled movement.
   useEffect(() => {
-    const onKey = e => {
-      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      e.preventDefault();
-      const dir = e.key === 'ArrowDown' ? 1 : -1;
-      window.scrollBy({ top: dir * window.innerHeight * 1.1, behavior: 'smooth' });
+    const keyScroll = keyScrollRef.current;
+
+    const cancelKeyScroll = () => {
+      if (!keyScroll.active) return;
+      cancelAnimationFrame(keyScroll.raf);
+      keyScroll.active = false;
     };
+
+    const animateToStop = targetYVh => {
+      const vh100 = window.innerHeight / 100;
+      const startY = window.scrollY || 0;
+      const targetY = Math.max(0, targetYVh * vh100);
+      const distance = Math.abs(targetY - startY);
+
+      if (distance < 2) return;
+
+      const duration = keyJumpDuration(Math.abs(targetYVh - scrollYToVh()));
+      const startTime = performance.now();
+      keyScroll.active = true;
+
+      const step = now => {
+        const progress = Math.min(1, (now - startTime) / duration);
+        const eased = easeInOutCubic(progress);
+
+        window.scrollTo(0, startY + (targetY - startY) * eased);
+
+        if (progress < 1) {
+          keyScroll.raf = requestAnimationFrame(step);
+          return;
+        }
+
+        window.scrollTo(0, targetY);
+        keyScroll.active = false;
+      };
+
+      keyScroll.raf = requestAnimationFrame(step);
+    };
+
+    const onKey = e => {
+      const dir = KEY_DIRECTIONS[e.key];
+      if (!dir) return;
+      if (isEditableTarget(e.target)) return;
+      e.preventDefault();
+
+      if (e.repeat || keyScroll.active) return;
+
+      const currentYVh = scrollYToVh();
+      const targetIndex = nextStopIndex(currentYVh, dir);
+
+      animateToStop(NAV_STOPS[targetIndex].yVh);
+    };
+
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    window.addEventListener('wheel', cancelKeyScroll, { passive: true });
+    window.addEventListener('touchstart', cancelKeyScroll, { passive: true });
+
+    return () => {
+      cancelKeyScroll();
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('wheel', cancelKeyScroll);
+      window.removeEventListener('touchstart', cancelKeyScroll);
+    };
   }, []);
 
   // scale the whole world down on narrow screens; pacing stays in vh
