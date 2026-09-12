@@ -22,7 +22,7 @@ const EXPERIENCES = [
     image: null,
     title: 'AI Engineer Intern',
     company: 'Gift of Life Marrow Registry',
-    dates: 'June 2026 – Present',
+    dates: 'June 2023 - August 2023',
     bullets: [
       'Building AI-powered tooling to support the mission of matching donors with patients.',
     ],

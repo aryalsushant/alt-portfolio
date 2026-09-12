@@ -63,7 +63,7 @@ const nextStopIndex = (yVh, direction) => {
   return 0;
 };
 
-const keyJumpDuration = distanceVh => Math.min(1800, Math.max(950, distanceVh * 5.2));
+const keyJumpDuration = distanceVh => Math.min(2600, Math.max(900, distanceVh * 9.5));
 
 function CameraRig({ layerRefs, stageRef }) {
   useFrame(s => {
