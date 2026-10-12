@@ -89,7 +89,11 @@ export function attachKeyboard(onAction) {
     // so buttons and links stay keyboard-operable.
     const t = e.target;
     const onControl = t && t.closest && t.closest('button, a, [role="button"]');
-    if (!input.enabled && onControl) return;
+    if (!input.enabled && onControl) {
+      // keys a focused control doesn't use still count as "any key" (title screen)
+      if (c !== 'Enter' && c !== 'Space' && c !== 'Tab' && !e.repeat) onAction('any');
+      return;
+    }
     if (c === 'KeyM' || (c === 'Tab' && input.enabled)) { onAction('map'); e.preventDefault(); return; }
     if (c === 'KeyN' && !e.repeat) { onAction('mute'); return; }
     if (Object.values(BINDINGS).some(b => b.includes(c))) e.preventDefault();
