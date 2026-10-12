@@ -72,7 +72,7 @@ export const STONES = Array.from({ length: 5 }, (_, i) => ({
 
 // Jump pads: standing on one launches the player.
 export const JUMP_PADS = [
-  { id: 'pad-summit', x: 46, z: -66, y: 0.5, power: 23, color: '#ffd166' },
+  { id: 'pad-summit', x: 46, z: -68.2, y: 0.5, power: 23, color: '#ffd166', target: 'stone-0' },
   { id: 'pad-spawn', x: -9, z: 2, y: 0, power: 17, color: '#63e7de' },
   { id: 'pad-research', x: -35.7, z: -17.9, y: 1.5, power: 17, color: '#9d8cff' },
 ];
@@ -152,7 +152,7 @@ export const SHARDS = (() => {
   // floating ones that need a jump pad or a double jump
   list.push({ x: -9, y: 6.5, z: 2 });
   list.push({ x: -35.7, y: 7.9, z: -17.9 });
-  list.push({ x: 46, y: 9.5, z: -66 });
+  list.push({ x: 46, y: 9.2, z: -68.2 });
   return list.map((p, i) => ({ ...p, id: `shard-${i}` }));
 })();
 

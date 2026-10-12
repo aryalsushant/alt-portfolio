@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { input, consume, readMove } from '../input/input';
 import { runtime, getState } from '../core/store';
 import { emit } from '../core/events';
-import { SPAWN, KILL_Y, JUMP_PADS } from '../core/layout';
+import { SPAWN, KILL_Y, JUMP_PADS, STONES } from '../core/layout';
 import Robot from './Robot';
 
 // ---------------------------------------------------------------------
@@ -62,6 +62,7 @@ export function createCharacterState() {
     rising: false,
     moving: 0, // 0..1 normalized horizontal speed
     padCd: 0,
+    padFlight: false, // aimed launch in progress: damp air control
     intro: 0, // >0 while the drop-in intro is playing
     frozen: false,
   };
@@ -159,9 +160,10 @@ export default function Player({ character }) {
       const tx = wishLen > 0.001 ? (wishX / Math.hypot(wishX, wishZ)) * target : 0;
       const tz = wishLen > 0.001 ? (wishZ / Math.hypot(wishX, wishZ)) * target : 0;
       const accelerating = wishLen > 0.05;
-      const rate = ch.grounded
+      let rate = ch.grounded
         ? accelerating ? TUNE.groundAccel : TUNE.groundDecel
         : accelerating ? TUNE.airAccel : TUNE.airDecel;
+      if (ch.padFlight && !ch.grounded) rate *= 0.18;
       const dx = tx - vx;
       const dz = tz - vz;
       const dl = Math.hypot(dx, dz);
@@ -239,6 +241,7 @@ export default function Player({ character }) {
         emit('land', { pos: ch.pos, impact });
       }
       ch.airTime = 0;
+      ch.padFlight = false;
       ch.jumpsLeft = 1;
       ch.canAirDash = true;
       ch.safeTimer += dt;
@@ -258,6 +261,20 @@ export default function Player({ character }) {
         if (dy > -0.2 && dy < 0.6 && Math.hypot(ch.pos.x - p.x, ch.pos.z - p.z) < 1.35) {
           ch.vel.y = p.power;
           ch.grounded = false;
+          const T = p.target && STONES.find(st => st.id === p.target);
+          if (T) {
+            // solve the horizontal speed that lands us on the target:
+            // rise with normal gravity, fall with the heavier fall gravity
+            const up = p.power / TUNE.gravity;
+            const apex = p.y + (p.power * p.power) / (2 * TUNE.gravity);
+            const down = Math.sqrt((2 * Math.max(0.1, apex - T.y)) / (TUNE.gravity * TUNE.fallGravityMult));
+            const dx = T.x - ch.pos.x;
+            const dz = T.z - ch.pos.z;
+            ch.vel.x = dx / (up + down);
+            ch.vel.z = dz / (up + down);
+            ch.targetYaw = Math.atan2(dx, dz);
+            ch.padFlight = true;
+          }
           ch.sinceGrounded = 1;
           ch.jumpsLeft = 1;
           ch.canAirDash = true;
