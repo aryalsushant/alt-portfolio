@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { ISLANDS, BRIDGES, INTERACTABLES, JUMP_PADS, SHARDS, NAME_ROW } from '../core/layout';
 import { mulberry32 } from '../core/math';
+import Blocker from './Blocker';
 
 // ---------------------------------------------------------------------
 // Placement: rejection sampling per island, keeping clear of paths
@@ -161,7 +162,7 @@ function Trees() {
           return (
             <React.Fragment key={i}>
               <CylinderCollider args={[1, 0.3 * s]} position={[t.x, t.y + 1, t.z]} />
-              <BallCollider args={[0.95 * s]} position={[t.x, t.y + 2.45 * s, t.z]} />
+              <Blocker shape={BallCollider} args={[0.95 * s]} position={[t.x, t.y + 2.45 * s, t.z]} />
             </React.Fragment>
           );
         })}

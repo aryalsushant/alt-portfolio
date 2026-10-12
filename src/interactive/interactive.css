@@ -801,8 +801,14 @@ kbd {
 @media (max-width: 720px), (max-height: 520px) {
   .gx-hud-stats .gx-counter:nth-child(n + 2) { display: none; }
   .gx-icon-btn { width: 40px; height: 40px; font-size: 16px; border-radius: 12px; }
-  .gx-toasts { width: calc(100vw - 32px); top: calc(124px + var(--gx-safe-t)); }
-  .gx-toast { min-width: 0; width: 100%; }
+  .gx-toasts { width: calc(100vw - 32px); top: calc(122px + var(--gx-safe-t)); gap: 6px; }
+  .gx-toast { min-width: 0; width: auto; max-width: 100%; padding: 7px 14px 7px 8px; gap: 9px; border-radius: 14px; }
+  .gx-toast-icon { width: 30px; height: 30px; font-size: 16px; border-radius: 9px; }
+  .gx-toast strong { font-size: 13px; }
+  .gx-toast--zone strong { font-size: 15px; }
+  .gx-toast--zone { padding: 8px 16px; }
+  .gx-toast span { display: none; }
+  .gx-zone { font-size: 12.5px; white-space: nowrap; }
   .gx-panel {
     top: auto;
     left: calc(8px + var(--gx-safe-l));

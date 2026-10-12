@@ -4,7 +4,7 @@ import { useRapier } from '@react-three/rapier';
 import * as THREE from 'three';
 import { input, takeLook } from '../input/input';
 import { runtime, getState } from '../core/store';
-import { on } from '../core/events';
+import { on, cameraBlockers } from '../core/events';
 import { damp, dampAngle } from '../core/math';
 
 const MIN_PITCH = -0.2;
@@ -111,9 +111,13 @@ export default function FollowCamera({ character: ch }) {
       true,
       rapier.QueryFilterFlags.EXCLUDE_SENSORS |
         rapier.QueryFilterFlags.EXCLUDE_KINEMATIC |
-        rapier.QueryFilterFlags.EXCLUDE_DYNAMIC
+        rapier.QueryFilterFlags.EXCLUDE_DYNAMIC,
+      undefined,
+      undefined,
+      undefined,
+      col => cameraBlockers.has(col.handle)
     );
-    const limit = hit ? Math.max(1.2, hit.timeOfImpact - 0.4) : want;
+    const limit = hit ? Math.max(2.4, hit.timeOfImpact - 0.4) : want;
     cam.actualDist = limit < cam.actualDist ? damp(cam.actualDist, limit, 25, dt) : damp(cam.actualDist, limit, 3, dt);
 
     cam.pos.set(

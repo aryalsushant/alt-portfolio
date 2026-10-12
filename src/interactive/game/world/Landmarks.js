@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { ZONES, INTERACTABLES, CRYSTALS, MONOLITHS, CABINETS, LANDMARKS, islandById } from '../core/layout';
 import { PROFILE, RESEARCH, AWARDS } from '../../content';
 import { FONT_BOLD, FONT_MED, FONT_DISPLAY } from './Spawn';
+import Blocker from './Blocker';
 
 const glow = (hex, k = 2.2) => new THREE.Color(hex).multiplyScalar(k);
 const find = id => INTERACTABLES.find(i => i.id === id);
@@ -267,7 +268,7 @@ function Monolith({ m }) {
         </mesh>
       </group>
       <RigidBody type="fixed" colliders={false}>
-        <CuboidCollider args={[1.35, 2.2, 0.35]} position={[0, 2.2, 0]} />
+        <Blocker shape={CuboidCollider} args={[1.35, 2.2, 0.35]} position={[0, 2.2, 0]} />
       </RigidBody>
     </group>
   );
@@ -446,7 +447,7 @@ function Observatory() {
         </Text>
       </Billboard>
       <RigidBody type="fixed" colliders={false}>
-        <CylinderCollider args={[2, 2.8]} position={[0, 2, 0]} />
+        <Blocker shape={CylinderCollider} args={[2, 2.8]} position={[0, 2, 0]} />
       </RigidBody>
     </group>
   );
@@ -507,7 +508,7 @@ function USMTower({ l }) {
         GPA 4.0
       </Text>
       <RigidBody type="fixed" colliders={false}>
-        <CuboidCollider args={[1.7, 3.3, 1.7]} position={[0, 3.3, 0]} />
+        <Blocker shape={CuboidCollider} args={[1.7, 3.3, 1.7]} position={[0, 3.3, 0]} />
       </RigidBody>
     </group>
   );
@@ -559,7 +560,7 @@ function CornellTower({ l }) {
         {e.degree}
       </Text>
       <RigidBody type="fixed" colliders={false}>
-        <CuboidCollider args={[1.1, 4.6, 1.1]} position={[0, 4.6, 0]} />
+        <Blocker shape={CuboidCollider} args={[1.1, 4.6, 1.1]} position={[0, 4.6, 0]} />
       </RigidBody>
     </group>
   );
@@ -625,7 +626,7 @@ function SignalTower() {
           ))}
         </group>
         <RigidBody type="fixed" colliders={false}>
-          <CylinderCollider args={[H / 2, 0.85]} position={[0, H / 2, 0]} />
+          <Blocker shape={CylinderCollider} args={[H / 2, 0.85]} position={[0, H / 2, 0]} />
         </RigidBody>
       </group>
       {/* terminal */}
@@ -718,7 +719,7 @@ function Summit() {
       ))}
       <group ref={cups}>
         {tiers.map(t => (
-          <group key={t.place} position={[t.x, t.h, 0]} scale={t.place === 1 ? 1.25 : 0.95}>
+          <group key={t.place} position={[t.x, t.h, 0]} scale={t.place === 1 ? 1.7 : 1.3}>
             <mesh geometry={cupGeo} castShadow>
               <meshStandardMaterial color={MEDAL[t.place]} metalness={0.95} roughness={0.18} emissive={MEDAL[t.place]} emissiveIntensity={0.25} />
             </mesh>

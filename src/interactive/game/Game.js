@@ -105,7 +105,7 @@ export default function Game() {
       camera={{ fov: 52, near: 0.1, far: 900, position: [30, 14, 20] }}
       onCreated={({ gl, scene }) => {
         gl.setClearColor(PALETTE.horizon);
-        if (process.env.NODE_ENV !== 'production' && window.__gx) window.__gx.scene = scene;
+        if (process.env.NODE_ENV !== 'production' && window.__gx) Object.assign(window.__gx, { scene, gl });
       }}
     >
       <fog attach="fog" args={[PALETTE.fog, 75, 300]} />

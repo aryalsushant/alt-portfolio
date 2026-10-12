@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { ISLANDS, BRIDGES, STONES } from '../core/layout';
 import { mulberry32 } from '../core/math';
+import Blocker from './Blocker';
 
 // ---------------------------------------------------------------------
 // Floating island mesh: flat grass cap + jagged rocky underside tapering
@@ -105,7 +106,7 @@ function Island({ island }) {
     <group position={[island.x, island.y, island.z]}>
       <mesh geometry={geo} material={islandMaterial} receiveShadow castShadow />
       <RigidBody type="fixed" colliders={false} position={[0, -1, 0]}>
-        <CylinderCollider args={[1, island.r + 0.2]} friction={0.8} />
+        <Blocker shape={CylinderCollider} args={[1, island.r + 0.2]} friction={0.8} />
       </RigidBody>
     </group>
   );
@@ -117,7 +118,7 @@ function Stone({ stone }) {
     <group position={[stone.x, stone.y, stone.z]}>
       <mesh geometry={geo} material={islandMaterial} receiveShadow castShadow />
       <RigidBody type="fixed" colliders={false} position={[0, -0.6, 0]}>
-        <CylinderCollider args={[0.6, stone.r + 0.15]} />
+        <Blocker shape={CylinderCollider} args={[0.6, stone.r + 0.15]} />
       </RigidBody>
     </group>
   );
@@ -236,7 +237,7 @@ function Bridges() {
         const f = bridgeFrame(b);
         return (
           <RigidBody key={b.id} type="fixed" colliders={false} position={f.mid.toArray()} quaternion={f.quat.toArray()}>
-            <CuboidCollider args={[BRIDGE_W / 2, 0.15, f.len / 2 + 0.3]} position={[0, -0.08, 0]} />
+            <Blocker shape={CuboidCollider} args={[BRIDGE_W / 2, 0.15, f.len / 2 + 0.3]} position={[0, -0.08, 0]} />
             <CuboidCollider args={[0.08, 0.7, f.len / 2 - 1.2]} position={[-BRIDGE_W / 2 + 0.05, 0.7, 0]} />
             <CuboidCollider args={[0.08, 0.7, f.len / 2 - 1.2]} position={[BRIDGE_W / 2 - 0.05, 0.7, 0]} />
           </RigidBody>

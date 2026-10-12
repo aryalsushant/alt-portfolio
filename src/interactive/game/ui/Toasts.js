@@ -8,7 +8,7 @@ export default function Toasts() {
   return (
     <div className="gx-toasts" aria-live="polite">
       <AnimatePresence>
-        {toasts.map(t => {
+        {toasts.slice(-3).map(t => {
           const ach = t.kind === 'achievement' ? ACHIEVEMENTS.find(a => a.title === t.title) : null;
           return (
             <motion.div
