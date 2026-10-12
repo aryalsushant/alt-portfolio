@@ -169,17 +169,20 @@ export function CloudSea() {
   );
 }
 
-// Puffy low-poly cloud clusters drifting between the islands.
+// Puffy low-poly cloud clusters. They orbit slowly on a ring well outside
+// the archipelago (islands sit within ~65 m of its centre), so they read as
+// sky backdrop and never drift between the camera and an exhibit.
+const WORLD_CENTER = { x: 5, z: -48 };
 export function CloudPuffs({ count = 18 }) {
   const group = useRef();
   const puffs = useMemo(() => {
     const rnd = (a, b) => a + Math.random() * (b - a);
     return Array.from({ length: count }, (_, i) => ({
-      x: rnd(-120, 140),
-      y: rnd(-14, 26),
-      z: rnd(-200, 60),
-      s: rnd(2.5, 6),
-      speed: rnd(0.3, 0.9),
+      angle: (i / count) * Math.PI * 2 + rnd(-0.12, 0.12),
+      radius: rnd(115, 175),
+      y: rnd(-16, 34),
+      s: rnd(6, 13),
+      speed: rnd(0.004, 0.009),
       blobs: Array.from({ length: 5 }, () => [rnd(-1.6, 1.6), rnd(-0.3, 0.6), rnd(-0.8, 0.8), rnd(0.6, 1.2)]),
       key: i,
     }));
@@ -196,16 +199,18 @@ export function CloudPuffs({ count = 18 }) {
     []
   );
   const geo = useMemo(() => new THREE.IcosahedronGeometry(1, 1), []);
-  useFrame((_, dt) => {
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime;
     group.current.children.forEach((c, i) => {
-      c.position.x += puffs[i].speed * dt;
-      if (c.position.x > 160) c.position.x = -140;
+      const p = puffs[i];
+      const a = p.angle + t * p.speed;
+      c.position.set(WORLD_CENTER.x + Math.cos(a) * p.radius, p.y, WORLD_CENTER.z + Math.sin(a) * p.radius);
     });
   });
   return (
     <group ref={group}>
       {puffs.map(p => (
-        <group key={p.key} position={[p.x, p.y, p.z]} scale={p.s}>
+        <group key={p.key} scale={p.s}>
           {p.blobs.map((b, j) => (
             <mesh key={j} geometry={geo} material={mat} position={[b[0], b[1], b[2]]} scale={[b[3], b[3] * 0.7, b[3]]} />
           ))}
