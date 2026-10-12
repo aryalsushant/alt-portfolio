@@ -89,14 +89,14 @@ const on = (id, angle, radius, lift = 0) => {
 
 // Experience monoliths stand in an arc facing the incoming bridge (+z side).
 // Angles (×π) are picked to stay clear of bridge mouths.
-const MONOLITH_ANGLES = [1.12, 1.41, 1.67, 1.8];
+const MONOLITH_ANGLES = [1.14, 1.42, 1.66, 1.81];
 const CABINET_ANGLES = [0.76, 1.08, 1.27, 1.74, 1.94, 2.14, 2.34];
 const CRYSTAL_ANGLES = [0.05, 0.4, 1.18, 1.38];
 const LANDMARK_ANGLES = [1.05, 1.55];
 
 export const MONOLITHS = EXPERIENCE.map((e, i) => {
   const a = Math.PI * MONOLITH_ANGLES[i];
-  const p = on('experience', a, 9.5);
+  const p = on('experience', a, 10.5);
   return { ...p, id: e.id, data: e, face: Math.atan2(islandById.experience.x - p.x, islandById.experience.z - p.z) };
 });
 
@@ -122,10 +122,10 @@ export const INTERACTABLES = [
   { id: 'about', label: 'About Sushant', verb: 'Read', panel: { type: 'about' }, ...on('about', Math.PI * 1.5, 1.8) },
   { id: 'monk', label: 'Low cortisol bot', verb: 'Meditate', panel: { type: 'about' }, ...on('about', Math.PI * 0.75, 5.6) },
   ...CRYSTALS.map(c => ({ id: `skill-${c.id}`, label: c.data.group, verb: 'Inspect', panel: { type: 'skills', id: c.id }, x: c.x, y: c.y, z: c.z, r: 3.4 })),
-  ...MONOLITHS.map(m => ({ id: `exp-${m.id}`, label: m.data.company, verb: 'Read', panel: { type: 'experience', id: m.id }, x: m.x, y: m.y, z: m.z, r: 3.6 })),
-  ...CABINETS.map(c => ({ id: `proj-${c.id}`, label: c.data.name, verb: 'Play', panel: { type: 'project', id: c.id }, x: c.x, y: c.y, z: c.z, r: 2.9 })),
+  ...MONOLITHS.map(m => ({ id: `exp-${m.id}`, label: m.data.company, verb: 'Read', panel: { type: 'experience', id: m.id }, x: m.x, y: m.y, z: m.z, r: 4.6 })),
+  ...CABINETS.map(c => ({ id: `proj-${c.id}`, label: c.data.name, verb: 'Play', panel: { type: 'project', id: c.id }, x: c.x, y: c.y, z: c.z, r: 3.4 })),
   { id: 'research', label: 'Research paper', verb: 'Read', panel: { type: 'research' }, ...on('research', 0, 0) , r: 4 },
-  ...LANDMARKS.map(l => ({ id: `edu-${l.id}`, label: l.data.school, verb: 'Read', panel: { type: 'education', id: l.id }, x: l.x, y: l.y, z: l.z, r: 4.2 })),
+  ...LANDMARKS.map(l => ({ id: `edu-${l.id}`, label: l.data.school, verb: 'Read', panel: { type: 'education', id: l.id }, x: l.x, y: l.y, z: l.z, r: 5 })),
   { id: 'contact', label: 'Signal terminal', verb: 'Open', panel: { type: 'contact' }, ...on('contact', Math.PI * 0.3, 4.2), r: 3.4 },
   { id: 'awards', label: 'Trophy podium', verb: 'View', panel: { type: 'awards' }, ...on('awards', 0, 0), r: 4.4 },
 ].map(i => ({ r: 3, ...i }));
@@ -193,14 +193,18 @@ export function viewpointFor(zoneId) {
   const c = items.reduce((a, it) => ({ x: a.x + it.x / items.length, z: a.z + it.z / items.length }), { x: 0, z: 0 });
   // if the exhibits ring the centre, the centroid sits on it: face the first one
   const target = Math.hypot(c.x - I.x, c.z - I.z) < 1.5 ? items[0] : c;
-  return { x: I.x, y: I.y + 0.2, z: I.z, yaw: look(I, target) };
+  // step back from the exhibits so the whole set fits in frame
+  const yaw = look(I, target);
+  const back = Math.min(5, I.r * 0.35);
+  const p = { x: I.x - Math.sin(yaw) * back, z: I.z - Math.cos(yaw) * back };
+  return { x: p.x, y: I.y + 0.2, z: p.z, yaw: look(p, target) };
 }
 
 // Prev/next travel: stand in front of an exhibit, facing it.
 const FACED = Object.fromEntries(
   [...MONOLITHS.map(m => [`exp-${m.id}`, m]), ...CABINETS.map(c => [`proj-${c.id}`, c]), ...LANDMARKS.map(l => [`edu-${l.id}`, l])]
 );
-const STAND_DIST = { exp: 3.1, proj: 2.4, edu: 4.2, skill: 2.9 };
+const STAND_DIST = { exp: 4.3, proj: 3, edu: 4.9, skill: 2.9 };
 
 export function standPointFor(interactableId) {
   const it = INTERACTABLES.find(i => i.id === interactableId);

@@ -226,6 +226,11 @@ function Crystal({ c }) {
 // ---------------------------------------------------------------------
 // Career Monoliths
 // ---------------------------------------------------------------------
+// Pillar scale factors: big enough to read from neighbouring islands.
+export const MONOLITH_K = 1.35;
+export const CABINET_K = 1.3;
+export const TOWER_K = 1.25;
+
 function Monolith({ m }) {
   const emblem = useRef();
   const e = m.data;
@@ -236,6 +241,7 @@ function Monolith({ m }) {
   });
   return (
     <group position={[m.x, m.y, m.z]} rotation={[0, m.face, 0]}>
+      <group scale={MONOLITH_K}>
       <RoundedBox args={[2.7, 4.4, 0.7]} radius={0.12} position={[0, 2.2, 0]} castShadow receiveShadow>
         <meshStandardMaterial color="#2b2747" roughness={0.55} metalness={0.25} />
       </RoundedBox>
@@ -253,16 +259,16 @@ function Monolith({ m }) {
             <boxGeometry args={[2.3, 0.05, 0.02]} />
             <meshBasicMaterial color={glow(e.color, 2.6)} toneMapped={false} />
           </mesh>
-          <Text font={FONT_DISPLAY} fontSize={e.short.length > 14 ? 0.19 : 0.25} maxWidth={2.3} textAlign="center" color={e.color} position={[0, 3.85, 0.37]} anchorX="center" anchorY="top" lineHeight={1.1}>
+          <Text font={FONT_DISPLAY} fontSize={e.short.length > 14 ? 0.25 : 0.32} maxWidth={2.4} textAlign="center" color={e.color} position={[0, 3.95, 0.37]} anchorX="center" anchorY="top" lineHeight={1.1}>
             {e.short}
           </Text>
-          <Text font={FONT_BOLD} fontSize={0.17} maxWidth={2.2} textAlign="center" color="#ffffff" position={[0, 2.85, 0.37]} anchorX="center" anchorY="top" lineHeight={1.25}>
+          <Text font={FONT_BOLD} fontSize={0.23} maxWidth={2.35} textAlign="center" color="#ffffff" position={[0, 2.95, 0.37]} anchorX="center" anchorY="top" lineHeight={1.2}>
             {e.title}
           </Text>
-          <Text font={FONT_MED} fontSize={0.14} color="#cfc7ef" position={[0, 2.05, 0.37]} anchorX="center" anchorY="top">
+          <Text font={FONT_MED} fontSize={0.19} color="#cfc7ef" position={[0, 2.0, 0.37]} anchorX="center" anchorY="top">
             {e.dates}
           </Text>
-          <Text font={FONT_MED} fontSize={0.13} color="#9d93c9" position={[0, 1.75, 0.37]} anchorX="center" anchorY="top">
+          <Text font={FONT_MED} fontSize={0.17} color="#9d93c9" position={[0, 1.62, 0.37]} anchorX="center" anchorY="top">
             {e.location}
           </Text>
         </group>
@@ -273,8 +279,9 @@ function Monolith({ m }) {
           <meshStandardMaterial color={e.color} emissive={e.color} emissiveIntensity={1.4} toneMapped={false} metalness={0.4} roughness={0.2} />
         </mesh>
       </group>
+      </group>
       <RigidBody type="fixed" colliders={false}>
-        <Blocker shape={CuboidCollider} args={[1.35, 2.2, 0.35]} position={[0, 2.2, 0]} />
+        <Blocker shape={CuboidCollider} args={[1.35 * MONOLITH_K, 2.2 * MONOLITH_K, 0.35 * MONOLITH_K]} position={[0, 2.2 * MONOLITH_K, 0]} />
       </RigidBody>
     </group>
   );
@@ -322,6 +329,7 @@ function Cabinet({ c }) {
   });
   return (
     <group position={[c.x, c.y, c.z]} rotation={[0, c.face, 0]}>
+      <group scale={CABINET_K}>
       {/* body */}
       <RoundedBox args={[1.35, 2.3, 1.05]} radius={0.06} position={[0, 1.15, 0]} castShadow receiveShadow>
         <meshStandardMaterial color="#1e1b38" roughness={0.45} metalness={0.3} />
@@ -381,12 +389,13 @@ function Cabinet({ c }) {
         </mesh>
       ))}
       <Billboard position={[0, 2.85, 0]}>
-        <Text font={FONT_MED} fontSize={0.15} color="#ffffff" anchorX="center" outlineWidth={0.012} outlineColor="#1b1838" maxWidth={2.6} textAlign="center">
+        <Text font={FONT_MED} fontSize={0.19} color="#ffffff" anchorX="center" outlineWidth={0.014} outlineColor="#1b1838" maxWidth={2.6} textAlign="center">
           {p.tagline}
         </Text>
       </Billboard>
+      </group>
       <RigidBody type="fixed" colliders={false}>
-        <CuboidCollider args={[0.68, 1.15, 0.53]} position={[0, 1.15, 0]} />
+        <CuboidCollider args={[0.68 * CABINET_K, 1.15 * CABINET_K, 0.53 * CABINET_K]} position={[0, 1.15 * CABINET_K, 0]} />
       </RigidBody>
     </group>
   );
@@ -477,6 +486,7 @@ function USMTower({ l }) {
   const e = l.data;
   return (
     <group position={[l.x, l.y, l.z]} rotation={[0, l.face, 0]}>
+      <group scale={TOWER_K}>
       <mesh position={[0, 0.3, 0]} castShadow receiveShadow>
         <boxGeometry args={[3.4, 0.6, 3.4]} />
         <meshStandardMaterial color="#3a3a3a" roughness={0.8} />
@@ -507,14 +517,15 @@ function USMTower({ l }) {
       <Text font={FONT_DISPLAY} fontSize={0.22} color="#ffc72c" position={[0, 2.55, 1.22]} anchorX="center">
         {e.short}
       </Text>
-      <Text font={FONT_BOLD} fontSize={0.15} color="#ffffff" position={[0, 2.2, 1.22]} anchorX="center">
+      <Text font={FONT_BOLD} fontSize={0.18} color="#ffffff" position={[0, 2.2, 1.22]} anchorX="center">
         {e.degree}
       </Text>
       <Text font={FONT_DISPLAY} fontSize={0.34} color="#ffffff" position={[0, 1.45, 1.22]} anchorX="center" outlineWidth={0.02} outlineColor="#ffc72c">
         GPA 4.0
       </Text>
+      </group>
       <RigidBody type="fixed" colliders={false}>
-        <Blocker shape={CuboidCollider} args={[1.7, 3.3, 1.7]} position={[0, 3.3, 0]} />
+        <Blocker shape={CuboidCollider} args={[1.7 * TOWER_K, 3.3 * TOWER_K, 1.7 * TOWER_K]} position={[0, 3.3 * TOWER_K, 0]} />
       </RigidBody>
     </group>
   );
@@ -528,6 +539,7 @@ function CornellTower({ l }) {
   });
   return (
     <group position={[l.x, l.y, l.z]} rotation={[0, l.face, 0]}>
+      <group scale={TOWER_K}>
       <mesh position={[0, 3.6, 0]} castShadow receiveShadow>
         <boxGeometry args={[1.9, 7.2, 1.9]} />
         <meshStandardMaterial color="#9c6b55" roughness={0.85} />
@@ -562,11 +574,12 @@ function CornellTower({ l }) {
       <Text font={FONT_DISPLAY} fontSize={0.22} color="#ffffff" position={[0, 2.4, 0.96]} anchorX="center" outlineWidth={0.015} outlineColor="#b31b1b">
         {e.short}
       </Text>
-      <Text font={FONT_BOLD} fontSize={0.13} color="#ffffff" position={[0, 2.2, 0.96]} anchorX="center" anchorY="top" maxWidth={1.7} textAlign="center" lineHeight={1.25}>
+      <Text font={FONT_BOLD} fontSize={0.16} color="#ffffff" position={[0, 2.2, 0.96]} anchorX="center" anchorY="top" maxWidth={1.75} textAlign="center" lineHeight={1.2}>
         {e.degree}
       </Text>
+      </group>
       <RigidBody type="fixed" colliders={false}>
-        <Blocker shape={CuboidCollider} args={[1.1, 4.6, 1.1]} position={[0, 4.6, 0]} />
+        <Blocker shape={CuboidCollider} args={[1.1 * TOWER_K, 4.6 * TOWER_K, 1.1 * TOWER_K]} position={[0, 4.6 * TOWER_K, 0]} />
       </RigidBody>
     </group>
   );
