@@ -6,7 +6,7 @@ import { on } from '../core/events';
 // Contextual first-run hints that retire themselves once the player
 // has demonstrated each move.
 const DESKTOP = [
-  { id: 'move', keys: ['W', 'A', 'S', 'D'], text: 'to move', done: 'firstSteps' },
+  { id: 'move', keys: ['←', '↑', '↓', '→'], text: 'to move', done: 'firstSteps' },
   { id: 'jump', keys: ['Space'], text: 'to jump · twice to double jump', done: 'airborne' },
   { id: 'dash', keys: ['Shift'], text: 'to dash', done: 'dash' },
   { id: 'look', keys: ['Drag'], text: 'to look around · M for the map', done: null },

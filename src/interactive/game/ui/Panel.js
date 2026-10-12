@@ -57,7 +57,7 @@ function HowTo() {
         ['Action button', 'Read / interact when it appears'],
       ]
     : [
-        ['W A S D / Arrows', 'Move'],
+        ['Arrow keys / W A S D', 'Move'],
         ['Space', 'Jump — again in the air to double jump; hold for higher'],
         ['Shift', 'Dash (once per jump in the air)'],
         ['Walk up / click', 'Open any landmark in the sidebar'],
