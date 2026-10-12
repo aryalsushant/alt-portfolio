@@ -13,7 +13,7 @@ export const PROFILE = {
     { value: '4.0', label: 'GPA' },
     { value: '450+', label: 'users on tools I shipped' },
     { value: '3', label: 'internships completed' },
-    { value: '50K+', label: 'lines contributed at Lumibot' },
+    { value: '4x', label: 'hackathon winner' },
   ],
   ribbon: 'LOW CORTISOL',
 };
@@ -117,9 +117,9 @@ export const PROJECTS = [
   {
     id: 'hipaapotamus',
     name: 'HIPAApotamus',
-    tagline: 'Hatchathon winner → MS Dept. of Health PoC',
+    tagline: 'Hackathon winner → MS Dept. of Health PoC',
     dates: 'Feb 2026 – May 2026',
-    desc: 'Won Hatchathon 2025, then built a BAA compliance proof of concept for the Mississippi Department of Health with ITS and AWS. Vendor e-signatures with signed PDFs on S3 and a SHA-256 audit hash for every signing event. Automated 90/30/7-day expiry reminders via SES and GPT-4o audit packet summaries.',
+    desc: 'Won the USM Annual Hackathon 2025, then built a BAA compliance proof of concept for the Mississippi Department of Health with ITS and AWS. Vendor e-signatures with signed PDFs on S3 and a SHA-256 audit hash for every signing event. Automated 90/30/7-day expiry reminders via SES and GPT-4o audit packet summaries.',
     stack: ['Next.js', 'TypeScript', 'AWS', 'OpenAI'],
     links: [{ label: 'GitHub', href: 'https://github.com/aryalsushant/HIPAApotamus' }],
     image: '/hipaa.jpeg',
@@ -227,9 +227,8 @@ export const EDUCATION = [
 ];
 
 export const AWARDS = [
-  { id: 'usm-hack-25', place: 1, title: 'First Prize', event: 'USM Annual Hackathon 2025' },
+  { id: 'usm-hack-25', place: 1, title: 'First Prize', event: 'USM Annual Hackathon 2025 · HIPAApotamus' },
   { id: 'golden-idea', place: 1, title: 'First Place', event: 'USM Golden Idea Pitch Competition 2025' },
-  { id: 'hatchathon', place: 1, title: 'Winner', event: 'Hatchathon 2025 · HIPAApotamus' },
   { id: 'wids', place: 2, title: 'Second Most Improved Team', event: 'Break Through Tech WiDS Global Datathon 2026' },
   { id: 'usm-hack-24', place: 3, title: 'Third Place', event: 'USM Annual Hackathon 2024' },
 ];
