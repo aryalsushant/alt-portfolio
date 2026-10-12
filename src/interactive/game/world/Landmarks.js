@@ -562,7 +562,7 @@ function CornellTower({ l }) {
       <Text font={FONT_DISPLAY} fontSize={0.22} color="#ffffff" position={[0, 2.4, 0.96]} anchorX="center" outlineWidth={0.015} outlineColor="#b31b1b">
         {e.short}
       </Text>
-      <Text font={FONT_BOLD} fontSize={0.13} color="#ffffff" position={[0, 2.1, 0.96]} anchorX="center">
+      <Text font={FONT_BOLD} fontSize={0.13} color="#ffffff" position={[0, 2.2, 0.96]} anchorX="center" anchorY="top" maxWidth={1.7} textAlign="center" lineHeight={1.25}>
         {e.degree}
       </Text>
       <RigidBody type="fixed" colliders={false}>

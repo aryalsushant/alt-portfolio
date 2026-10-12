@@ -216,7 +216,7 @@ export const EDUCATION = [
     id: 'cornell',
     school: 'Cornell University',
     short: 'CORNELL',
-    degree: 'Machine Learning Foundations',
+    degree: 'Summer class in Machine Learning Foundations',
     sub: 'Break Through Tech AI Program',
     dates: 'May 2025 – Aug 2025',
     location: 'Remote',
