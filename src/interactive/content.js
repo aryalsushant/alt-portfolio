@@ -12,7 +12,7 @@ export const PROFILE = {
   stats: [
     { value: '4.0', label: 'GPA' },
     { value: '450+', label: 'users on tools I shipped' },
-    { value: '3,000+', label: 'applicants' },
+    { value: '3', label: 'internships completed' },
     { value: '50K+', label: 'lines contributed at Lumibot' },
   ],
   ribbon: 'LOW CORTISOL',
