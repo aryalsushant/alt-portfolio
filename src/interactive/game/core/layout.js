@@ -86,7 +86,7 @@ const on = (id, angle, radius, lift = 0) => {
 // Experience monoliths stand in an arc facing the incoming bridge (+z side).
 // Angles (×π) are picked to stay clear of bridge mouths.
 const MONOLITH_ANGLES = [1.12, 1.41, 1.67, 1.8];
-const CABINET_ANGLES = [0.76, 1.06, 1.2, 1.34, 1.72, 1.88, 2.04, 2.2, 2.36];
+const CABINET_ANGLES = [0.76, 1.08, 1.27, 1.74, 1.94, 2.14, 2.34];
 const CRYSTAL_ANGLES = [0.05, 0.4, 1.18, 1.38];
 const LANDMARK_ANGLES = [1.05, 1.55];
 
