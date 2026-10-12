@@ -126,7 +126,7 @@ export const INTERACTABLES = [
   ...CABINETS.map(c => ({ id: `proj-${c.id}`, label: c.data.name, verb: 'Play', panel: { type: 'project', id: c.id }, x: c.x, y: c.y, z: c.z, r: 3.4 })),
   { id: 'research', label: 'Research paper', verb: 'Read', panel: { type: 'research' }, ...on('research', 0, 0) , r: 4 },
   ...LANDMARKS.map(l => ({ id: `edu-${l.id}`, label: l.data.school, verb: 'Read', panel: { type: 'education', id: l.id }, x: l.x, y: l.y, z: l.z, r: 5 })),
-  { id: 'contact', label: 'Signal terminal', verb: 'Open', panel: { type: 'contact' }, ...on('contact', Math.PI * 0.3, 4.2), r: 3.4 },
+  { id: 'contact', label: 'Phone booth', verb: 'Call', panel: { type: 'contact' }, ...on('contact', Math.PI * 0.3, 4.4), r: 4 },
   { id: 'awards', label: 'Trophy podium', verb: 'View', panel: { type: 'awards' }, ...on('awards', 0, 0), r: 4.4 },
 ].map(i => ({ r: 3, ...i }));
 
@@ -204,7 +204,7 @@ export function viewpointFor(zoneId) {
 const FACED = Object.fromEntries(
   [...MONOLITHS.map(m => [`exp-${m.id}`, m]), ...CABINETS.map(c => [`proj-${c.id}`, c]), ...LANDMARKS.map(l => [`edu-${l.id}`, l])]
 );
-const STAND_DIST = { exp: 4.3, proj: 3, edu: 4.9, skill: 2.9 };
+const STAND_DIST = { exp: 4.3, proj: 3, edu: 4.9, skill: 2.9, contact: 3.6 };
 
 export function standPointFor(interactableId) {
   const it = INTERACTABLES.find(i => i.id === interactableId);
@@ -219,7 +219,7 @@ export function standPointFor(interactableId) {
     dx = Math.sin(faced.face);
     dz = Math.cos(faced.face);
   } else if (interactableId === 'contact') {
-    // the terminal's screen faces away from the tower
+    // the phone booth's door faces away from the tower
     const l = Math.hypot(it.x - I.x, it.z - I.z);
     dx = (it.x - I.x) / l;
     dz = (it.z - I.z) / l;

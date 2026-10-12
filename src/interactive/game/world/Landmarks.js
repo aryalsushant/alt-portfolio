@@ -615,6 +615,96 @@ function CornellTower({ l }) {
   );
 }
 
+// British K6-style telephone box: the contact point.
+const BOOTH_RED = '#c8102e';
+const PANES = Array.from({ length: 18 }, (_, i) => [((i % 3) - 1) * 0.36, 1.05 + Math.floor(i / 3) * 0.34]);
+
+function BoothSide({ front }) {
+  return (
+    <>
+      {/* window panes lit from inside */}
+      {PANES.map(([x, y], i) => (
+        <mesh key={i} position={[x, y, 0.79]}>
+          <planeGeometry args={[0.3, 0.28]} />
+          <meshBasicMaterial color={glow('#ffe7a8', 1.15)} toneMapped={false} />
+        </mesh>
+      ))}
+      {/* illuminated TELEPHONE header */}
+      <mesh position={[0, 3.18, 0.86]}>
+        <planeGeometry args={[1.25, 0.26]} />
+        <meshBasicMaterial color={glow('#fff8e6', 1.4)} toneMapped={false} />
+      </mesh>
+      <Text font={FONT_BOLD} fontSize={0.17} letterSpacing={0.08} color="#111111" position={[0, 3.18, 0.87]} anchorX="center" anchorY="middle">
+        TELEPHONE
+      </Text>
+      {/* crown */}
+      <mesh position={[0, 3.62, 0.84]}>
+        <circleGeometry args={[0.13, 20]} />
+        <meshStandardMaterial color="#ffd166" metalness={0.8} roughness={0.25} />
+      </mesh>
+      {front && (
+        <>
+          <mesh position={[0.62, 1.75, 0.82]}>
+            <boxGeometry args={[0.05, 0.3, 0.05]} />
+            <meshStandardMaterial color="#d9c38a" metalness={0.8} roughness={0.3} />
+          </mesh>
+          <mesh position={[0, 0.62, 0.8]}>
+            <planeGeometry args={[0.95, 0.24]} />
+            <meshBasicMaterial color="#fff8e6" />
+          </mesh>
+          <Text font={FONT_DISPLAY} fontSize={0.1} color={BOOTH_RED} position={[0, 0.62, 0.81]} anchorX="center" anchorY="middle">
+            CALL SUSHANT
+          </Text>
+        </>
+      )}
+    </>
+  );
+}
+
+function PhoneBooth() {
+  return (
+    <group>
+      <mesh position={[0, 0.09, 0]} castShadow receiveShadow>
+        <boxGeometry args={[1.95, 0.18, 1.95]} />
+        <meshStandardMaterial color="#6d6d70" roughness={0.9} />
+      </mesh>
+      {/* glazed body with red glazing bars, inside is warm light */}
+      <mesh position={[0, 1.9, 0]} castShadow receiveShadow>
+        <boxGeometry args={[1.56, 3.44, 1.56]} />
+        <meshStandardMaterial color={BOOTH_RED} roughness={0.45} metalness={0.1} />
+      </mesh>
+      {/* corner posts */}
+      {[[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([x, z]) => (
+        <mesh key={`${x}${z}`} position={[x * 0.78, 1.95, z * 0.78]} castShadow>
+          <boxGeometry args={[0.22, 3.55, 0.22]} />
+          <meshStandardMaterial color={BOOTH_RED} roughness={0.45} />
+        </mesh>
+      ))}
+      {/* header band, cornice and domed roof */}
+      <mesh position={[0, 3.18, 0]} castShadow>
+        <boxGeometry args={[1.7, 0.44, 1.7]} />
+        <meshStandardMaterial color={BOOTH_RED} roughness={0.45} />
+      </mesh>
+      <mesh position={[0, 3.45, 0]} castShadow>
+        <boxGeometry args={[1.82, 0.1, 1.82]} />
+        <meshStandardMaterial color={BOOTH_RED} roughness={0.45} />
+      </mesh>
+      <mesh position={[0, 3.5, 0]} scale={[1, 0.42, 1]} castShadow>
+        <sphereGeometry args={[1.12, 4, 6, Math.PI / 4, Math.PI * 2, 0, Math.PI / 2]} />
+        <meshStandardMaterial color={BOOTH_RED} roughness={0.45} flatShading />
+      </mesh>
+      {FACES.map((r, i) => (
+        <group key={r} rotation={[0, r, 0]}>
+          <BoothSide front={i === 0} />
+        </group>
+      ))}
+      <RigidBody type="fixed" colliders={false}>
+        <Blocker shape={CuboidCollider} args={[0.92, 1.9, 0.92]} position={[0, 1.9, 0]} />
+      </RigidBody>
+    </group>
+  );
+}
+
 // ---------------------------------------------------------------------
 // Signal Tower (contact)
 // ---------------------------------------------------------------------
@@ -678,28 +768,8 @@ function SignalTower() {
           <Blocker shape={CylinderCollider} args={[H / 2, 0.85]} position={[0, H / 2, 0]} />
         </RigidBody>
       </group>
-      {/* terminal */}
       <group position={[it.x, it.y, it.z]} rotation={[0, Math.atan2(I.x - it.x, I.z - it.z) + Math.PI, 0]}>
-        <RoundedBox args={[1.4, 1.2, 0.7]} radius={0.08} position={[0, 0.6, 0]} castShadow>
-          <meshStandardMaterial color="#2b3a66" roughness={0.4} metalness={0.4} />
-        </RoundedBox>
-        <mesh position={[0, 1.35, -0.05]} rotation={[-0.4, 0, 0]}>
-          <boxGeometry args={[1.3, 0.85, 0.08]} />
-          <meshStandardMaterial color="#1b2340" />
-        </mesh>
-        <mesh position={[0, 1.36, -0.005]} rotation={[-0.4, 0, 0]}>
-          <planeGeometry args={[1.15, 0.7]} />
-          <meshBasicMaterial color={glow('#7db8ff', 0.9)} toneMapped={false} />
-        </mesh>
-        <Text font={FONT_DISPLAY} fontSize={0.1} color="#0b1530" position={[0, 1.42, 0.03]} rotation={[-0.4, 0, 0]} anchorX="center">
-          OPEN CHANNEL
-        </Text>
-        <Text font={FONT_MED} fontSize={0.07} color="#0b1530" position={[0, 1.27, 0.08]} rotation={[-0.4, 0, 0]} anchorX="center">
-          press to transmit
-        </Text>
-        <RigidBody type="fixed" colliders={false}>
-          <CuboidCollider args={[0.7, 0.8, 0.4]} position={[0, 0.8, 0]} />
-        </RigidBody>
+        <PhoneBooth />
       </group>
     </>
   );
