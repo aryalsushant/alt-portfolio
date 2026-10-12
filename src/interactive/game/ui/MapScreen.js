@@ -95,7 +95,10 @@ export default function MapScreen() {
                 tabIndex={0}
                 aria-label={`Fast travel to ${z.name}`}
                 onKeyDown={e => {
-                  if (e.key === 'Enter' && !here) warpTo(z.id);
+                  if (e.key !== 'Enter' && e.key !== ' ') return;
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (!here) warpTo(z.id);
                 }}
               >
                 <circle cx={z.x} cy={z.z} r={z.r} fill={z.grass} stroke={here ? '#fff' : 'rgba(255,255,255,0.4)'} strokeWidth={here ? 0.9 : 0.4} />

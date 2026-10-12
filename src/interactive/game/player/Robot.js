@@ -52,7 +52,6 @@ export default function Robot({ character: ch, feet }) {
       squash: new Spring(340, 17),
       antX: new Spring(120, 7),
       antZ: new Spring(120, 7),
-      lastVel: new THREE.Vector3(),
       blinkIn: 2,
       blink: 0,
       happy: 0,
@@ -135,8 +134,7 @@ export default function Robot({ character: ch, feet }) {
     const dashing = ch.dashT > 0;
 
     // acceleration in local space for lean / antenna
-    tmp.copy(ch.vel).sub(a.lastVel).divideScalar(Math.max(dt, 1e-4));
-    a.lastVel.copy(ch.vel);
+    tmp.copy(ch.accel);
     const sinY = Math.sin(ch.yaw);
     const cosY = Math.cos(ch.yaw);
     const accFwd = tmp.x * sinY + tmp.z * cosY;

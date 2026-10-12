@@ -23,7 +23,7 @@ export function warpTo(zoneId) {
   const z = ZONES.find(x => x.id === zoneId);
   if (!z) return;
   sfx.warp();
-  setState({ fade: 1, mapOpen: false });
+  setState({ fade: 1, mapOpen: false, prompt: null });
   setTimeout(() => {
     // land just inside the rim, facing the island centre
     const a = Math.atan2(runtime.player.z - z.z, runtime.player.x - z.x);

@@ -63,8 +63,10 @@ export function takeLook() {
   return l;
 }
 
+// Clears one-shot and touch input. Physical keys are left alone: readMove()
+// already ignores them while input is disabled, and clearing them would drop
+// a key the player is still holding when they close a menu.
 export function clearInput() {
-  keys.clear();
   input.held.jump = false;
   input.held.dash = false;
   input.pressed.jump = false;
@@ -83,11 +85,16 @@ export function attachKeyboard(onAction) {
     if (isTyping(e.target)) return;
     const c = e.code;
     if (c === 'Escape' || c === 'KeyP') { onAction('pause'); e.preventDefault(); return; }
-    if (c === 'KeyM' || c === 'Tab') { onAction('map'); e.preventDefault(); return; }
+    // Menus open or a control focused: let the browser handle Enter/Space/Tab
+    // so buttons and links stay keyboard-operable.
+    const t = e.target;
+    const onControl = t && t.closest && t.closest('button, a, [role="button"]');
+    if (!input.enabled && onControl) return;
+    if (c === 'KeyM' || (c === 'Tab' && input.enabled)) { onAction('map'); e.preventDefault(); return; }
     if (c === 'KeyN' && !e.repeat) { onAction('mute'); return; }
     if (Object.values(BINDINGS).some(b => b.includes(c))) e.preventDefault();
+    keys.add(c); // re-add on auto-repeat too, so a still-held key survives a pause
     if (e.repeat) return;
-    keys.add(c);
     for (const action of ['jump', 'dash', 'interact']) {
       if (BINDINGS[action].includes(c)) press(action);
     }
@@ -99,7 +106,10 @@ export function attachKeyboard(onAction) {
       if (!anyDown(BINDINGS[action])) release(action);
     }
   };
-  const blur = () => clearInput();
+  const blur = () => {
+    keys.clear();
+    clearInput();
+  };
   window.addEventListener('keydown', down);
   window.addEventListener('keyup', up);
   window.addEventListener('blur', blur);
@@ -174,12 +184,15 @@ export function pollGamepad(dt, onAction) {
     padPrev[i] = now;
   };
   edge(0, () => press('jump'));
+  // only release jump on the pad's own button-up edge, never every frame,
+  // so keyboard/touch jump-hold isn't cancelled by an idle controller
+  if (!btn(0) && padPrev.jumpHeld) release('jump');
+  padPrev.jumpHeld = btn(0);
   edge(2, () => press('dash'));
   edge(1, () => press('dash'));
   edge(3, () => press('interact'));
   edge(9, () => onAction('pause'));
   edge(8, () => onAction('map'));
-  if (!btn(0)) release('jump');
   if (lx || ly || btn(0)) { padActive = true; onAction('any'); }
 }
 

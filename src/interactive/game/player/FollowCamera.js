@@ -12,7 +12,8 @@ const MAX_PITCH = 1.2;
 const MIN_DIST = 4;
 const MAX_DIST = 15;
 
-const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+const reducedMotion = () => motionQuery.matches;
 
 const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
@@ -37,6 +38,7 @@ export default function FollowCamera({ character: ch }) {
       look: new THREE.Vector3(),
       titlePos: new THREE.Vector3(),
       titleLook: new THREE.Vector3(),
+      blendLook: new THREE.Vector3(),
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [rapier]
@@ -141,8 +143,8 @@ export default function FollowCamera({ character: ch }) {
       cam.introT = Math.min(1, cam.introT + dt / 2.2);
       const k = easeInOut(cam.introT);
       camera.position.lerpVectors(cam.titlePos, cam.pos, k);
-      const l = cam.titleLook.clone().lerp(cam.look, k);
-      camera.lookAt(l);
+      cam.blendLook.copy(cam.titleLook).lerp(cam.look, k);
+      camera.lookAt(cam.blendLook);
     }
 
     // ---- shake

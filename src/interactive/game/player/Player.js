@@ -57,6 +57,7 @@ export function createCharacterState() {
     dashDir: new THREE.Vector3(),
     canAirDash: true,
     landImpact: 0, // set on landing, decays in animator
+    accel: new THREE.Vector3(), // velocity change per second, measured per fixed step
     lastSafe: new THREE.Vector3(SPAWN.x, SPAWN.y + FEET, SPAWN.z),
     safeTimer: 0,
     rising: false,
@@ -121,6 +122,8 @@ export default function Player({ character }) {
     }
 
     ch.prev.copy(ch.pos);
+    const v0x = ch.vel.x;
+    const v0z = ch.vel.z;
 
     const controllable = s.phase === 'playing' && !s.paused && !s.panel && !s.mapOpen && !ch.frozen;
     const mv = controllable ? readMove() : { x: 0, y: 0 };
@@ -199,6 +202,7 @@ export default function Player({ character }) {
     if (buffered) {
       if (ch.grounded || ch.sinceGrounded <= TUNE.coyote) {
         ch.vel.y = TUNE.jumpVel;
+        ch.dashT = 0; // a jump always wins over an active dash
         ch.grounded = false;
         ch.sinceGrounded = TUNE.coyote + 1;
         ch.sinceJumpPressed = 99;
@@ -266,6 +270,7 @@ export default function Player({ character }) {
         const dy = ch.pos.y - FEET - p.y;
         if (dy > -0.2 && dy < 0.6 && Math.hypot(ch.pos.x - p.x, ch.pos.z - p.z) < 1.35) {
           ch.vel.y = p.power;
+          ch.dashT = 0;
           ch.grounded = false;
           const T = p.target && STONES.find(st => st.id === p.target);
           if (T) {
@@ -291,6 +296,8 @@ export default function Player({ character }) {
         }
       }
     }
+
+    ch.accel.set((ch.vel.x - v0x) / dt, 0, (ch.vel.z - v0z) / dt);
 
     // ---- facing
     const hs = Math.hypot(ch.vel.x, ch.vel.z);
