@@ -4,6 +4,10 @@
   "private": true,
   "dependencies": {
     "@formspree/react": "^3.0.0",
+    "@react-three/drei": "9.122.0",
+    "@react-three/fiber": "8.18.0",
+    "@react-three/postprocessing": "2.19.1",
+    "@react-three/rapier": "1.5.0",
     "aos": "^3.0.0-beta.6",
     "cra-template-pwa": "2.0.0",
     "framer-motion": "^11.0.0",
@@ -15,8 +19,10 @@
     "react-simple-typewriter": "^5.0.1",
     "react-tsparticles": "^2.12.2",
     "smoothscroll-polyfill": "^0.4.4",
+    "three": "0.170.0",
     "tsparticles": "^3.8.1",
-    "web-vitals": "^5.0.3"
+    "web-vitals": "^5.0.3",
+    "zzfx": "1.4.0"
   },
   "main": "index.js",
   "scripts": {
