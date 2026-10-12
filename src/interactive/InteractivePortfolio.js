@@ -32,17 +32,25 @@ if (process.env.NODE_ENV !== 'production') window.__gx = { getState, setState, r
 export default function InteractivePortfolio() {
   const webgl = useMemo(() => hasWebGL(), []);
 
-  useEffect(() => {
+  // Reset session state during the first render — before any child effect
+  // (e.g. the in-canvas Ready marker) can flip the phase to 'title'.
+  useMemo(() => {
     const s = getState();
     setState({
       touch: isTouchDevice(),
       tier: s.quality === 'auto' ? detectTier() : s.quality,
-      phase: s.phase === 'loading' || s.phase === 'title' ? s.phase : 'title',
+      phase: 'loading',
       paused: false,
       panel: null,
       mapOpen: false,
+      prompt: null,
+      zone: null,
+      toasts: [],
       fade: 0,
     });
+  }, []);
+
+  useEffect(() => {
     // The game owns the viewport: no page scroll, rubber-banding or pinch-zoom.
     const html = document.documentElement;
     const prev = { overflow: html.style.overflow, bodyOverflow: document.body.style.overflow, overscroll: html.style.overscrollBehavior };

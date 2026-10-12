@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody, CapsuleCollider, useRapier, useBeforePhysicsStep } from '@react-three/rapier';
 import * as THREE from 'three';
@@ -77,7 +77,10 @@ export default function Player({ character }) {
   const acc = useRef(0);
   const ch = character;
 
-  const controller = useMemo(() => {
+  // Created in an effect (not a memo) so a StrictMode-style remount never
+  // keeps using a controller whose WASM memory was already freed.
+  const controllerRef = useRef(null);
+  useEffect(() => {
     const c = world.createCharacterController(0.03);
     c.setUp({ x: 0, y: 1, z: 0 });
     c.setMaxSlopeClimbAngle((52 * Math.PI) / 180);
@@ -87,15 +90,18 @@ export default function Player({ character }) {
     c.setSlideEnabled(true);
     c.setApplyImpulsesToDynamicBodies(true);
     c.setCharacterMass(60);
-    return c;
+    controllerRef.current = c;
+    return () => {
+      controllerRef.current = null;
+      world.removeCharacterController(c);
+    };
   }, [world]);
-
-  useEffect(() => () => world.removeCharacterController(controller), [world, controller]);
 
   useBeforePhysicsStep(() => {
     const rb = body.current;
     const col = collider.current;
-    if (!rb || !col) return;
+    const controller = controllerRef.current;
+    if (!rb || !col || !controller) return;
     const dt = STEP;
     const s = getState();
 

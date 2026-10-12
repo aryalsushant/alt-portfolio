@@ -49,7 +49,7 @@ export function initAudio() {
 
 export function setMuted(m) {
   muted = m;
-  if (master) master.gain.setTargetAtTime(m ? 0 : 0.8, ctx.currentTime, 0.08);
+  if (ctx && master) master.gain.setTargetAtTime(m ? 0 : 0.8, ctx.currentTime, 0.08);
 }
 
 export function suspendAudio(s) {
@@ -263,4 +263,9 @@ export function disposeAudio() {
   musicTimer = null;
   if (ctx) ctx.close();
   ctx = null;
+  master = null;
+  sfxBus = null;
+  musicBus = null;
+  reverb = null;
+  noiseBuf = null;
 }
