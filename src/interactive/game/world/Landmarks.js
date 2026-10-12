@@ -482,29 +482,13 @@ function LogoPlate({ src, w = 1.4, h = 1.4 }) {
   );
 }
 
-function USMTower({ l }) {
-  const e = l.data;
+// Education towers carry their plaque on all four faces, so they read from
+// whichever side the player comes from.
+const FACES = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
+
+function USMFace({ e }) {
   return (
-    <group position={[l.x, l.y, l.z]} rotation={[0, l.face, 0]}>
-      <group scale={TOWER_K}>
-      <mesh position={[0, 0.3, 0]} castShadow receiveShadow>
-        <boxGeometry args={[3.4, 0.6, 3.4]} />
-        <meshStandardMaterial color="#3a3a3a" roughness={0.8} />
-      </mesh>
-      <mesh position={[0, 3, 0]} castShadow receiveShadow>
-        <boxGeometry args={[2.4, 4.8, 2.4]} />
-        <meshStandardMaterial color="#1d1d1f" roughness={0.6} />
-      </mesh>
-      {[-1.21, 1.21].map(x => (
-        <mesh key={x} position={[x, 3, 1.21]}>
-          <boxGeometry args={[0.1, 4.8, 0.1]} />
-          <meshBasicMaterial color={glow('#ffc72c', 2)} toneMapped={false} />
-        </mesh>
-      ))}
-      <mesh position={[0, 5.9, 0]} castShadow>
-        <coneGeometry args={[1.9, 1.8, 4]} />
-        <meshStandardMaterial color="#ffc72c" metalness={0.6} roughness={0.3} />
-      </mesh>
+    <>
       <group position={[0, 3.9, 1.22]}>
         <mesh position={[0, 0, -0.005]}>
           <planeGeometry args={[1.8, 1.8]} />
@@ -523,6 +507,38 @@ function USMTower({ l }) {
       <Text font={FONT_DISPLAY} fontSize={0.34} color="#ffffff" position={[0, 1.45, 1.22]} anchorX="center" outlineWidth={0.02} outlineColor="#ffc72c">
         GPA 4.0
       </Text>
+    </>
+  );
+}
+
+function USMTower({ l }) {
+  const e = l.data;
+  return (
+    <group position={[l.x, l.y, l.z]} rotation={[0, l.face, 0]}>
+      <group scale={TOWER_K}>
+      <mesh position={[0, 0.3, 0]} castShadow receiveShadow>
+        <boxGeometry args={[3.4, 0.6, 3.4]} />
+        <meshStandardMaterial color="#3a3a3a" roughness={0.8} />
+      </mesh>
+      <mesh position={[0, 3, 0]} castShadow receiveShadow>
+        <boxGeometry args={[2.4, 4.8, 2.4]} />
+        <meshStandardMaterial color="#1d1d1f" roughness={0.6} />
+      </mesh>
+      {[[-1.21, 1.21], [1.21, 1.21], [-1.21, -1.21], [1.21, -1.21]].map(([x, z]) => (
+        <mesh key={`${x}${z}`} position={[x, 3, z]}>
+          <boxGeometry args={[0.1, 4.8, 0.1]} />
+          <meshBasicMaterial color={glow('#ffc72c', 2)} toneMapped={false} />
+        </mesh>
+      ))}
+      <mesh position={[0, 5.9, 0]} castShadow>
+        <coneGeometry args={[1.9, 1.8, 4]} />
+        <meshStandardMaterial color="#ffc72c" metalness={0.6} roughness={0.3} />
+      </mesh>
+      {FACES.map(r => (
+        <group key={r} rotation={[0, r, 0]}>
+          <USMFace e={e} />
+        </group>
+      ))}
       </group>
       <RigidBody type="fixed" colliders={false}>
         <Blocker shape={CuboidCollider} args={[1.7 * TOWER_K, 3.3 * TOWER_K, 1.7 * TOWER_K]} position={[0, 3.3 * TOWER_K, 0]} />
@@ -531,33 +547,15 @@ function USMTower({ l }) {
   );
 }
 
-function CornellTower({ l }) {
-  const e = l.data;
-  const hand = useRef();
-  useFrame(({ clock }) => {
-    hand.current.rotation.z = -clock.elapsedTime * 0.5;
-  });
+function CornellFace({ e, handRef }) {
   return (
-    <group position={[l.x, l.y, l.z]} rotation={[0, l.face, 0]}>
-      <group scale={TOWER_K}>
-      <mesh position={[0, 3.6, 0]} castShadow receiveShadow>
-        <boxGeometry args={[1.9, 7.2, 1.9]} />
-        <meshStandardMaterial color="#9c6b55" roughness={0.85} />
-      </mesh>
-      <mesh position={[0, 7.4, 0]} castShadow>
-        <boxGeometry args={[2.2, 0.4, 2.2]} />
-        <meshStandardMaterial color="#e8dccb" />
-      </mesh>
-      <mesh position={[0, 8.9, 0]} castShadow>
-        <coneGeometry args={[1.45, 2.6, 4]} />
-        <meshStandardMaterial color="#5d6a74" metalness={0.3} roughness={0.5} />
-      </mesh>
+    <>
       <group position={[0, 6.2, 0.96]}>
         <mesh>
           <circleGeometry args={[0.7, 32]} />
           <meshStandardMaterial color="#fff8e8" emissive="#fff1c9" emissiveIntensity={0.6} />
         </mesh>
-        <mesh ref={hand} position={[0, 0, 0.01]}>
+        <mesh ref={handRef} position={[0, 0, 0.01]}>
           <planeGeometry args={[0.06, 1.1]} />
           <meshBasicMaterial color="#2b2b2b" />
         </mesh>
@@ -577,6 +575,38 @@ function CornellTower({ l }) {
       <Text font={FONT_BOLD} fontSize={0.16} color="#ffffff" position={[0, 2.2, 0.96]} anchorX="center" anchorY="top" maxWidth={1.75} textAlign="center" lineHeight={1.2}>
         {e.degree}
       </Text>
+    </>
+  );
+}
+
+function CornellTower({ l }) {
+  const e = l.data;
+  const hands = useRef([]);
+  useFrame(({ clock }) => {
+    hands.current.forEach(h => {
+      if (h) h.rotation.z = -clock.elapsedTime * 0.5;
+    });
+  });
+  return (
+    <group position={[l.x, l.y, l.z]} rotation={[0, l.face, 0]}>
+      <group scale={TOWER_K}>
+      <mesh position={[0, 3.6, 0]} castShadow receiveShadow>
+        <boxGeometry args={[1.9, 7.2, 1.9]} />
+        <meshStandardMaterial color="#9c6b55" roughness={0.85} />
+      </mesh>
+      <mesh position={[0, 7.4, 0]} castShadow>
+        <boxGeometry args={[2.2, 0.4, 2.2]} />
+        <meshStandardMaterial color="#e8dccb" />
+      </mesh>
+      <mesh position={[0, 8.9, 0]} castShadow>
+        <coneGeometry args={[1.45, 2.6, 4]} />
+        <meshStandardMaterial color="#5d6a74" metalness={0.3} roughness={0.5} />
+      </mesh>
+      {FACES.map((r, i) => (
+        <group key={r} rotation={[0, r, 0]}>
+          <CornellFace e={e} handRef={h => (hands.current[i] = h)} />
+        </group>
+      ))}
       </group>
       <RigidBody type="fixed" colliders={false}>
         <Blocker shape={CuboidCollider} args={[1.1 * TOWER_K, 4.6 * TOWER_K, 1.1 * TOWER_K]} position={[0, 4.6 * TOWER_K, 0]} />
