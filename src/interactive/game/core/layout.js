@@ -160,3 +160,71 @@ export const KILL_Y = -24;
 
 // Name letters at spawn — a row with a gap for the path north.
 export const NAME_ROW = { z: -7, gap: 1.7, size: 1.5, spacing: 1.18, words: ['SUSHANT', 'ARYAL'] };
+
+// ---------------------------------------------------------------------
+// Where the robot stands when it travels somewhere.
+// ---------------------------------------------------------------------
+const islandOf = p =>
+  ISLANDS.reduce((best, I) => {
+    const d = Math.hypot(p.x - I.x, p.z - I.z) - I.r;
+    return !best || d < best.d ? { I, d } : best;
+  }, null).I;
+
+const look = (from, to) => Math.atan2(to.x - from.x, to.z - from.z);
+
+// Map fast travel: land mid-island looking at the exhibits. Islands whose
+// centre is occupied by a landmark get a stand-off point in front of it.
+const STAND_OFF = { about: 4.2, research: 6.2, contact: 6.5, awards: 5 };
+
+export function viewpointFor(zoneId) {
+  if (zoneId === 'spawn') return { x: SPAWN.x, y: SPAWN.y, z: SPAWN.z, yaw: SPAWN.yaw };
+  const I = islandById[zoneId];
+  const items = INTERACTABLES.filter(it => islandOf(it) === I);
+  if (STAND_OFF[zoneId]) {
+    // stand on the side players arrive from (+z), facing the centre piece
+    const focus = zoneId === 'about' ? INTERACTABLES.find(i => i.id === 'about') : I;
+    const p = { x: I.x, z: focus.z + STAND_OFF[zoneId] };
+    return { x: p.x, y: I.y + 0.2, z: p.z, yaw: look(p, focus) };
+  }
+  const c = items.reduce((a, it) => ({ x: a.x + it.x / items.length, z: a.z + it.z / items.length }), { x: 0, z: 0 });
+  // if the exhibits ring the centre, the centroid sits on it: face the first one
+  const target = Math.hypot(c.x - I.x, c.z - I.z) < 1.5 ? items[0] : c;
+  return { x: I.x, y: I.y + 0.2, z: I.z, yaw: look(I, target) };
+}
+
+// Prev/next travel: stand in front of an exhibit, facing it.
+const FACED = Object.fromEntries(
+  [...MONOLITHS.map(m => [`exp-${m.id}`, m]), ...CABINETS.map(c => [`proj-${c.id}`, c]), ...LANDMARKS.map(l => [`edu-${l.id}`, l])]
+);
+const STAND_DIST = { exp: 3.1, proj: 2.4, edu: 4.2, skill: 2.9 };
+
+export function standPointFor(interactableId) {
+  const it = INTERACTABLES.find(i => i.id === interactableId);
+  if (!it) return null;
+  const I = islandOf(it);
+  const kind = interactableId.split('-')[0];
+  const dist = STAND_DIST[kind] || 2.6;
+  const faced = FACED[interactableId];
+  let dx;
+  let dz;
+  if (faced) {
+    dx = Math.sin(faced.face);
+    dz = Math.cos(faced.face);
+  } else if (interactableId === 'contact') {
+    // the terminal's screen faces away from the tower
+    const l = Math.hypot(it.x - I.x, it.z - I.z);
+    dx = (it.x - I.x) / l;
+    dz = (it.z - I.z) / l;
+  } else {
+    const l = Math.hypot(I.x - it.x, I.z - it.z);
+    // centre pieces (observatory, podium): approach from the +z side
+    dx = l < 0.5 ? 0 : (I.x - it.x) / l;
+    dz = l < 0.5 ? 1 : (I.z - it.z) / l;
+  }
+  const d = Math.hypot(I.x - it.x, I.z - it.z) < 0.5 ? it.r * 0.92 : dist;
+  const p = { x: it.x + dx * d, z: it.z + dz * d };
+  return { x: p.x, y: I.y + 0.2, z: p.z, yaw: look(p, it) };
+}
+
+export const interactableFor = panel =>
+  INTERACTABLES.find(i => i.panel.type === panel.type && (i.panel.id || null) === (panel.id || null));
