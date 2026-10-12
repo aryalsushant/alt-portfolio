@@ -12,6 +12,8 @@ const MAX_PITCH = 1.2;
 const MIN_DIST = 4;
 const MAX_DIST = 15;
 
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const easeInOut = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export default function FollowCamera({ character: ch }) {
@@ -144,6 +146,7 @@ export default function FollowCamera({ character: ch }) {
     }
 
     // ---- shake
+    if (cam.trauma > 0 && reducedMotion()) cam.trauma = 0;
     if (cam.trauma > 0) {
       const sh = cam.trauma * cam.trauma * 0.25;
       camera.position.x += (Math.random() - 0.5) * sh;
@@ -154,7 +157,7 @@ export default function FollowCamera({ character: ch }) {
     // ---- fov
     cam.fovKick = Math.max(ch.dashT > 0 ? 1 : 0, cam.fovKick - dt * 3);
     const baseFov = portrait ? 66 : 52;
-    const fov = baseFov + cam.fovKick * 9 + Math.min(1, ch.moving) * 2;
+    const fov = baseFov + (reducedMotion() ? 0 : cam.fovKick * 9 + Math.min(1, ch.moving) * 2);
     if (Math.abs(camera.fov - fov) > 0.01) {
       camera.fov = damp(camera.fov, fov, 8, dt);
       camera.updateProjectionMatrix();

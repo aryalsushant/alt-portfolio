@@ -122,7 +122,7 @@ export const INTERACTABLES = [
   ...CABINETS.map(c => ({ id: `proj-${c.id}`, label: c.data.name, verb: 'Play', panel: { type: 'project', id: c.id }, x: c.x, y: c.y, z: c.z, r: 2.9 })),
   { id: 'research', label: 'Research paper', verb: 'Read', panel: { type: 'research' }, ...on('research', 0, 0) , r: 4 },
   ...LANDMARKS.map(l => ({ id: `edu-${l.id}`, label: l.data.school, verb: 'Read', panel: { type: 'education', id: l.id }, x: l.x, y: l.y, z: l.z, r: 4.2 })),
-  { id: 'contact', label: 'Signal terminal', verb: 'Open', panel: { type: 'contact' }, ...on('contact', Math.PI * 1.75, 3.4), r: 3.4 },
+  { id: 'contact', label: 'Signal terminal', verb: 'Open', panel: { type: 'contact' }, ...on('contact', Math.PI * 0.3, 4.2), r: 3.4 },
   { id: 'awards', label: 'Trophy podium', verb: 'View', panel: { type: 'awards' }, ...on('awards', 0, 0), r: 4.4 },
 ].map(i => ({ r: 3, ...i }));
 

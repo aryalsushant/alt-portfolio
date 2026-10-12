@@ -172,7 +172,7 @@ export default function Particles({ tier, character }) {
         for (let i = 0; i < n(90); i++) {
           const a = Math.random() * Math.PI * 2;
           const sp = rnd(2, 6);
-          conf.spawn(p.x, p.y + 1.5, p.z, Math.cos(a) * sp, rnd(5, 10), Math.sin(a) * sp, CONFETTI[i % CONFETTI.length], rnd(0.12, 0.22), rnd(1.6, 2.6), 9, 1.8, 0);
+          conf.spawn(p.x, p.y + 1.5, p.z, Math.cos(a) * sp, rnd(5, 10), Math.sin(a) * sp, CONFETTI[i % CONFETTI.length], rnd(0.05, 0.1), rnd(1.6, 2.6), 9, 1.8, 0);
         }
       }),
       on('discover', () => {
