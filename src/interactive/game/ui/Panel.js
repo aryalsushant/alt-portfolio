@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
-import { setState, useGame } from '../core/store';
+import { useGame } from '../core/store';
 import { award } from '../world/Gameplay';
 import { sfx } from '../audio/sound';
-import { closePanel } from './actions';
+import { closePanel, openPanel, travelToPanel } from './actions';
 import { PROFILE, SKILLS, EXPERIENCE, PROJECTS, RESEARCH, EDUCATION, AWARDS, CONTACT } from '../../content';
 
 const COLLECTIONS = {
@@ -53,13 +53,15 @@ function HowTo() {
         ['Drag right side', 'Look around · pinch to zoom'],
         ['⤒ button', 'Jump — tap again in the air to double jump'],
         ['⇢ button', 'Dash (works in the air too)'],
+        ['Tap a landmark', 'Open it — walking up to one shows a preview card'],
         ['Action button', 'Read / interact when it appears'],
       ]
     : [
         ['W A S D / Arrows', 'Move'],
         ['Space', 'Jump — again in the air to double jump; hold for higher'],
         ['Shift', 'Dash (once per jump in the air)'],
-        ['E / Enter', 'Interact · read'],
+        ['Walk up / click', 'Open any landmark in the sidebar'],
+        ['E / Enter', 'Toggle the sidebar for what you’re standing at'],
         ['Mouse drag · Wheel', 'Orbit camera · zoom'],
         ['M / Tab', 'World map & fast travel'],
         ['Esc', 'Pause menu'],
@@ -322,46 +324,60 @@ export default function Panel({ panel }) {
   const accent = item?.color || ACCENT[panel.type];
   const ref = useRef(null);
 
+  const touch = useGame(s => s.touch);
+
+  // prev/next (and the pips) walk the robot over to that exhibit
+  const goTo = target => travelToPanel({ type: panel.type, id: target.id });
   const go = dir => {
     if (!list) return;
-    const next = list[(index + dir + list.length) % list.length];
-    sfx.click();
-    setState({ panel: { ...panel, id: next.id } });
+    goTo(list[(index + dir + list.length) % list.length]);
   };
-
-  useEffect(() => {
-    ref.current?.focus({ preventScroll: true });
-  }, []);
 
   useEffect(() => {
     ref.current?.scrollTo?.({ top: 0 });
   }, [panel.id]);
 
+  const openedAt = useRef(performance.now());
   useEffect(() => {
-    if (!list) return undefined;
-    const onKey = e => {
-      const t = e.target;
-      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return;
-      if (e.code === 'ArrowRight' || e.code === 'KeyD') go(1);
-      if (e.code === 'ArrowLeft' || e.code === 'KeyA') go(-1);
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  });
+    openedAt.current = performance.now();
+  }, [panel.mode]);
+
+  // phones: walking up to something shows a compact card; tap to read
+  if (touch && panel.mode === 'auto') {
+    const title = item ? item.name || item.title || item.school : EYEBROW[panel.type];
+    const sub = item ? item.company || item.tagline || item.degree : 'Tap to read';
+    return (
+      <motion.button
+        className="gx-peek"
+        style={{ '--accent': accent }}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 16 }}
+        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+        onClick={() => openPanel(panel, 'open')}
+      >
+        <span className="gx-panel-eyebrow">{EYEBROW[panel.type]}</span>
+        <strong>{title}</strong>
+        <small>{sub} · tap to read ↑</small>
+      </motion.button>
+    );
+  }
 
   return (
     <>
-      <motion.div
-        className="gx-scrim"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={closePanel}
-      />
+      {touch && (
+        <motion.div
+          className="gx-scrim"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          // ignore the ghost click from the same tap that opened the sheet
+          onClick={() => performance.now() - openedAt.current > 450 && closePanel()}
+        />
+      )}
       <motion.aside
         className="gx-panel"
-        role="dialog"
-        aria-modal="true"
+        role="complementary"
         aria-label={EYEBROW[panel.type]}
         style={{ '--accent': accent }}
         initial={{ opacity: 0, x: 60, y: 0 }}
@@ -395,7 +411,7 @@ export default function Panel({ panel }) {
                 <button
                   key={x.id}
                   className={i === index ? 'is-on' : ''}
-                  onClick={() => setState({ panel: { ...panel, id: x.id } })}
+                  onClick={() => goTo(x)}
                   aria-label={x.name || x.company || x.school}
                 />
               ))}

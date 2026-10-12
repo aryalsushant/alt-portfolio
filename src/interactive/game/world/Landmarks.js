@@ -7,6 +7,7 @@ import { ZONES, INTERACTABLES, CRYSTALS, MONOLITHS, CABINETS, LANDMARKS, islandB
 import { PROFILE, RESEARCH, AWARDS } from '../../content';
 import { FONT_BOLD, FONT_MED, FONT_DISPLAY } from './Spawn';
 import Blocker from './Blocker';
+import Clickable from './Clickable';
 
 const glow = (hex, k = 2.2) => new THREE.Color(hex).multiplyScalar(k);
 const find = id => INTERACTABLES.find(i => i.id === id);
@@ -239,28 +240,33 @@ function Monolith({ m }) {
         <meshStandardMaterial color="#2b2747" roughness={0.55} metalness={0.25} />
       </RoundedBox>
       {/* glowing edge strips */}
-      {[-1.36, 1.36].map(x => (
-        <mesh key={x} position={[x, 2.2, 0.2]}>
+      {[-1.36, 1.36].flatMap(x => [0.33, -0.33].map(z => [x, z])).map(([x, z]) => (
+        <mesh key={`${x}${z}`} position={[x, 2.2, z]}>
           <boxGeometry args={[0.05, 4.2, 0.05]} />
           <meshBasicMaterial color={glow(e.color, 2.6)} toneMapped={false} />
         </mesh>
       ))}
-      <mesh position={[0, 4.15, 0.36]}>
-        <boxGeometry args={[2.3, 0.05, 0.02]} />
-        <meshBasicMaterial color={glow(e.color, 2.6)} toneMapped={false} />
-      </mesh>
-      <Text font={FONT_DISPLAY} fontSize={0.27} maxWidth={2.3} textAlign="center" color={e.color} position={[0, 3.7, 0.37]} anchorX="center" anchorY="top">
-        {e.short}
-      </Text>
-      <Text font={FONT_BOLD} fontSize={0.17} maxWidth={2.2} textAlign="center" color="#ffffff" position={[0, 2.85, 0.37]} anchorX="center" anchorY="top" lineHeight={1.25}>
-        {e.title}
-      </Text>
-      <Text font={FONT_MED} fontSize={0.14} color="#cfc7ef" position={[0, 2.05, 0.37]} anchorX="center" anchorY="top">
-        {e.dates}
-      </Text>
-      <Text font={FONT_MED} fontSize={0.13} color="#9d93c9" position={[0, 1.75, 0.37]} anchorX="center" anchorY="top">
-        {e.location}
-      </Text>
+      {/* engraved on both faces so the board reads from either side */}
+      {[0, Math.PI].map(ry => (
+        <group key={ry} rotation={[0, ry, 0]}>
+          <mesh position={[0, 4.15, 0.36]}>
+            <boxGeometry args={[2.3, 0.05, 0.02]} />
+            <meshBasicMaterial color={glow(e.color, 2.6)} toneMapped={false} />
+          </mesh>
+          <Text font={FONT_DISPLAY} fontSize={e.short.length > 14 ? 0.19 : 0.25} maxWidth={2.3} textAlign="center" color={e.color} position={[0, 3.85, 0.37]} anchorX="center" anchorY="top" lineHeight={1.1}>
+            {e.short}
+          </Text>
+          <Text font={FONT_BOLD} fontSize={0.17} maxWidth={2.2} textAlign="center" color="#ffffff" position={[0, 2.85, 0.37]} anchorX="center" anchorY="top" lineHeight={1.25}>
+            {e.title}
+          </Text>
+          <Text font={FONT_MED} fontSize={0.14} color="#cfc7ef" position={[0, 2.05, 0.37]} anchorX="center" anchorY="top">
+            {e.dates}
+          </Text>
+          <Text font={FONT_MED} fontSize={0.13} color="#9d93c9" position={[0, 1.75, 0.37]} anchorX="center" anchorY="top">
+            {e.location}
+          </Text>
+        </group>
+      ))}
       <group ref={emblem} position={[0, 5.25, 0]}>
         <mesh>
           <torusKnotGeometry args={[0.3, 0.09, 64, 8]} />
@@ -757,21 +763,41 @@ export default function Landmarks() {
   return (
     <>
       <ZoneTitles />
-      <Shrine />
-      <MonkBot />
+      <Clickable id="about">
+        <Shrine />
+      </Clickable>
+      <Clickable id="monk">
+        <MonkBot />
+      </Clickable>
       {CRYSTALS.map(c => (
-        <Crystal key={c.id} c={c} />
+        <Clickable key={c.id} id={`skill-${c.id}`}>
+          <Crystal c={c} />
+        </Clickable>
       ))}
       {MONOLITHS.map(m => (
-        <Monolith key={m.id} m={m} />
+        <Clickable key={m.id} id={`exp-${m.id}`}>
+          <Monolith m={m} />
+        </Clickable>
       ))}
       {CABINETS.map(c => (
-        <Cabinet key={c.id} c={c} />
+        <Clickable key={c.id} id={`proj-${c.id}`}>
+          <Cabinet c={c} />
+        </Clickable>
       ))}
-      <Observatory />
-      {LANDMARKS.map(l => (l.id === 'usm' ? <USMTower key={l.id} l={l} /> : <CornellTower key={l.id} l={l} />))}
-      <SignalTower />
-      <Summit />
+      <Clickable id="research">
+        <Observatory />
+      </Clickable>
+      {LANDMARKS.map(l => (
+        <Clickable key={l.id} id={`edu-${l.id}`}>
+          {l.id === 'usm' ? <USMTower l={l} /> : <CornellTower l={l} />}
+        </Clickable>
+      ))}
+      <Clickable id="contact">
+        <SignalTower />
+      </Clickable>
+      <Clickable id="awards">
+        <Summit />
+      </Clickable>
     </>
   );
 }

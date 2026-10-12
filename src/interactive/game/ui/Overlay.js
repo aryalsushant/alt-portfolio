@@ -5,7 +5,7 @@ import { useGame, getState, setState, setPersisted } from '../core/store';
 import { on } from '../core/events';
 import { attachKeyboard, consume, clearInput, input } from '../input/input';
 import { initAudio, setMuted, sfx, suspendAudio, disposeAudio } from '../audio/sound';
-import { openPanel, closePanel } from './actions';
+import { openPanel, closePanel, syncProximityPanel, interactableById } from './actions';
 import TitleScreen from './TitleScreen';
 import Hud from './Hud';
 import Prompt from './Prompt';
@@ -34,17 +34,40 @@ export default function Overlay() {
     setState({ phase: 'intro' });
   }, []);
 
+  const activate = useCallback(
+    it => {
+      if (!it) return;
+      if (it.panel.type === 'classic') {
+        sfx.warp();
+        setState({ fade: 1 });
+        setTimeout(() => navigate('/classic'), 450);
+        return;
+      }
+      openPanel(it.panel, 'open');
+    },
+    [navigate]
+  );
+
   const interact = useCallback(() => {
     const s = getState();
-    if (s.phase !== 'playing' || s.panel || s.paused || s.mapOpen || !s.prompt) return;
-    if (s.prompt.panel.type === 'classic') {
-      sfx.warp();
-      setState({ fade: 1 });
-      setTimeout(() => navigate('/classic'), 450);
-      return;
-    }
-    openPanel(s.prompt.panel);
-  }, [navigate]);
+    if (s.phase !== 'playing' || s.paused || s.mapOpen || !s.prompt) return;
+    activate(s.prompt);
+  }, [activate]);
+
+  // clicking / tapping a landmark in the world
+  useEffect(
+    () =>
+      on('clickInteractable', ({ id }) => {
+        const s = getState();
+        if (s.phase !== 'playing' || s.paused || s.mapOpen) return;
+        activate(interactableById(id));
+      }),
+    [activate]
+  );
+
+  // walking up to something opens its sidebar; walking away closes it
+  const prompt = useGame(s => s.prompt);
+  useEffect(() => syncProximityPanel(prompt), [prompt]);
 
   // UI-level actions from keyboard / gamepad
   const onAction = useCallback(
@@ -63,7 +86,7 @@ export default function Overlay() {
           sfx.click();
         }
       } else if (action === 'map') {
-        if (s.panel || s.paused) return;
+        if (s.paused) return;
         setState({ mapOpen: !s.mapOpen });
         sfx.click();
       } else if (action === 'mute') {
@@ -84,6 +107,7 @@ export default function Overlay() {
       if (input.pressed.interact) {
         consume('interact');
         const s = getState();
+        // E toggles: put the sidebar away, or read what you're standing at
         if (s.panel) closePanel();
         else interact();
       }
@@ -127,11 +151,12 @@ export default function Overlay() {
   }, [paused, phase]);
   useEffect(() => () => disposeAudio(), []);
 
-  // input is only live while actually playing
+  // input is live while playing — the sidebar never blocks movement, except
+  // the full-screen sheet on phones, which hides the touch controls instead
   useEffect(() => {
-    input.enabled = phase === 'playing' && !panel && !mapOpen && !paused;
+    input.enabled = phase === 'playing' && !mapOpen && !paused;
     if (!input.enabled) clearInput();
-  }, [phase, panel, mapOpen, paused]);
+  }, [phase, mapOpen, paused]);
 
   const playing = phase === 'playing' || phase === 'intro';
 
@@ -139,7 +164,7 @@ export default function Overlay() {
     <div className="gx-ui">
       {playing && <Hud onAction={onAction} />}
       {phase === 'playing' && <Prompt onInteract={interact} />}
-      {phase === 'playing' && touch && !panel && !mapOpen && !paused && <TouchControls onInteract={interact} />}
+      {phase === 'playing' && touch && !(panel && panel.mode === 'open') && !mapOpen && !paused && <TouchControls onInteract={interact} />}
       {phase === 'playing' && <ControlsHint />}
       <Toasts />
       <AnimatePresence>{panel && <Panel key="panel" panel={panel} />}</AnimatePresence>

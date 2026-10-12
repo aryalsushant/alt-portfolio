@@ -11,6 +11,7 @@ import Foliage from './world/Foliage';
 import Spawn from './world/Spawn';
 import Landmarks from './world/Landmarks';
 import { JumpPads, Shards, ZoneTracker } from './world/Gameplay';
+import { TapPicker } from './world/Clickable';
 import Particles, { Fireflies } from './fx/Particles';
 import Effects from './fx/Effects';
 import { attachMouse, pollGamepad } from './input/input';
@@ -66,6 +67,7 @@ function World({ tier, character }) {
       <JumpPads />
       <Shards />
       <ZoneTracker />
+      <TapPicker />
       <Fireflies count={s.fireflies} />
       <Particles tier={tier} character={character} />
     </>
@@ -103,9 +105,9 @@ export default function Game() {
         toneMappingExposure: 1.05,
       }}
       camera={{ fov: 52, near: 0.1, far: 900, position: [30, 14, 20] }}
-      onCreated={({ gl, scene }) => {
+      onCreated={({ gl, scene, camera }) => {
         gl.setClearColor(PALETTE.horizon);
-        if (process.env.NODE_ENV !== 'production' && window.__gx) Object.assign(window.__gx, { scene, gl });
+        if (process.env.NODE_ENV !== 'production' && window.__gx) Object.assign(window.__gx, { scene, gl, camera });
       }}
     >
       <fog attach="fog" args={[PALETTE.fog, 75, 300]} />

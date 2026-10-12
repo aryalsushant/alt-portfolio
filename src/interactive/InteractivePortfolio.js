@@ -4,6 +4,7 @@ import Game from './game/Game';
 import Overlay from './game/ui/Overlay';
 import StaticFallback from './StaticFallback';
 import { getState, setState, runtime } from './game/core/store';
+import { on as onEvent, emit as emitEvent } from './game/core/events';
 import { detectTier, hasWebGL, isTouchDevice } from './game/core/quality';
 
 class GameErrorBoundary extends React.Component {
@@ -27,7 +28,7 @@ class GameErrorBoundary extends React.Component {
 }
 
 // Dev-only handle for automated play-testing.
-if (process.env.NODE_ENV !== 'production') window.__gx = { getState, setState, runtime };
+if (process.env.NODE_ENV !== 'production') window.__gx = { getState, setState, runtime, on: onEvent, emit: emitEvent };
 
 export default function InteractivePortfolio() {
   const webgl = useMemo(() => hasWebGL(), []);

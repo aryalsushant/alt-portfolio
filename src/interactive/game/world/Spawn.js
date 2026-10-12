@@ -9,6 +9,7 @@ import { NAME_ROW, INTERACTABLES } from '../core/layout';
 import { emit, on } from '../core/events';
 import { toast } from '../core/store';
 import { award } from './Gameplay';
+import Clickable from './Clickable';
 
 export const FONT_BOLD = '/game/fonts/spacegrotesk-bold.ttf';
 export const FONT_MED = '/game/fonts/spacegrotesk-medium.ttf';
@@ -217,8 +218,12 @@ export default function Spawn() {
         <NameLetters />
       </React.Suspense>
       <LetterTracker />
-      <Signpost {...howto} />
-      <Portal {...classic} />
+      <Clickable id="howto">
+        <Signpost {...howto} />
+      </Clickable>
+      <Clickable id="classic">
+        <Portal {...classic} />
+      </Clickable>
     </>
   );
 }

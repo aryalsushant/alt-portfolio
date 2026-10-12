@@ -39,6 +39,7 @@ export default function FollowCamera({ character: ch }) {
       titlePos: new THREE.Vector3(),
       titleLook: new THREE.Vector3(),
       blendLook: new THREE.Vector3(),
+      viewShift: 0,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [rapier]
@@ -71,7 +72,7 @@ export default function FollowCamera({ character: ch }) {
 
     // ---- input
     const look = takeLook();
-    const canLook = !s.panel && !s.mapOpen && !s.paused;
+    const canLook = !s.mapOpen && !s.paused;
     if (canLook) {
       cam.yaw -= look.x;
       cam.pitch = THREE.MathUtils.clamp(cam.pitch + look.y, MIN_PITCH, MAX_PITCH);
@@ -97,7 +98,12 @@ export default function FollowCamera({ character: ch }) {
     cam.target.z = damp(cam.target.z, tz, 11, dt);
     const vLambda = ch.grounded ? 9 : ch.vel.y < -12 ? 10 : 3.2;
     cam.target.y = damp(cam.target.y, ty, vLambda, dt);
-    if (Math.abs(cam.target.y - ty) > 6) cam.target.y = ty; // teleports / big falls
+    if (Math.abs(cam.target.y - ty) > 6) cam.target.y = ty; // big falls
+    if (Math.hypot(cam.target.x - tx, cam.target.z - tz) > 8) {
+      // teleported (fast travel, respawn, prev/next): cut, don't swoop
+      cam.target.set(tx, ty, tz);
+      cam.actualDist = cam.wantDist;
+    }
 
     // ---- collision: pull in when geometry blocks the view
     const cp = Math.cos(cam.pitch);
@@ -155,6 +161,12 @@ export default function FollowCamera({ character: ch }) {
       camera.position.y += (Math.random() - 0.5) * sh;
       cam.trauma = Math.max(0, cam.trauma - dt * 1.8);
     }
+
+    // ---- keep the robot centred in the space left of the desktop sidebar
+    const sidebar = s.panel && !s.touch && size.width > 720 ? Math.min(500, size.width - 24) / 2 : 0;
+    cam.viewShift = damp(cam.viewShift, sidebar, 6, dt);
+    if (cam.viewShift > 0.5) camera.setViewOffset(size.width, size.height, cam.viewShift, 0, size.width, size.height);
+    else if (camera.view && camera.view.enabled) camera.clearViewOffset();
 
     // ---- fov
     cam.fovKick = Math.max(ch.dashT > 0 ? 1 : 0, cam.fovKick - dt * 3);

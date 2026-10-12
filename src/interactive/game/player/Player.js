@@ -125,7 +125,7 @@ export default function Player({ character }) {
     const v0x = ch.vel.x;
     const v0z = ch.vel.z;
 
-    const controllable = s.phase === 'playing' && !s.paused && !s.panel && !s.mapOpen && !ch.frozen;
+    const controllable = s.phase === 'playing' && !s.paused && !s.mapOpen && !ch.frozen;
     const mv = controllable ? readMove() : { x: 0, y: 0 };
 
     // camera-relative wish direction on the ground plane

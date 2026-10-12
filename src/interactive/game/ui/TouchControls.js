@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useGame } from '../core/store';
 import { input, press, release, addLook } from '../input/input';
+import { emit } from '../core/events';
 
 const RADIUS = 56;
 const buzz = ms => {
@@ -16,6 +17,7 @@ const buzz = ms => {
 // Buttons sit on top of the right half and swallow their own touches.
 export default function TouchControls({ onInteract }) {
   const prompt = useGame(s => s.prompt);
+  const panel = useGame(s => s.panel);
   const stickRef = useRef(null);
   const knobRef = useRef(null);
   const zoneRef = useRef(null);
@@ -24,6 +26,7 @@ export default function TouchControls({ onInteract }) {
     const zone = zoneRef.current;
     const stick = { id: null, ox: 0, oy: 0 };
     const looks = new Map(); // pointerId -> {x, y}
+    const taps = new Map(); // pointerId -> {x, y, t, moved} for tap-to-select
     let pinch = 0;
 
     const showStick = (x, y) => {
@@ -40,6 +43,7 @@ export default function TouchControls({ onInteract }) {
 
     const down = e => {
       if (e.pointerType === 'mouse') return;
+      taps.set(e.pointerId, { x: e.clientX, y: e.clientY, t: performance.now(), moved: false });
       const left = e.clientX < window.innerWidth * 0.45;
       if (left && stick.id === null) {
         stick.id = e.pointerId;
@@ -58,6 +62,8 @@ export default function TouchControls({ onInteract }) {
     };
 
     const move = e => {
+      const tap = taps.get(e.pointerId);
+      if (tap && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) > 10) tap.moved = true;
       if (e.pointerId === stick.id) {
         let dx = e.clientX - stick.ox;
         let dy = e.clientY - stick.oy;
@@ -98,6 +104,12 @@ export default function TouchControls({ onInteract }) {
     };
 
     const up = e => {
+      // a quick, still touch selects whatever landmark is under the finger
+      const tap = taps.get(e.pointerId);
+      taps.delete(e.pointerId);
+      if (e.type === 'pointerup' && tap && !tap.moved && performance.now() - tap.t < 300 && looks.size <= 1) {
+        emit('tap', { x: e.clientX, y: e.clientY });
+      }
       if (e.pointerId === stick.id) {
         stick.id = null;
         hideStick();
@@ -145,7 +157,7 @@ export default function TouchControls({ onInteract }) {
         <div ref={knobRef} className="gx-knob" />
       </div>
       <div className="gx-touch-buttons">
-        {prompt && (
+        {prompt && !panel && (
           <button
             className="gx-tbtn gx-tbtn--act"
             onPointerDown={e => {
