@@ -1,0 +1,4 @@
+Orbitron (Matt McInerney) and Space Grotesk (Florian Karsten) are licensed under
+the SIL Open Font License, Version 1.1 — https://openfontlicense.org
+Downloaded from Google Fonts. orbitron-black.typeface.json is a conversion of
+orbitron-black.ttf for three.js TextGeometry (generated with three's TTFLoader).
