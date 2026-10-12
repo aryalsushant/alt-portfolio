@@ -5,70 +5,159 @@ import useAppliedTheme from '../hooks/useAppliedTheme';
 
 // Self-contained banner art (kept out of the lazy game chunk on purpose).
 function InteractiveArt() {
-  const stars = Array.from({ length: 26 }, (_, i) => {
+  // Mirrors the 3D game: sunset sky, floating islands, rope bridges, cloud sea.
+  const stars = Array.from({ length: 22 }, (_, i) => {
     const r = n => {
       const x = Math.sin(i * 57.3 + n) * 10000;
       return x - Math.floor(x);
     };
-    return { left: r(1) * 100, top: r(2) * 55, d: r(3) * 3 };
+    return { left: 30 + r(1) * 70, top: r(2) * 30, d: r(3) * 3 };
   });
+
+  // low-poly floating island: grass cap + jagged rock underside
+  const island = (cx, cy, w, grass, key) => {
+    const h = w * 0.62;
+    const rock = `M${cx - w / 2} ${cy}
+      L${cx - w * 0.36} ${cy + h * 0.38} L${cx - w * 0.2} ${cy + h * 0.55}
+      L${cx - w * 0.06} ${cy + h} L${cx + w * 0.1} ${cy + h * 0.62}
+      L${cx + w * 0.26} ${cy + h * 0.5} L${cx + w * 0.42} ${cy + h * 0.26} L${cx + w / 2} ${cy} Z`;
+    return (
+      <g key={key}>
+        <path d={rock} fill="#5b3f6e" />
+        <path d={`M${cx - w * 0.06} ${cy + h} L${cx + w * 0.1} ${cy + h * 0.62} L${cx + w * 0.26} ${cy + h * 0.5} L${cx + w * 0.42} ${cy + h * 0.26} L${cx + w / 2} ${cy} Z`} fill="#3f2f63" />
+        <path d={`M${cx - w / 2} ${cy} L${cx - w * 0.38} ${cy + h * 0.1} L${cx + w * 0.38} ${cy + h * 0.1} L${cx + w / 2} ${cy} Z`} fill="#b0703f" />
+        <ellipse cx={cx} cy={cy} rx={w / 2} ry={w * 0.09} fill={grass} />
+        <ellipse cx={cx - w * 0.08} cy={cy - w * 0.02} rx={w * 0.3} ry={w * 0.045} fill="#fff" opacity=".12" />
+      </g>
+    );
+  };
+
+  const tree = (x, y, s, c, key) => (
+    <g key={key}>
+      <rect x={x - 2 * s} y={y - 16 * s} width={4 * s} height={16 * s} fill="#7a4b38" />
+      <polygon points={`${x},${y - 34 * s} ${x + 12 * s},${y - 20 * s} ${x + 7 * s},${y - 12 * s} ${x - 8 * s},${y - 12 * s} ${x - 12 * s},${y - 22 * s}`} fill={c} />
+    </g>
+  );
+
+  const bridge = (x1, y1, x2, y2, key) => {
+    const n = Math.max(6, Math.round(Math.hypot(x2 - x1, y2 - y1) / 9));
+    return (
+      <g key={key}>
+        {Array.from({ length: n + 1 }, (_, i) => {
+          const t = i / n;
+          const x = x1 + (x2 - x1) * t;
+          const y = y1 + (y2 - y1) * t + Math.sin(t * Math.PI) * 6;
+          return <rect key={i} x={x - 3} y={y - 2} width={6} height={5} rx={1} fill="#a8714a" />;
+        })}
+        <path d={`M${x1} ${y1 - 9} Q${(x1 + x2) / 2} ${(y1 + y2) / 2 + 2} ${x2} ${y2 - 9}`} stroke="#e8d3a8" strokeWidth="1.2" fill="none" opacity=".9" />
+      </g>
+    );
+  };
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none"
-      style={{ background: 'linear-gradient(180deg, #0a0e28 0%, #1c2150 55%, #43285c 100%)' }}>
+      style={{ background: 'linear-gradient(180deg, #2b2a6b 0%, #5c3f8f 38%, #c4709b 68%, #ffb38a 100%)' }}>
+      <style>{`
+        @keyframes home-float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-7px) } }
+        @keyframes home-float-2 { 0%,100% { transform: translateY(0) } 50% { transform: translateY(6px) } }
+        @keyframes home-drift { from { transform: translateX(0) } to { transform: translateX(-60px) } }
+        @keyframes home-glint { 0%,100% { opacity: .55 } 50% { opacity: 1 } }
+      `}</style>
       {stars.map((s, i) => (
         <span key={i} className="absolute rounded-full bg-white"
           style={{
-            left: `${s.left}%`, top: `${s.top}%`, width: 2.5, height: 2.5,
+            left: `${s.left}%`, top: `${s.top}%`, width: 2, height: 2,
             animation: `home-twinkle 3s ease-in-out ${s.d}s infinite`,
           }} />
       ))}
-      {/* moon */}
+      {/* low sun with glow */}
       <div className="absolute rounded-full"
         style={{
-          right: '12%', top: '14%', width: 46, height: 46,
-          background: 'radial-gradient(circle at 60% 35%, #fdfbee, #cdc6e6)',
-          boxShadow: '0 0 34px 8px rgba(220,214,255,.35)',
+          right: '30%', bottom: '18%', width: 70, height: 70,
+          background: 'radial-gradient(circle, #fff6dc 0%, #ffd9a0 45%, rgba(255,190,140,0) 72%)',
+          boxShadow: '0 0 90px 40px rgba(255,190,140,.35)',
         }} />
-      {/* skyline */}
-      <svg className="absolute bottom-0 left-0 w-full" style={{ height: '52%' }}
-        viewBox="0 0 1200 240" preserveAspectRatio="none">
-        {Array.from({ length: 18 }, (_, i) => {
-          const r = n => { const x = Math.sin(i * 91.7 + n) * 10000; return x - Math.floor(x); };
-          const w = 46 + r(4) * 44, h = 70 + r(5) * 150, x = i * 68;
-          return (
+
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 420" preserveAspectRatio="xMaxYMid slice">
+        {/* far islands */}
+        <g opacity=".55" style={{ animation: 'home-float-2 7s ease-in-out infinite' }}>
+          {island(640, 130, 110, '#8fb07a', 'f1')}
+          {island(1120, 92, 90, '#9bb07a', 'f2')}
+        </g>
+
+        {/* bridges */}
+        {bridge(820, 236, 958, 182, 'b1')}
+        {bridge(1052, 182, 1150, 132, 'b2')}
+
+        {/* main island: robot + career boards */}
+        <g style={{ animation: 'home-float 6s ease-in-out infinite' }}>
+          {island(745, 246, 230, '#7ccf6a', 'main')}
+          {tree(660, 240, 1.2, '#ff9ec7', 't1')}
+          {tree(812, 236, 1, '#58b86b', 't2')}
+          {/* boards */}
+          {[['#ff5d73', 690], ['#9d8cff', 718], ['#63e7de', 772], ['#ffb454', 800]].map(([c, x], i) => (
             <g key={i}>
-              <rect x={x} y={240 - h} width={w} height={h} fill={i % 3 ? '#141936' : '#0f1430'} />
-              {Array.from({ length: 5 }, (_, j) => (
-                r(j + 8) > 0.4 && (
-                  <rect key={j} x={x + 8 + (j % 2) * 18} y={240 - h + 14 + Math.floor(j / 2) * 30}
-                    width={7} height={10} rx={1.5} fill="rgba(255,205,130,.85)" />
-                )
-              ))}
+              <rect x={x} y={196 + (i % 2) * 4} width={20} height={36} rx={2.5} fill="#2b2747" />
+              <rect x={x} y={196 + (i % 2) * 4} width={1.6} height={36} fill={c} />
+              <rect x={x + 18.4} y={196 + (i % 2) * 4} width={1.6} height={36} fill={c} />
+              <rect x={x + 4} y={203 + (i % 2) * 4} width={12} height={2} fill={c} opacity=".9" />
+              <rect x={x + 5} y={209 + (i % 2) * 4} width={10} height={1.5} fill="#fff" opacity=".55" />
+              <rect x={x + 5} y={213 + (i % 2) * 4} width={10} height={1.5} fill="#fff" opacity=".35" />
             </g>
-          );
-        })}
-        {/* mountain + flag */}
-        <path d="M880 240 L1030 60 L1090 60 L1200 240 Z" fill="#232a52" />
-        <path d="M1030 60 L1090 60 L1104 86 L1072 76 L1042 92 L1016 78 Z" fill="#e7ebfa" opacity=".9" />
-        <line x1="1058" y1="60" x2="1058" y2="30" stroke="#e7ebfa" strokeWidth="3" />
-        <path d="M1058 30 L1082 38 L1058 46 Z" fill="#ffb454" />
+          ))}
+          {/* robot */}
+          <g transform="translate(736 206) scale(.3)">
+            <line x1="50" y1="16" x2="50" y2="5" stroke="#8f99b4" strokeWidth="4" />
+            <circle cx="50" cy="4" r="6" fill="#ffd166" />
+            <rect x="14" y="56" width="12" height="34" rx="6" fill="#aab4cc" />
+            <rect x="74" y="56" width="12" height="34" rx="6" fill="#aab4cc" />
+            <rect x="34" y="96" width="11" height="26" rx="5" fill="#8f99b4" />
+            <rect x="55" y="96" width="11" height="26" rx="5" fill="#8f99b4" />
+            <rect x="28" y="50" width="44" height="50" rx="13" fill="#ff8a52" />
+            <circle cx="50" cy="70" r="6.5" fill="#ffd166" />
+            <rect x="24" y="14" width="52" height="36" rx="16" fill="#eef1f8" />
+            <rect x="30" y="22" width="40" height="22" rx="10" fill="#141a30" />
+            <circle cx="42" cy="33" r="4.6" fill="#6ff7ee" />
+            <circle cx="58" cy="33" r="4.6" fill="#6ff7ee" />
+          </g>
+          {/* data shard */}
+          <polygon points="760,170 767,180 760,190 753,180" fill="#8ff6ff" style={{ animation: 'home-glint 2s ease-in-out infinite' }} />
+        </g>
+
+        {/* mid island: arcade + crystal */}
+        <g style={{ animation: 'home-float-2 6.5s ease-in-out infinite' }}>
+          {island(1004, 184, 120, '#5fbf8f', 'mid')}
+          <polygon points="975,178 983,150 991,178" fill="#ff7ac8" opacity=".9" />
+          <polygon points="985,178 992,160 999,178" fill="#ff9fd6" opacity=".85" />
+          <rect x="1012" y="152" width="16" height="26" rx="2" fill="#1e1b38" />
+          <rect x="1014" y="156" width="12" height="9" fill="#63e7de" opacity=".85" />
+          {tree(1045, 180, 0.8, '#b48cff', 't3')}
+        </g>
+
+        {/* summit island: trophy + flag */}
+        <g style={{ animation: 'home-float 8s ease-in-out infinite' }}>
+          {island(1172, 128, 70, '#b8d86c', 'top')}
+          <rect x="1160" y="112" width="18" height="14" fill="#f4efe6" />
+          <path d="M1162 100 h14 l-2 8 q-5 5 -10 0 z" fill="#ffd166" />
+          <rect x="1167" y="107" width="4" height="5" fill="#ffd166" />
+          <line x1="1188" y1="126" x2="1188" y2="96" stroke="#e7ebfa" strokeWidth="2" />
+          <path d="M1188 96 L1204 101 L1188 106 Z" fill="#ff8a52" />
+        </g>
+
+        {/* cloud sea */}
+        <g style={{ animation: 'home-drift 18s linear infinite alternate' }}>
+          {Array.from({ length: 14 }, (_, i) => (
+            <ellipse key={i} cx={i * 100 + 20} cy={392 + (i % 3) * 8} rx={90 + (i % 4) * 18} ry={34 + (i % 3) * 8}
+              fill={i % 2 ? '#ffd9c2' : '#f3bfc6'} opacity=".92" />
+          ))}
+        </g>
       </svg>
-      {/* tiny robot */}
-      <svg className="absolute" style={{ left: '14%', bottom: '8%', width: 54, height: 74 }}
-        viewBox="0 0 100 140">
-        <line x1="50" y1="16" x2="50" y2="5" stroke="#8f99b4" strokeWidth="3" />
-        <circle cx="50" cy="4" r="4.5" fill="#ffd166" />
-        <rect x="14" y="56" width="12" height="34" rx="6" fill="#aab4cc" />
-        <rect x="74" y="56" width="12" height="34" rx="6" fill="#aab4cc" />
-        <rect x="34" y="96" width="11" height="26" rx="5" fill="#8f99b4" />
-        <rect x="55" y="96" width="11" height="26" rx="5" fill="#8f99b4" />
-        <rect x="28" y="50" width="44" height="50" rx="13" fill="#ff9d6b" />
-        <circle cx="50" cy="70" r="6.5" fill="#ffd166" />
-        <rect x="24" y="14" width="52" height="36" rx="16" fill="#e8ecf7" />
-        <rect x="30" y="22" width="40" height="22" rx="10" fill="#1c2138" />
-        <circle cx="42" cy="33" r="4.6" fill="#63e7de" />
-        <circle cx="58" cy="33" r="4.6" fill="#63e7de" />
-      </svg>
+
+      {/* keep the copy legible: left fade on desktop, full wash on phones */}
+      <div className="absolute inset-0 hidden md:block"
+        style={{ background: 'linear-gradient(90deg, rgba(20,12,48,.82) 0%, rgba(20,12,48,.55) 38%, rgba(20,12,48,0) 62%)' }} />
+      <div className="absolute inset-0 md:hidden"
+        style={{ background: 'linear-gradient(180deg, rgba(20,12,48,.55) 0%, rgba(20,12,48,.78) 45%, rgba(20,12,48,.35) 100%)' }} />
     </div>
   );
 }
@@ -171,7 +260,7 @@ export default function Home() {
           art={<InteractiveArt />}
           eyebrow="▶ New Game"
           title="Interactive Portfolio"
-          blurb="A scroll-driven adventure. Walk a retro city, bungee off a bridge, catch a plane, climb a mountain. My work, playable."
+          blurb="A 3D game. Run, jump and dash a robot across floating islands, read my work off the landmarks, collect data shards and climb to the trophy summit. Works on phones too."
           cta="Press Start →"
           to="/interactive"
         />
