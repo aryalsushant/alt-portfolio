@@ -58,6 +58,10 @@ export const BRIDGES = BRIDGE_PAIRS.map(([a, b]) => {
     id: `${a}-${b}`,
     from: { x: A.x + ux * (A.r - inset), y: A.y, z: A.z + uz * (A.r - inset) },
     to: { x: B.x - ux * (B.r - inset), y: B.y, z: B.z - uz * (B.r - inset) },
+    // the sloped part runs rim to rim (collider rim = r + 0.2) so it meets each
+    // island flush with its surface; flat landings cover rim → from/to
+    spanFrom: { x: A.x + ux * (A.r + 0.2), y: A.y, z: A.z + uz * (A.r + 0.2) },
+    spanTo: { x: B.x - ux * (B.r + 0.2), y: B.y, z: B.z - uz * (B.r + 0.2) },
   };
 });
 

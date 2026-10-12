@@ -143,6 +143,9 @@ function bridgeFrame(b) {
   return { len, yaw, pitch, mid, quat };
 }
 
+const span = b => ({ from: b.spanFrom, to: b.spanTo });
+const segmentsOf = b => [{ from: b.from, to: b.spanFrom }, span(b), { from: b.spanTo, to: b.to }];
+
 function Bridges() {
   const planks = useRef();
   const posts = useRef();
@@ -158,11 +161,10 @@ function Bridges() {
     const q = new THREE.Quaternion();
     const e = new THREE.Euler();
     const base = new THREE.Color('#a8714a');
-    BRIDGES.forEach(b => {
-      const f = bridgeFrame(b);
+    const addPlanks = seg => {
+      const f = bridgeFrame(seg);
       const fwd = new THREE.Vector3(0, 0, 1).applyQuaternion(f.quat);
-      const right = new THREE.Vector3(1, 0, 0).applyQuaternion(f.quat);
-      const n = Math.floor(f.len / 0.56);
+      const n = Math.max(1, Math.floor(f.len / 0.56));
       for (let i = 0; i <= n; i++) {
         const t = i / n - 0.5;
         const p = f.mid.clone().addScaledVector(fwd, t * f.len);
@@ -173,6 +175,12 @@ function Bridges() {
         plankM.push(m.clone());
         plankC.push(base.clone().offsetHSL((rnd() - 0.5) * 0.03, 0, (rnd() - 0.5) * 0.1));
       }
+    };
+    BRIDGES.forEach(b => {
+      segmentsOf(b).forEach(addPlanks);
+      const f = bridgeFrame(span(b));
+      const fwd = new THREE.Vector3(0, 0, 1).applyQuaternion(f.quat);
+      const right = new THREE.Vector3(1, 0, 0).applyQuaternion(f.quat);
       const postsN = Math.max(2, Math.round(f.len / 2.6));
       for (let i = 0; i <= postsN; i++) {
         const t = i / postsN - 0.5;
@@ -234,13 +242,23 @@ function Bridges() {
       </instancedMesh>
 
       {BRIDGES.map(b => {
-        const f = bridgeFrame(b);
+        const f = bridgeFrame(span(b));
+        const [la, , lb] = segmentsOf(b).map(bridgeFrame);
         return (
-          <RigidBody key={b.id} type="fixed" colliders={false} position={f.mid.toArray()} quaternion={f.quat.toArray()}>
-            <Blocker shape={CuboidCollider} args={[BRIDGE_W / 2, 0.15, f.len / 2 + 0.3]} position={[0, -0.08, 0]} />
-            <CuboidCollider args={[0.08, 0.7, f.len / 2 - 1.2]} position={[-BRIDGE_W / 2 + 0.05, 0.7, 0]} />
-            <CuboidCollider args={[0.08, 0.7, f.len / 2 - 1.2]} position={[BRIDGE_W / 2 - 0.05, 0.7, 0]} />
-          </RigidBody>
+          <React.Fragment key={b.id}>
+            {/* sloped span: ends exactly at each island's rim height */}
+            <RigidBody type="fixed" colliders={false} position={f.mid.toArray()} quaternion={f.quat.toArray()}>
+              <Blocker shape={CuboidCollider} args={[BRIDGE_W / 2, 0.15, f.len / 2 + 0.05]} position={[0, -0.08, 0]} />
+              <CuboidCollider args={[0.08, 0.7, Math.max(0.3, f.len / 2 - 0.2)]} position={[-BRIDGE_W / 2 + 0.05, 0.7, 0]} />
+              <CuboidCollider args={[0.08, 0.7, Math.max(0.3, f.len / 2 - 0.2)]} position={[BRIDGE_W / 2 - 0.05, 0.7, 0]} />
+            </RigidBody>
+            {/* flat landings over the island rim */}
+            {[la, lb].map((l, i) => (
+              <RigidBody key={i} type="fixed" colliders={false} position={l.mid.toArray()} quaternion={l.quat.toArray()}>
+                <Blocker shape={CuboidCollider} args={[BRIDGE_W / 2, 0.15, l.len / 2]} position={[0, -0.08, 0]} />
+              </RigidBody>
+            ))}
+          </React.Fragment>
         );
       })}
     </>
