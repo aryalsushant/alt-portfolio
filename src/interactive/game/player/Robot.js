@@ -297,7 +297,7 @@ export default function Robot({ character: ch, feet }) {
       sh.position.set(ch.render.x, gy + 0.03, ch.render.z);
       const k = THREE.MathUtils.clamp(1 - h / 10, 0.25, 1);
       sh.scale.setScalar(0.9 * (0.6 + k * 0.4));
-      sh.material.opacity = 0.42 * k;
+      sh.material.opacity = 0.26 * k;
     } else {
       sh.visible = false;
     }

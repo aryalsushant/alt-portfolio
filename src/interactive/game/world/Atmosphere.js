@@ -259,6 +259,7 @@ export function Lighting({ shadows, shadowSize = 2048 }) {
         shadow-camera-bottom={-28}
         shadow-camera-near={1}
         shadow-camera-far={160}
+        shadow-intensity={0.3}
         shadow-bias={-0.0004}
         shadow-normalBias={0.04}
       />

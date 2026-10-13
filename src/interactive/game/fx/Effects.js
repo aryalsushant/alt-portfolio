@@ -10,7 +10,7 @@ export default function Effects({ tier }) {
   if (tier === 'high') {
     return (
       <EffectComposer multisampling={0} enableNormalPass={false}>
-        <N8AO aoRadius={1.6} distanceFalloff={0.6} intensity={2.2} quality="performance" halfRes color="#2a1840" />
+        <N8AO aoRadius={1.2} distanceFalloff={0.6} intensity={0.9} quality="performance" halfRes color="#2a1840" />
         <Bloom mipmapBlur intensity={0.9} luminanceThreshold={0.95} luminanceSmoothing={0.2} radius={0.75} />
         <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
         <Vignette offset={0.28} darkness={0.55} />
