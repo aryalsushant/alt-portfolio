@@ -1,7 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaGithub, FaLinkedin, FaEnvelope, FaMoon, FaSun } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope, FaMoon, FaSun, FaApple, FaFileAlt } from 'react-icons/fa';
 import useAppliedTheme from '../hooks/useAppliedTheme';
+import { PROJECTS, RESEARCH } from '../interactive/content';
+
+const PROOF = [
+  { label: 'iPhone app on the App Store', href: 'https://apps.apple.com/us/app/pricycle/id6820843494', icon: <FaApple size={14} /> },
+  { label: 'Co-author, arXiv preprint', href: RESEARCH.href, icon: <FaFileAlt size={12} /> },
+  { label: '4\u00d7 hackathon winner' },
+  { label: 'AI intern, Gift of Life Marrow Registry' },
+];
 
 // Self-contained banner art (kept out of the lazy game chunk on purpose).
 function InteractiveArt() {
@@ -163,24 +171,30 @@ function InteractiveArt() {
 }
 
 function ClassicArt() {
+  // Preview of the real classic page: the first three project cards.
+  const preview = PROJECTS.slice(0, 3);
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none bg-bg-soft">
-      <div className="absolute inset-0 opacity-[0.55]"
+    <div className="absolute inset-0 overflow-hidden pointer-events-none bg-surface">
+      <div className="absolute inset-0 opacity-60"
         style={{
           backgroundImage:
             'linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)',
           backgroundSize: '44px 44px',
         }} />
-      {/* abstract doc lines */}
-      <div className="absolute left-[8%] top-[18%] flex flex-col gap-3 w-1/3 opacity-70">
-        <div className="h-4 w-2/3 rounded bg-accent/60" />
-        <div className="h-2.5 w-full rounded bg-line-strong" />
-        <div className="h-2.5 w-5/6 rounded bg-line-strong" />
-        <div className="h-2.5 w-4/6 rounded bg-line-strong" />
-      </div>
-      <div className="absolute right-[10%] bottom-[16%] grid grid-cols-2 gap-3 w-1/4 opacity-70">
-        {[0, 1, 2, 3].map(i => (
-          <div key={i} className="h-14 rounded-xl border border-line-strong bg-surface" />
+      <div className="hidden md:flex absolute right-[5%] top-1/2 -translate-y-1/2 w-[42%] flex-col gap-3"
+        aria-hidden="true">
+        {preview.map((p, i) => (
+          <div key={p.id}
+            className="rounded-2xl border border-line-strong bg-bg-soft px-5 py-4 shadow-soft dark:shadow-soft-dark transition-transform duration-500 group-hover:-translate-x-2"
+            style={{ transitionDelay: `${i * 60}ms`, marginLeft: `${i * 6}%` }}>
+            <p className="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-accent mb-1 truncate">{p.tagline}</p>
+            <p className="font-display font-bold text-lg text-ink leading-tight">{p.name}</p>
+            <div className="flex gap-1.5 mt-2.5">
+              {p.stack.slice(0, 3).map(t => (
+                <span key={t} className="px-2 py-[3px] text-[10px] rounded font-mono font-semibold bg-accent-soft text-accent border border-line">{t}</span>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -189,7 +203,7 @@ function ClassicArt() {
 
 function Banner({ art, eyebrow, title, blurb, cta, to, external }) {
   const inner = (
-    <div className="group relative min-h-[44vh] flex items-center overflow-hidden rounded-3xl border border-line card-hover">
+    <div className="group relative min-h-[380px] md:min-h-[420px] flex items-center overflow-hidden rounded-3xl border border-line-strong shadow-card dark:shadow-card-dark card-hover">
       {art}
       <div className="relative z-10 px-8 md:px-14 py-12 max-w-xl">
         <p className="eyebrow mb-4">{eyebrow}</p>
@@ -197,8 +211,8 @@ function Banner({ art, eyebrow, title, blurb, cta, to, external }) {
           style={{ color: external ? undefined : '#f3f1ea' }}>
           {title}
         </h2>
-        <p className="text-[15px] md:text-base leading-relaxed mb-7"
-          style={{ color: external ? undefined : 'rgba(243,241,234,.75)' }}>
+        <p className={`text-[16px] md:text-[17px] leading-relaxed mb-7 ${external ? 'text-ink-2' : ''}`}
+          style={{ color: external ? undefined : 'rgba(243,241,234,.85)' }}>
           {blurb}
         </p>
         <span className="inline-block font-mono text-[13px] font-bold tracking-[0.18em] uppercase
@@ -221,7 +235,7 @@ export default function Home() {
 
       {/* header */}
       <header className="max-w-6xl mx-auto px-6 py-7 flex items-center justify-between">
-        <span className="font-orbitron font-bold tracking-[0.22em] text-lg md:text-xl">
+        <span className="font-orbitron font-bold tracking-[0.14em] sm:tracking-[0.22em] text-[15px] sm:text-lg md:text-xl whitespace-nowrap">
           SUSHANT ARYAL
         </span>
         <div className="flex items-center gap-2">
@@ -247,32 +261,77 @@ export default function Home() {
       </header>
 
       {/* intro */}
-      <div className="max-w-6xl mx-auto px-6 pt-6 pb-10 text-center">
-        <p className="eyebrow justify-center mb-4">Hi, I'm Sushant</p>
-        <h1 className="font-display text-3xl md:text-5xl font-extrabold tracking-tight">
-          Welcome to my website
+      <section className="max-w-6xl mx-auto px-6 pt-10 md:pt-16 pb-12 md:pb-14">
+        <p className="eyebrow mb-5">AI engineer · CS @ Southern Miss</p>
+        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.02] mb-6">
+          Sushant Aryal
         </h1>
-      </div>
+        <p className="text-lg md:text-xl text-ink-2 max-w-2xl leading-relaxed mb-8">
+          I build AI tools and apps that people use. Right now that means a voice-training app for
+          450+ Gift of Life ambassadors, a private period tracker on the App Store, and research on
+          how LLM-written security patches get graded.
+        </p>
+        <ul className="flex flex-wrap gap-2.5">
+          {PROOF.map(p => {
+            const cls = 'inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line-strong bg-surface text-[14px] font-semibold text-ink';
+            return (
+              <li key={p.label}>
+                {p.href ? (
+                  <a href={p.href} target="_blank" rel="noopener noreferrer" className={`${cls} hover:border-accent hover:text-accent transition-colors`}>
+                    {p.icon}{p.label}<span aria-hidden="true" className="text-ink-3">↗</span>
+                  </a>
+                ) : (
+                  <span className={cls}><span className="w-1.5 h-1.5 rounded-full bg-accent" />{p.label}</span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </section>
 
-      {/* banners */}
-      <main className="max-w-6xl mx-auto px-6 pb-16 flex flex-col gap-8">
-        <Banner
-          art={<InteractiveArt />}
-          eyebrow="▶ New Game"
-          title="Interactive Portfolio"
-          blurb="A 3D game. Run, jump and dash a robot across floating islands, read my work off the landmarks, collect data shards and climb to the trophy summit. Works on phones too."
-          cta="Press Start →"
-          to="/interactive"
-        />
-        <Banner
-          art={<ClassicArt />}
-          external
-          eyebrow="📄 Speedrun"
-          title="Classic Portfolio"
-          blurb="A classic, straightforward portfolio with no sidequests and no mountains."
-          cta="View Portfolio →"
-          to="/classic"
-        />
+      {/* two ways in */}
+      <main className="max-w-6xl mx-auto px-6 pb-16">
+        <h2 className="font-mono text-[12px] tracking-[0.22em] uppercase font-semibold text-ink-2 mb-5">Pick a version</h2>
+        <div className="flex flex-col gap-8">
+          <Banner
+            art={<ClassicArt />}
+            external
+            eyebrow="Recommended"
+            title="Classic Portfolio"
+            blurb="Experience, projects, research and awards on one page. Takes about two minutes to read."
+            cta="View portfolio →"
+            to="/classic"
+          />
+          <Banner
+            art={<InteractiveArt />}
+            eyebrow="▶ New game"
+            title="Interactive Portfolio"
+            blurb="The same content as a 3D game. Run, jump and dash a robot across floating islands and read my work off the landmarks. Works on phones too."
+            cta="Press start →"
+            to="/interactive"
+          />
+        </div>
+
+        {/* selected work */}
+        <section className="mt-16" aria-labelledby="selected-work">
+          <div className="flex items-end justify-between gap-4 mb-5">
+            <h2 id="selected-work" className="font-display text-2xl md:text-3xl font-extrabold tracking-tight">Selected work</h2>
+            <Link to="/classic#projects" className="text-[14px] font-semibold text-ink-2 hover:text-accent transition-colors whitespace-nowrap">
+              All projects →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {PROJECTS.slice(0, 3).map(p => (
+              <Link key={p.id} to="/classic#projects"
+                className="group glass-card border-line-strong p-6 flex flex-col hover:border-accent transition-colors">
+                <p className="font-mono text-[11px] tracking-[0.16em] uppercase font-bold text-accent mb-2">{p.dates}</p>
+                <h3 className="font-display font-bold text-xl text-ink mb-1">{p.name}</h3>
+                <p className="text-[15px] font-medium text-ink-2 mb-4">{p.tagline}</p>
+                <p className="mt-auto text-[13px] font-mono text-ink-3">{p.stack.slice(0, 3).join(' · ')}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
 
       <footer style={{ background: '#484848' }}>
@@ -299,10 +358,10 @@ export default function Home() {
                 </svg>
               </div>
               <p className="text-[14px] leading-relaxed" style={{ color: 'rgba(255,255,255,.82)' }}>
-                Sushant Aryal is a Computer Science student specializing in AI Engineering.
-                He has built and deployed multiple production level applications for personal
-                projects, hackathons, as well as organizations. His speciality is finding
-                creative solutions to boring engineering problems.
+                Sushant Aryal is a computer science student at the University of Southern Mississippi
+                (May 2027) and an AI engineer. He interned at Gift of Life Marrow Registry, Lumibot and
+                Delta Health Alliance, was a Break Through Tech AI Fellow at Cornell Tech, and has won four
+                hackathons.
               </p>
             </div>
           </div>
