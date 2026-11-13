@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 // saved preference carries across routes.
 export default function useAppliedTheme() {
   const [dark, setDark] = useState(() => {
+    if (typeof window === 'undefined') return false; // prerender
     const stored = localStorage.getItem('theme');
     if (stored) return stored === 'dark';
     return window.matchMedia('(prefers-color-scheme: dark)').matches;

@@ -17,6 +17,7 @@ import ProgressBar from '../components/ProgressBar';
 function ClassicPortfolio() {
   // Dark mode state — preserve existing logic exactly
   const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window === 'undefined') return false; // prerender
     const stored = localStorage.getItem('theme');
     if (stored) return stored === 'dark';
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
