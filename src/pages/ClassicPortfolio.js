@@ -6,7 +6,9 @@ import Education from '../components/Education';
 import Highlights from '../components/Highlights';
 import Experience from '../components/Experience';
 import Projects from '../components/Projects';
-import CoolThings from '../components/CoolThings';
+import Research from '../components/Research';
+import Awards from '../components/Awards';
+import Skills from '../components/Skills';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import CursorGlow from '../components/CursorGlow';
@@ -50,14 +52,6 @@ function ClassicPortfolio() {
           <Hero />
         </section>
 
-        <section id="education">
-          <Education />
-        </section>
-
-        <section id="highlights">
-          <Highlights />
-        </section>
-
         <section id="experience">
           <Experience />
         </section>
@@ -66,8 +60,21 @@ function ClassicPortfolio() {
           <Projects />
         </section>
 
-        <section id="coolthings">
-          <CoolThings />
+        <section id="research">
+          <Research />
+        </section>
+
+        <section id="awards">
+          <Awards />
+        </section>
+
+        <section id="skills">
+          <Skills />
+        </section>
+
+        <section id="education">
+          <Education />
+          <Highlights />
         </section>
 
         <section id="contact">
