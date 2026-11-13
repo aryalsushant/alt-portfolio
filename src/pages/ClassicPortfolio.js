@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Education from '../components/Education';
@@ -31,6 +31,14 @@ function ClassicPortfolio() {
       localStorage.setItem('theme', 'light');
     }
   }, [darkMode]);
+
+  // Deep links like /classic#projects from the landing page
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (!hash) return;
+    const t = setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView(), 60);
+    return () => clearTimeout(t);
+  }, [hash]);
 
   // Smooth scroll polyfill for Safari/IE
   useEffect(() => {
