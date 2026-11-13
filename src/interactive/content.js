@@ -135,7 +135,7 @@ export const PROJECTS = [
     dates: 'Feb 2026 – May 2026',
     desc: 'Won the USM Annual Hackathon 2025, then built a BAA compliance proof of concept for the Mississippi Department of Health with ITS and AWS. Vendor e-signatures with signed PDFs on S3 and a SHA-256 audit hash for every signing event. Automated 90/30/7-day expiry reminders via SES and GPT-4o audit packet summaries.',
     stack: ['Next.js', 'TypeScript', 'AWS', 'OpenAI'],
-    links: [],
+    links: [{ label: 'GitHub', href: 'https://github.com/Mississippi-AI-Innovation-Hub/HIPPApotamus' }],
     image: '/hipaa.jpeg',
     category: 'ai',
     color: '#7db8ff',
