@@ -1,0 +1,40 @@
+# Sushant Aryal
+
+> AI engineer and computer science student at the University of Southern Mississippi (B.S. Computer Science, minor in Economic Data Analysis, expected May 2027, 4.0 GPA). Based in Hattiesburg, Mississippi. Builds AI tools and apps that people use.
+
+Not to be confused with other people named Sushant Aryal. This one is the USM computer science student whose GitHub is github.com/aryalsushant.
+
+## Experience
+
+- Artificial Intelligence Intern, Gift of Life Marrow Registry (Boca Raton, FL), June to Aug 2026. Built and deployed a full-stack training tool used by 450+ campus ambassadors; trained models to predict stem cell collection times and cancellation probabilities.
+- AI & Machine Learning Fellow, Break Through Tech AI at Cornell Tech, May 2025 to May 2026. Selected from 3,000+ applicants; built ML pipelines forecasting aerospace employment across 50 states.
+- Software Engineering Intern, Lumibot LLC (Hattiesburg, MS), Oct to Dec 2025. Flutter app and React/Node.js website work; internal tools that turn bug reports into prioritized GitHub issues.
+- Software & Data Science Intern, Delta Health Alliance (Greenwood, MS), May to July 2025. Full-stack learning management platform on AWS; taught Python to 40+ high school students in rural Mississippi.
+
+## Projects
+
+- DCS: voice-based training app where Gift of Life campus ambassadors practice donor recruitment against 6 AI personas, with a trainer view for coaching. Next.js, Supabase, ElevenLabs, OpenAI.
+- PriCycle: private period tracker for iPhone, live on the App Store since Oct 2026. No account, no server, zero network requests; encrypted on-device storage. https://apps.apple.com/us/app/pricycle/id6820843494
+- HIPAApotamus: won the USM Annual Hackathon 2025, then became a Business Associate Agreement compliance proof of concept for the Mississippi Department of Health through the Mississippi AI Innovation Hub (ITS) and AWS.
+- Crewly: maps where utilities are about to build near each other, using public filings from 20+ grid planners and a 68-tool agent. https://crewly.miami/
+- HLA Nomenclature Translator: shows one HLA typing reduced across all eight py-ard levels side by side. https://hla-nomenclature-translator-kappa.vercel.app
+- Campus Menace: 3D browser runner game built with React Three Fiber and Supabase. https://campus-menace.vercel.app
+
+## Research
+
+- O. Nepal, S. Aryal, O. Olukola, N. Rahimi. "Metrics Failure in LLM-Based Code Vulnerability Repair: An Empirical Study and a Change-Aware Screen." arXiv:2609.26749 (cs.SE), Sept 2026. https://arxiv.org/abs/2609.26749
+
+## Awards
+
+- First Prize, USM Annual Hackathon 2025 (HIPAApotamus)
+- First Place, USM Golden Idea Pitch Competition 2025
+- Second Most Improved Team, Break Through Tech WiDS Global Datathon 2026
+- Third Place, USM Annual Hackathon 2024
+- Core organizer, Nepal-US Hackathon 2026 (Nepali Leaders Network): 1,350+ applications, 44 mentors
+
+## Links
+
+- Portfolio: https://sushantaryal.com/classic
+- LinkedIn: https://www.linkedin.com/in/sushant-aryal/
+- GitHub: https://github.com/aryalsushant
+- Email: sushantaryal05@gmail.com
