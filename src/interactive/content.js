@@ -120,7 +120,7 @@ export const PROJECTS = [
     name: 'PriCycle',
     tagline: 'Private period tracker on the App Store',
     dates: 'Oct 2026',
-    desc: 'iPhone period tracker that never touches the network: no account, no server, zero network requests. Logs live in an encrypted on-device database with the key in the Keychain, excluded from iCloud backup, behind an optional Face ID / Touch ID / PIN lock. Backups are password-encrypted exports the user starts.',
+    desc: 'iPhone period tracker with no account and no server. It makes zero network requests. Logs are stored in an encrypted on-device database with the key in the Keychain, excluded from iCloud backup, behind an optional Face ID, Touch ID or PIN lock. Backups are password-encrypted files the user exports.',
     stack: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
     links: [
       { label: 'App Store', href: 'https://apps.apple.com/us/app/pricycle/id6820843494' },

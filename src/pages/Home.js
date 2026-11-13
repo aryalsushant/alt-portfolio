@@ -298,7 +298,7 @@ export default function Home() {
             external
             eyebrow="Recommended"
             title="Classic Portfolio"
-            blurb="Experience, projects, research and awards on one page. Takes about two minutes to read."
+            blurb="Experience, projects, research and awards on one scrolling page."
             cta="View portfolio →"
             to="/classic"
           />
@@ -358,8 +358,8 @@ export default function Home() {
                 </svg>
               </div>
               <p className="text-[14px] leading-relaxed" style={{ color: 'rgba(255,255,255,.82)' }}>
-                Sushant Aryal is a computer science student at the University of Southern Mississippi
-                (May 2027) and an AI engineer. He interned at Gift of Life Marrow Registry, Lumibot and
+                Sushant Aryal is an AI engineer and a computer science student at the University of
+                Southern Mississippi, graduating in May 2027. He interned at Gift of Life Marrow Registry, Lumibot and
                 Delta Health Alliance, was a Break Through Tech AI Fellow at Cornell Tech, and has won four
                 hackathons.
               </p>
