@@ -1,278 +1,155 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaGithub, FaExternalLinkAlt, FaApple } from 'react-icons/fa';
+import { PROJECTS } from '../interactive/content';
+import useReveal from '../hooks/useReveal';
+import SectionHeader from './SectionHeader';
 
-function useReveal(rootMargin = '-60px') {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { el.classList.add('visible'); obs.disconnect(); } },
-      { rootMargin }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [rootMargin]);
-  return ref;
-}
+// Classic-page extras keyed by project id. Copy lives in interactive/content.js.
+const MEDIA = {
+  dcs: { stats: [['450+', 'campus ambassadors'], ['6', 'AI donor personas']] },
+  pricycle: { icon: '/pricycle-icon.jpg' },
+  hipaapotamus: { image: '/hipaa.jpeg' },
+  crewly: { image: '/crewly.jpg' },
+  hla: { image: '/hla.jpg' },
+  'campus-menace': { image: '/campus-menace.jpg' },
+};
 
-const ALL_PROJECTS = [
-  {
-    id: 'druglytics',
-    title: 'Druglytics',
-    subtitle: 'Hacklytics 2025',
-    description: 'Analyzed 300K+ drug interactions using NLP and LLMs to warn users of allergic conflicts. Full-stack app with secure MongoDB backend deployed on AWS EC2.',
-    stack: ['Python', 'Streamlit', 'AWS', 'Cloudflare', 'Flask', 'MongoDB'],
-    emoji: '💊',
-    image: '/drug.png',
-    github: 'https://github.com/aryalsushant/hacklytics2025',
-    demo: 'https://devpost.com/software/druglytics',
-  },
-  {
-    id: 'swipedin',
-    title: 'Swiped-In',
-    subtitle: 'HackNYU 2025',
-    description: 'AI-powered hiring app matching job seekers with recruiters via swiping interface. Gemini AI interviews + ElevenLabs voice screening. MVP built in 18 hours.',
-    stack: ['JavaScript', 'Node.js', 'MongoDB', 'Google Gemini', 'ElevenLabs'],
-    emoji: '🤝',
-    image: '/swipe.png',
-    github: 'https://github.com/rupaut98/swipedin',
-    demo: 'https://devpost.com/software/swiped-in',
-  },
-  {
-    id: 'hipaa',
-    title: 'HIPAApotamus',
-    subtitle: 'Hatchathon 2025 Winner',
-    description: 'HIPAA Contract Management System for health clinics. Won Hatchathon 2025. Contacted by Mississippi Dept. of IT for a joint follow-up project.',
-    stack: ['Next.js', 'OpenAI', 'AWS', 'TypeScript'],
-    emoji: '🏥',
-    image: '/hipaa.jpeg',
-    github: '#',
-    demo: '#',
-  },
-  {
-    id: 'coming1',
-    title: 'Coming Soon',
-    subtitle: 'Future Project',
-    description: 'Something exciting is in the works. Check back soon for updates on this upcoming project.',
-    stack: ['TBD'],
-    emoji: '🚀',
-    colorFrom: 'from-violet-500/20',
-    colorTo: 'to-purple-500/15',
-    github: '#',
-    demo: '#',
-    placeholder: true,
-  },
-  {
-    id: 'coming2',
-    title: 'Coming Soon',
-    subtitle: 'Future Project',
-    description: 'Another project in development. Stay tuned for more details.',
-    stack: ['TBD'],
-    emoji: '⚡',
-    colorFrom: 'from-amber-500/20',
-    colorTo: 'to-orange-500/15',
-    github: '#',
-    demo: '#',
-    placeholder: true,
-  },
-  {
-    id: 'coming3',
-    title: 'Coming Soon',
-    subtitle: 'Future Project',
-    description: 'More innovative work on the horizon. Follow along to see what comes next.',
-    stack: ['TBD'],
-    emoji: '🌟',
-    colorFrom: 'from-cyan-500/20',
-    colorTo: 'to-sky-500/15',
-    github: '#',
-    demo: '#',
-    placeholder: true,
-  },
+const hasCover = p => Boolean(MEDIA[p.id] && (MEDIA[p.id].image || MEDIA[p.id].icon));
+
+const FILTERS = [
+  { id: 'all', label: 'All' },
+  { id: 'ai', label: 'AI / ML' },
+  { id: 'mobile', label: 'Mobile' },
+  { id: 'web', label: 'Web' },
 ];
 
-function Badge({ text }) {
+function linkIcon(label) {
+  if (label === 'GitHub') return <FaGithub size={15} />;
+  if (label === 'App Store') return <FaApple size={15} />;
+  return <FaExternalLinkAlt size={12} />;
+}
+
+function Links({ links }) {
+  if (!links.length) return null;
   return (
-    <span className="px-3 py-[5px] text-[12px] rounded-md font-mono font-semibold
-      bg-accent-soft
-      text-accent
-      border border-line-strong
-      tracking-tight">
-      {text}
-    </span>
+    <div className="flex flex-wrap gap-x-5 gap-y-2 pt-4 border-t border-line">
+      {links.map(l => (
+        <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-[14px] font-semibold text-ink hover:text-accent transition-colors">
+          {linkIcon(l.label)} {l.label}
+        </a>
+      ))}
+    </div>
   );
 }
 
-function PlaceholderImg({ emoji, image, label }) {
-  if (image) {
-    return (
-      <div className="relative w-full h-44 overflow-hidden border-b border-line">
-        <img src={image} alt={label || ''} className="w-full h-full object-cover" />
-      </div>
-    );
+function Stack({ items }) {
+  return (
+    <ul className="flex flex-wrap gap-1.5 mb-5" aria-label="Tech stack">
+      {items.map(t => (
+        <li key={t} className="px-3 py-[5px] text-[12px] rounded-md font-mono font-semibold bg-accent-soft text-accent border border-line-strong tracking-tight">
+          {t}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Cover({ project }) {
+  const m = MEDIA[project.id] || {};
+  if (m.image) {
+    return <img src={m.image} alt={`${project.name} screenshot`} loading="lazy" className="w-full h-full object-cover object-top" />;
   }
   return (
-    <div className="relative w-full h-44 flex items-center justify-center overflow-hidden
-      border-b border-line"
-      style={{
-        background: 'linear-gradient(135deg, var(--accent-soft), transparent 65%)',
-      }}>
-      <div className="absolute inset-0 opacity-[0.10]"
-        style={{
-          backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)',
-          backgroundSize: '16px 16px',
-          color: 'var(--accent)',
-        }}
-      />
-      <span className="relative text-6xl" role="img">{emoji}</span>
+    <div className="w-full h-full flex items-center justify-center"
+      style={{ background: `linear-gradient(135deg, ${project.color}33, transparent 70%)` }}>
+      <img src={m.icon} alt={`${project.name} app icon`} loading="lazy" className="w-24 h-24 rounded-[22px] shadow-lg" />
     </div>
   );
 }
 
-function ProjectCard({ project, idx }) {
+// Numbers panel for the featured project when there is no public screenshot.
+function StatPanel({ project }) {
+  const { stats = [] } = MEDIA[project.id] || {};
   return (
-    <div
-      className={`glass-card border border-line flex-shrink-0
-        w-80 md:w-[22rem]
-        hover:border-line-strong hover:-translate-y-1
-        transition-all duration-300 overflow-hidden rounded-2xl
-        ${project.placeholder ? 'opacity-55' : ''}
-        reveal reveal-delay-${(idx % 3) + 1}`}
-    >
-      <PlaceholderImg emoji={project.emoji} image={project.image} label={project.title} />
-      <div className="p-6">
-        <div className="mb-3.5">
-          {/* Subtitle now ABOVE the title — pro pattern: eyebrow → headline */}
-          <p className="text-[12px] font-mono text-accent mb-1.5 tracking-[0.18em] uppercase font-bold">
-            {project.subtitle}
-          </p>
-          <h3 className="font-display font-bold text-[22px] text-ink tracking-tight leading-[1.15]">{project.title}</h3>
+    <dl className="h-full flex flex-col justify-center gap-6 p-8 md:p-10"
+      style={{ background: `linear-gradient(135deg, ${project.color}26, transparent 75%)` }}>
+      {stats.map(([value, label]) => (
+        <div key={label}>
+          <dt className="sr-only">{label}</dt>
+          <dd className="font-display font-extrabold text-4xl text-ink tracking-tight tabular-nums leading-none">{value}</dd>
+          <dd className="mt-1.5 text-[12px] font-mono text-ink-2 tracking-[0.16em] uppercase font-semibold">{label}</dd>
         </div>
-        <p className="text-[15px] text-ink-2 leading-relaxed mb-5 line-clamp-3">
-          {project.description}
-        </p>
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {project.stack.map(t => <Badge key={t} text={t} />)}
-        </div>
-        {!project.placeholder && (
-          <div className="flex gap-5 pt-4 border-t border-line">
-            <a href={project.github} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 text-[14px] font-semibold text-ink
-                hover:text-accent transition-colors">
-              <FaGithub size={15} /> GitHub
-            </a>
-            <a href={project.demo} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 text-[14px] font-semibold text-ink
-                hover:text-accent transition-colors">
-              <FaExternalLinkAlt size={13} /> Live Demo
-            </a>
-          </div>
-        )}
+      ))}
+    </dl>
+  );
+}
+
+function Featured({ project }) {
+  const ref = useReveal('-40px');
+  return (
+    <article ref={ref} className="reveal glass-card border border-line overflow-hidden rounded-2xl mb-8 grid md:grid-cols-5">
+      <div className="md:col-span-2 min-h-[220px] border-b md:border-b-0 md:border-r border-line">
+        {hasCover(project) ? <Cover project={project} /> : <StatPanel project={project} />}
       </div>
-    </div>
+      <div className="md:col-span-3 p-7 md:p-9">
+        <p className="text-[12px] font-mono text-accent mb-2 tracking-[0.18em] uppercase font-bold">
+          Featured · Gift of Life Marrow Registry · {project.dates}
+        </p>
+        <h3 className="font-display font-bold text-3xl text-ink tracking-tight leading-tight mb-1">{project.name}</h3>
+        <p className="font-display font-semibold text-ink-2 text-[17px] mb-4">{project.tagline}</p>
+        <p className="text-[15px] text-ink-2 leading-relaxed mb-5">{project.desc}</p>
+        <Stack items={project.stack} />
+        <Links links={project.links} />
+      </div>
+    </article>
+  );
+}
+
+function Card({ project, idx }) {
+  const ref = useReveal('-30px');
+  return (
+    <article ref={ref}
+      className={`reveal reveal-delay-${(idx % 3) + 1} glass-card border border-line overflow-hidden rounded-2xl flex flex-col
+        hover:border-line-strong hover:-translate-y-1 transition-all duration-300`}>
+      {hasCover(project) && <div className="h-44 border-b border-line overflow-hidden"><Cover project={project} /></div>}
+      <div className="p-6 flex flex-col flex-1">
+        <p className="text-[12px] font-mono text-accent mb-1.5 tracking-[0.18em] uppercase font-bold">{project.tagline}</p>
+        <h3 className="font-display font-bold text-[22px] text-ink tracking-tight leading-[1.15] mb-3">{project.name}</h3>
+        <p className="text-[15px] text-ink-2 leading-relaxed mb-5 flex-1">{project.desc}</p>
+        <Stack items={project.stack} />
+        <Links links={project.links} />
+      </div>
+    </article>
   );
 }
 
 export default function Projects() {
-  const sectionRef = useRef(null);
-  const trackRef = useRef(null);
-  const [showAll, setShowAll] = useState(false);
-  const headerRef = useReveal();
-
-  const mobileProjects = showAll ? ALL_PROJECTS : ALL_PROJECTS.slice(0, 3);
-
-  // Desktop horizontal scroll
-  useEffect(() => {
-    const section = sectionRef.current;
-    const track = trackRef.current;
-    if (!section || !track) return;
-
-    const onScroll = () => {
-      if (window.innerWidth < 768) return;
-      const rect = section.getBoundingClientRect();
-      const sectionHeight = section.offsetHeight;
-      const viewH = window.innerHeight;
-      if (rect.top > viewH || rect.bottom < 0) return;
-
-      const scrollable = sectionHeight - viewH;
-      if (scrollable <= 0) return;
-      const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
-      const maxTranslate = Math.max(0, track.scrollWidth - window.innerWidth + 128);
-      track.style.transform = `translateX(-${progress * maxTranslate}px)`;
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Trigger reveal on desktop cards too
-  useEffect(() => {
-    const cards = document.querySelectorAll('#projects .reveal');
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-      },
-      { rootMargin: '-20px', threshold: 0.05 }
-    );
-    cards.forEach(c => obs.observe(c));
-    return () => obs.disconnect();
-  }, [showAll]);
+  const [filter, setFilter] = useState('all');
+  const [featured, ...rest] = PROJECTS;
+  const shown = filter === 'all' ? rest : PROJECTS.filter(p => p.category === filter);
 
   return (
-    <section id="projects" className="bg-bg">
+    <section className="py-28 px-6 bg-bg">
+      <div className="max-w-6xl mx-auto">
+        <SectionHeader kicker="What I've built" title="Projects" />
 
-      {/* Header */}
-      <div className="py-24 px-6">
-        <div ref={headerRef} className="reveal max-w-6xl mx-auto text-center">
-          <p className="font-mono text-accent text-[12px] mb-4 tracking-[0.25em] uppercase font-semibold">What I've Built</p>
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-ink mb-5 tracking-tight">
-            Projects
-          </h2>
-          <div className="mx-auto w-16 h-[3px] rounded-full" style={{ background: 'linear-gradient(90deg, var(--accent), var(--accent) 50%, transparent)' }} />
-          <p className="mt-6 text-[13px] font-mono text-ink-2 hidden md:block tracking-wide font-medium">
-            ← scroll to pan through projects →
-          </p>
-        </div>
-      </div>
+        {filter === 'all' && <Featured project={featured} />}
 
-      {/* Desktop — sticky horizontal scroll */}
-      <div ref={sectionRef} className="hidden md:block relative" style={{ height: '450vh' }}>
-        <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-          <div
-            ref={trackRef}
-            className="horizontal-track"
-            style={{ willChange: 'transform' }}
-          >
-            {ALL_PROJECTS.map((p, i) => (
-              <ProjectCard key={p.id} project={p} idx={i} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile — vertical */}
-      <div className="md:hidden px-6 pb-16">
-        <div className="flex flex-col gap-6 max-w-sm mx-auto">
-          {mobileProjects.map((p, i) => (
-            <ProjectCard key={p.id} project={p} idx={i} />
+        <div className="flex flex-wrap justify-center gap-2 mb-8" role="tablist" aria-label="Filter projects">
+          {FILTERS.map(f => (
+            <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => setFilter(f.id)}
+              className={`px-4 py-2 rounded-full text-[13px] font-semibold font-display tracking-wide border transition-colors
+                ${filter === f.id ? 'bg-accent text-on-accent border-accent' : 'border-line-strong text-ink-2 hover:text-ink hover:border-accent'}`}>
+              {f.label}
+            </button>
           ))}
         </div>
 
-        {!showAll && (
-          <div className="text-center mt-8">
-            <button
-              onClick={() => setShowAll(true)}
-              className="px-8 py-3 rounded-xl font-display text-[14px] font-semibold tracking-wide
-                border border-line-strong text-ink
-                hover:bg-accent-soft hover:border-accent hover:text-accent
-                transition-all duration-300 hover:scale-[1.03]"
-            >
-              Show All Projects
-            </button>
-          </div>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {shown.map((p, i) => <Card key={p.id} project={p} idx={i} />)}
+        </div>
       </div>
-
     </section>
   );
 }

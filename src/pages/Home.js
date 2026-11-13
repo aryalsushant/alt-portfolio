@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaLinkedin, FaEnvelope, FaMoon, FaSun } from 'react-icons/fa';
 import useAppliedTheme from '../hooks/useAppliedTheme';
+import { PROJECTS } from '../interactive/content';
+
 
 // Self-contained banner art (kept out of the lazy game chunk on purpose).
 function InteractiveArt() {
@@ -163,24 +165,30 @@ function InteractiveArt() {
 }
 
 function ClassicArt() {
+  // Preview of the real classic page: the first three project cards.
+  const preview = PROJECTS.slice(0, 3);
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none bg-bg-soft">
-      <div className="absolute inset-0 opacity-[0.55]"
+    <div className="absolute inset-0 overflow-hidden pointer-events-none bg-surface">
+      <div className="absolute inset-0 opacity-60"
         style={{
           backgroundImage:
             'linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)',
           backgroundSize: '44px 44px',
         }} />
-      {/* abstract doc lines */}
-      <div className="absolute left-[8%] top-[18%] flex flex-col gap-3 w-1/3 opacity-70">
-        <div className="h-4 w-2/3 rounded bg-accent/60" />
-        <div className="h-2.5 w-full rounded bg-line-strong" />
-        <div className="h-2.5 w-5/6 rounded bg-line-strong" />
-        <div className="h-2.5 w-4/6 rounded bg-line-strong" />
-      </div>
-      <div className="absolute right-[10%] bottom-[16%] grid grid-cols-2 gap-3 w-1/4 opacity-70">
-        {[0, 1, 2, 3].map(i => (
-          <div key={i} className="h-14 rounded-xl border border-line-strong bg-surface" />
+      <div className="hidden md:flex absolute right-[5%] top-1/2 -translate-y-1/2 w-[42%] flex-col gap-3"
+        aria-hidden="true">
+        {preview.map((p, i) => (
+          <div key={p.id}
+            className="rounded-2xl border border-line-strong bg-bg-soft px-5 py-4 shadow-soft dark:shadow-soft-dark transition-transform duration-500 group-hover:-translate-x-2"
+            style={{ transitionDelay: `${i * 60}ms`, marginLeft: `${i * 6}%` }}>
+            <p className="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-accent mb-1 truncate">{p.tagline}</p>
+            <p className="font-display font-bold text-lg text-ink leading-tight">{p.name}</p>
+            <div className="flex gap-1.5 mt-2.5">
+              {p.stack.slice(0, 3).map(t => (
+                <span key={t} className="px-2 py-[3px] text-[10px] rounded font-mono font-semibold bg-accent-soft text-accent border border-line">{t}</span>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>
@@ -189,7 +197,7 @@ function ClassicArt() {
 
 function Banner({ art, eyebrow, title, blurb, cta, to, external }) {
   const inner = (
-    <div className="group relative min-h-[44vh] flex items-center overflow-hidden rounded-3xl border border-line card-hover">
+    <div className="group relative min-h-[380px] md:min-h-[420px] flex items-center overflow-hidden rounded-3xl border border-line-strong shadow-card dark:shadow-card-dark card-hover">
       {art}
       <div className="relative z-10 px-8 md:px-14 py-12 max-w-xl">
         <p className="eyebrow mb-4">{eyebrow}</p>
@@ -197,8 +205,8 @@ function Banner({ art, eyebrow, title, blurb, cta, to, external }) {
           style={{ color: external ? undefined : '#f3f1ea' }}>
           {title}
         </h2>
-        <p className="text-[15px] md:text-base leading-relaxed mb-7"
-          style={{ color: external ? undefined : 'rgba(243,241,234,.75)' }}>
+        <p className={`text-[16px] md:text-[17px] leading-relaxed mb-7 ${external ? 'text-ink-2' : ''}`}
+          style={{ color: external ? undefined : 'rgba(243,241,234,.85)' }}>
           {blurb}
         </p>
         <span className="inline-block font-mono text-[13px] font-bold tracking-[0.18em] uppercase
@@ -221,7 +229,7 @@ export default function Home() {
 
       {/* header */}
       <header className="max-w-6xl mx-auto px-6 py-7 flex items-center justify-between">
-        <span className="font-orbitron font-bold tracking-[0.22em] text-lg md:text-xl">
+        <span className="font-orbitron font-bold tracking-[0.14em] sm:tracking-[0.22em] text-[15px] sm:text-lg md:text-xl whitespace-nowrap">
           SUSHANT ARYAL
         </span>
         <div className="flex items-center gap-2">
@@ -247,32 +255,33 @@ export default function Home() {
       </header>
 
       {/* intro */}
-      <div className="max-w-6xl mx-auto px-6 pt-6 pb-10 text-center">
-        <p className="eyebrow justify-center mb-4">Hi, I'm Sushant</p>
-        <h1 className="font-display text-3xl md:text-5xl font-extrabold tracking-tight">
-          Welcome to my website
+      <div className="max-w-6xl mx-auto px-6 pt-8 pb-10 text-center">
+        <h1 className="font-display text-4xl md:text-6xl font-extrabold tracking-tight">
+          Hi, I'm Sushant
         </h1>
       </div>
 
       {/* banners */}
-      <main className="max-w-6xl mx-auto px-6 pb-16 flex flex-col gap-8">
-        <Banner
-          art={<InteractiveArt />}
-          eyebrow="▶ New Game"
-          title="Interactive Portfolio"
-          blurb="A 3D game. Run, jump and dash a robot across floating islands, read my work off the landmarks, collect data shards and climb to the trophy summit. Works on phones too."
-          cta="Press Start →"
-          to="/interactive"
-        />
-        <Banner
-          art={<ClassicArt />}
-          external
-          eyebrow="📄 Speedrun"
-          title="Classic Portfolio"
-          blurb="A classic, straightforward portfolio with no sidequests and no mountains."
-          cta="View Portfolio →"
-          to="/classic"
-        />
+      <main className="max-w-6xl mx-auto px-6 pb-16">
+        <div className="flex flex-col gap-8">
+          <Banner
+            art={<ClassicArt />}
+            external
+            eyebrow="📄 Speedrun"
+            title="Classic Portfolio"
+            blurb="A classic, straightforward portfolio with no sidequests and no mountains."
+            cta="View Portfolio →"
+            to="/classic"
+          />
+          <Banner
+            art={<InteractiveArt />}
+            eyebrow="▶ New Game"
+            title="Interactive Portfolio"
+            blurb="A 3D game. Run, jump and dash a robot across floating islands, read my work off the landmarks, collect data shards and climb to the trophy summit. Works on phones too."
+            cta="Press Start →"
+            to="/interactive"
+          />
+        </div>
       </main>
 
       <footer style={{ background: '#484848' }}>
@@ -299,10 +308,10 @@ export default function Home() {
                 </svg>
               </div>
               <p className="text-[14px] leading-relaxed" style={{ color: 'rgba(255,255,255,.82)' }}>
-                Sushant Aryal is a Computer Science student specializing in AI Engineering.
-                He has built and deployed multiple production level applications for personal
-                projects, hackathons, as well as organizations. His speciality is finding
-                creative solutions to boring engineering problems.
+                Sushant Aryal is an AI engineer and a computer science student at the University of
+                Southern Mississippi, graduating in May 2027. He interned at Gift of Life Marrow Registry, Lumibot and
+                Delta Health Alliance, was a Break Through Tech AI Fellow at Cornell Tech, and has won four
+                hackathons.
               </p>
             </div>
           </div>

@@ -44,7 +44,7 @@ function PlaceholderImage({ emoji, label, image }) {
 const ACHIEVEMENTS = [
   { icon: '🏆', label: '4× Hackathon Winner' },
   { icon: '💼', label: '3 Hands-On Internships' },
-  { icon: '🏫', label: 'Senior Resident Assistant on Campus' },
+  { icon: '📄', label: 'Co-author, arXiv preprint (cs.SE)' },
 ];
 
 const ACADEMICS = [

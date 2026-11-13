@@ -2,11 +2,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 
 const SECTIONS = [
   { id: 'home', label: 'Home' },
-  { id: 'education', label: 'Education' },
-  { id: 'highlights', label: 'Highlights' },
   { id: 'experience', label: 'Experience' },
   { id: 'projects', label: 'Projects' },
-  { id: 'coolthings', label: 'Cool Things' },
+  { id: 'research', label: 'Research' },
+  { id: 'awards', label: 'Awards' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'education', label: 'Education' },
   { id: 'contact', label: 'Contact' },
 ];
 

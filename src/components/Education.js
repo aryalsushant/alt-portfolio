@@ -61,7 +61,7 @@ export default function Education() {
   const headerRef = useReveal();
 
   return (
-    <section className="py-28 px-6 bg-bg-soft">
+    <section className="py-28 px-6 bg-bg">
       <div className="max-w-4xl mx-auto">
 
         {/* Header */}

@@ -6,9 +6,9 @@ import ClassicPortfolio from './pages/ClassicPortfolio';
 const InteractivePortfolio = lazy(() => import('./interactive/InteractivePortfolio'));
 
 const TITLES = {
-  '/': 'Sushant Aryal',
-  '/classic': 'Sushant Aryal | Portfolio',
-  '/interactive': 'Sushant Aryal | Interactive Portfolio',
+  '/': 'Sushant Aryal | AI Engineer and CS Student at Southern Miss',
+  '/classic': 'Sushant Aryal | Experience, Projects and Research',
+  '/interactive': 'Sushant Aryal | Interactive 3D Portfolio',
 };
 
 function ScrollToTop() {

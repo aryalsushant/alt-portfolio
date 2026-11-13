@@ -24,7 +24,7 @@ export default function Contact() {
   const infoRef = useReveal('-30px');
 
   return (
-    <section className="py-28 px-6 bg-bg">
+    <section className="py-28 px-6 bg-bg-soft">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
