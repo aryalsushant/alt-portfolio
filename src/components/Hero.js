@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const CYCLE_TEXTS = [
   'Sushant Aryal',
-  'AI Engineer',
-  'CS @ Southern Miss',
-  'iOS app developer',
+  'AI/ML Engineer',
+  'CS @ USM',
+  'Cornell Tech AI Fellow',
 ];
 const CODE_FRAGMENTS = [
   'import torch', 'def forward(x):', 'model.fit(X_train, y)', 'loss.backward()',
@@ -140,29 +140,31 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto pt-24 pb-20">
 
-        {/* Latest ship */}
-        <a href="https://apps.apple.com/us/app/pricycle/id6820843494" target="_blank" rel="noopener noreferrer"
-          className="inline-flex items-center gap-2.5 px-5 py-2.5 mb-10 rounded-full
-          border border-accent/50 bg-accent-soft text-accent
-          font-mono text-[13px] sm:text-sm font-medium hover:border-accent transition-colors">
-          <img src="/pricycle-icon.jpg" alt="" className="w-5 h-5 rounded-md" />
-          <span className="font-semibold tracking-tight">New: PriCycle is on the App Store</span>
-          <span aria-hidden="true">↗</span>
-        </a>
+        {/* BreakThroughTech badge */}
+        <div className="inline-flex items-center gap-2.5 px-5 py-2.5 mb-10 rounded-full
+          border border-accent/50
+          bg-accent-soft
+          text-accent
+          font-mono text-[13px] sm:text-sm font-medium
+          animate-glow-pulse">
+          <span className="text-lg" role="img" aria-label="graduation cap">🎓</span>
+          <span className="font-semibold tracking-tight">BreakThroughTech AI Fellow @ Cornell Tech</span>
+          <span className="flex h-2 w-2 relative flex-shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
+          </span>
+        </div>
 
         {/* Main heading — typewriter */}
         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6 leading-[1.05] tracking-tight text-ink"
           style={{ minHeight: '1.2em' }}>
-          <span className="sr-only">Sushant Aryal, AI engineer and CS student at Southern Miss</span>
-          <span aria-hidden="true">{displayText || '\u00A0'}</span>
+          <span>{displayText || '\u00A0'}</span>
           <span className="terminal-cursor" aria-hidden="true" />
         </h1>
 
         {/* Sub copy — primary message: large + ink-2 (78% contrast, not faded grey) */}
         <p className="text-lg md:text-xl text-ink-2 mb-7 max-w-2xl mx-auto leading-relaxed">
-          I build AI tools and apps that people use: a voice-training app for 450+ Gift of Life
-          ambassadors, a private period tracker on the App Store, and a compliance tool for the
-          Mississippi Department of Health.
+          Building at the intersection of AI, software engineering, and real-world impact.
         </p>
 
         {/* Meta line — pill row, full ink contrast, structured pro pattern */}

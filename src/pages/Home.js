@@ -1,15 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaGithub, FaLinkedin, FaEnvelope, FaMoon, FaSun, FaApple, FaFileAlt } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope, FaMoon, FaSun } from 'react-icons/fa';
 import useAppliedTheme from '../hooks/useAppliedTheme';
-import { PROJECTS, RESEARCH } from '../interactive/content';
+import { PROJECTS } from '../interactive/content';
 
-const PROOF = [
-  { label: 'iPhone app on the App Store', href: 'https://apps.apple.com/us/app/pricycle/id6820843494', icon: <FaApple size={14} /> },
-  { label: 'Co-author, arXiv preprint', href: RESEARCH.href, icon: <FaFileAlt size={12} /> },
-  { label: '4\u00d7 hackathon winner' },
-  { label: 'AI intern, Gift of Life Marrow Registry' },
-];
 
 // Self-contained banner art (kept out of the lazy game chunk on purpose).
 function InteractiveArt() {
@@ -261,77 +255,33 @@ export default function Home() {
       </header>
 
       {/* intro */}
-      <section className="max-w-6xl mx-auto px-6 pt-10 md:pt-16 pb-12 md:pb-14">
-        <p className="eyebrow mb-5">AI engineer · CS @ Southern Miss</p>
-        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.02] mb-6">
-          Sushant Aryal
+      <div className="max-w-6xl mx-auto px-6 pt-8 pb-10 text-center">
+        <h1 className="font-display text-4xl md:text-6xl font-extrabold tracking-tight">
+          Hi, I'm Sushant
         </h1>
-        <p className="text-lg md:text-xl text-ink-2 max-w-2xl leading-relaxed mb-8">
-          I build AI tools and apps that people use. Right now that means a voice-training app for
-          450+ Gift of Life ambassadors, a private period tracker on the App Store, and research on
-          how LLM-written security patches get graded.
-        </p>
-        <ul className="flex flex-wrap gap-2.5">
-          {PROOF.map(p => {
-            const cls = 'inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line-strong bg-surface text-[14px] font-semibold text-ink';
-            return (
-              <li key={p.label}>
-                {p.href ? (
-                  <a href={p.href} target="_blank" rel="noopener noreferrer" className={`${cls} hover:border-accent hover:text-accent transition-colors`}>
-                    {p.icon}{p.label}<span aria-hidden="true" className="text-ink-3">↗</span>
-                  </a>
-                ) : (
-                  <span className={cls}><span className="w-1.5 h-1.5 rounded-full bg-accent" />{p.label}</span>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+      </div>
 
-      {/* two ways in */}
+      {/* banners */}
       <main className="max-w-6xl mx-auto px-6 pb-16">
-        <h2 className="font-mono text-[12px] tracking-[0.22em] uppercase font-semibold text-ink-2 mb-5">Pick a version</h2>
         <div className="flex flex-col gap-8">
           <Banner
             art={<ClassicArt />}
             external
-            eyebrow="Recommended"
+            eyebrow="📄 Speedrun"
             title="Classic Portfolio"
-            blurb="Experience, projects, research and awards on one scrolling page."
-            cta="View portfolio →"
+            blurb="A classic, straightforward portfolio with no sidequests and no mountains."
+            cta="View Portfolio →"
             to="/classic"
           />
           <Banner
             art={<InteractiveArt />}
-            eyebrow="▶ New game"
+            eyebrow="▶ New Game"
             title="Interactive Portfolio"
-            blurb="The same content as a 3D game. Run, jump and dash a robot across floating islands and read my work off the landmarks. Works on phones too."
-            cta="Press start →"
+            blurb="A 3D game. Run, jump and dash a robot across floating islands, read my work off the landmarks, collect data shards and climb to the trophy summit. Works on phones too."
+            cta="Press Start →"
             to="/interactive"
           />
         </div>
-
-        {/* selected work */}
-        <section className="mt-16" aria-labelledby="selected-work">
-          <div className="flex items-end justify-between gap-4 mb-5">
-            <h2 id="selected-work" className="font-display text-2xl md:text-3xl font-extrabold tracking-tight">Selected work</h2>
-            <Link to="/classic#projects" className="text-[14px] font-semibold text-ink-2 hover:text-accent transition-colors whitespace-nowrap">
-              All projects →
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {PROJECTS.slice(0, 3).map(p => (
-              <Link key={p.id} to="/classic#projects"
-                className="group glass-card border-line-strong p-6 flex flex-col hover:border-accent transition-colors">
-                <p className="font-mono text-[11px] tracking-[0.16em] uppercase font-bold text-accent mb-2">{p.dates}</p>
-                <h3 className="font-display font-bold text-xl text-ink mb-1">{p.name}</h3>
-                <p className="text-[15px] font-medium text-ink-2 mb-4">{p.tagline}</p>
-                <p className="mt-auto text-[13px] font-mono text-ink-3">{p.stack.slice(0, 3).join(' · ')}</p>
-              </Link>
-            ))}
-          </div>
-        </section>
       </main>
 
       <footer style={{ background: '#484848' }}>
