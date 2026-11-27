@@ -1,7 +1,27 @@
 {
   "rewrites": [
-    { "source": "/classic", "destination": "/classic/index.html" },
-    { "source": "/interactive", "destination": "/interactive/index.html" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/classic",
+      "destination": "/classic/index.html"
+    },
+    {
+      "source": "/interactive",
+      "destination": "/interactive/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/csc424",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
   ]
 }
