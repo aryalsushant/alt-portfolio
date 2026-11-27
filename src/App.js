@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useLayoutEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import ClassicPortfolio from './pages/ClassicPortfolio';
+import Csc424 from './pages/Csc424';
 
 const InteractivePortfolio = lazy(() => import('./interactive/InteractivePortfolio'));
 
@@ -9,6 +10,7 @@ const TITLES = {
   '/': 'Sushant Aryal | AI Engineer and CS Student at Southern Miss',
   '/classic': 'Sushant Aryal | Experience, Projects and Research',
   '/interactive': 'Sushant Aryal | Interactive 3D Portfolio',
+  '/csc424': 'Sushant Aryal | CSC 424 Capstone',
 };
 
 function ScrollToTop() {
@@ -35,6 +37,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/classic" element={<ClassicPortfolio />} />
+        <Route path="/csc424" element={<Csc424 />} />
         <Route
           path="/interactive"
           element={
